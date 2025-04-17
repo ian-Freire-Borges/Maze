@@ -1,0 +1,45 @@
+.app-container {
+  text-align: center;
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(55, 127, 90, 0.644);
+  background-image: url("/Maze/src/assets/tilesetOpenGameBackground.png");
+  
+}
+
+.maze-wrapper {
+  position: relative;
+  margin: 20px 0;
+  margin-top: 3rem;
+  
+ 
+ 
+}
+h2{
+  border: solid rgb(164, 177, 21) 2px;
+}
+button {
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: .3rem 0.5rem;
+  background: linear-gradient(90deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+  border-radius: 1rem;
+  border: none;
+  transition: background 0.3s, opacity 0.3s;
+  margin-right: 1rem;
+  
+}
+
+button:hover {
+  background: linear-gradient(90deg, rgba(253,187,45,1) 0%, rgba(34,193,195,1) 100%);
+}
+
+button:disabled {
+  background: linear-gradient(90deg, rgba(34,193,195,0.5) 0%, rgba(253,187,45,0.5) 100%); 
+  opacity: 0.5; 
+}
+
