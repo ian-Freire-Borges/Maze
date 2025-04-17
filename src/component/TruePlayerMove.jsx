@@ -10,6 +10,7 @@ export default function TruePlayerMove() {
   const [moveDirection, setMoveDirection] = useState(null);
   const [lastValidDirection, setLastValidDirection] = useState("down");
   const [pathStack, setPathStack] = useState([]);
+  const [moveSpeed, setMoveSpeed] = useState(300);
 
   const visited = useRef(new Set());
 
@@ -110,7 +111,7 @@ export default function TruePlayerMove() {
       if (!moved) {
         backtrack();
       }
-    }, 300);
+    }, moveSpeed);
 
     return () => clearInterval(moveInterval);
   }, [isAutoMoving, playerPosition, exitFound, pathStack]);
@@ -133,6 +134,14 @@ export default function TruePlayerMove() {
           }} style={{ marginLeft: '10px' }}
           disabled={!isAutoMoving}>
             Parar
+          </button>
+          <button onClick={() => {
+            setMoveSpeed(prev => {
+            if (prev === 300) return 150;   
+            if (prev === 150) return 100;   
+            return 300;});
+            }} style={{ marginLeft: '10px' }}>
+            Velocidade: { moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : "3x"} ⏩
           </button>
         </div>
         {exitFound && <p style={{ color: 'green' }}>Saída encontrada!</p>}
