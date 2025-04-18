@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import RenderPlayerMove from './RenderPlayerMove';
 import { mazeLayout } from "./MazeMap";
 
-export default function TruePlayerMove() {
+export default function TruePlayerMove({setScreen}) {
   const [playerPosition, setPlayerPosition] = useState([],[]);
   const [maze, setMaze] = useState(mazeLayout);
   const [isAutoMoving, setIsAutoMoving] = useState(false);
@@ -12,6 +12,7 @@ export default function TruePlayerMove() {
   const [pathStack, setPathStack] = useState([]);
   const [moveSpeed, setMoveSpeed] = useState(300);
   const [playAgain, setPlayAgain] = useState(false)
+  
 
   const visited = useRef(new Set());
 
@@ -104,7 +105,10 @@ export default function TruePlayerMove() {
   };
 
   useEffect(() => {
-    if (!isAutoMoving || exitFound) return;
+    if (!isAutoMoving || exitFound) {
+      if(exitFound){
+      setTimeout(() => setScreen("END"), 300);}
+      return;}
 
     const moveInterval = setInterval(() => {
       const moved = tryMovePlayer(playerPosition);
@@ -147,9 +151,6 @@ export default function TruePlayerMove() {
             return 300;});
             }} style={{ marginLeft: '10px' }}>
             Velocidade: { moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} ⏩
-          </button>
-          <button>
-            Gerar Novo Mapa: 
           </button>
         </div>
         {exitFound && <p style={{ color: 'green' }}>Saída encontrada!</p>}

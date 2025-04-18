@@ -2,22 +2,20 @@ import { useRef } from 'react';
 import Sketch from 'react-p5';
 import { mazeLayout } from './MazeMap';
 
-import wall1 from "../assets/wall1.png";
-import wall2 from "../assets/wall2.png";
+import wall1 from "../assets/FlorestWall.png";
 import door from "../assets/pixel_door.png";
 
 import tile3 from "../assets/tile3.png";
 import tile4 from "../assets/tile4.png";
 import tile5 from "../assets/tile5.png";
 
-import bush from "../assets/08.png";
-import miniBush from "../assets/11.png";
+import bush from "../assets/Tree1.png";
+import miniBush from "../assets/Tree2.png";
 
 export default function StaticMaze() {
   const cellSize = 20;
 
   const wall1Ref = useRef();
-  const wall2Ref = useRef();
   const doorRef = useRef();
   const tile3Ref = useRef();
   const tile4Ref = useRef();
@@ -31,7 +29,6 @@ export default function StaticMaze() {
 
   const preload = (p5) => {
     wall1Ref.current = p5.loadImage(wall1);
-    wall2Ref.current = p5.loadImage(wall2);
     doorRef.current = p5.loadImage(door);
 
     tile3Ref.current = p5.loadImage(tile3);
@@ -62,8 +59,8 @@ export default function StaticMaze() {
         const val = mazeLayout[row][col];
 
         if (val === 1) {
-          // Parede: 60% wall1, 40% wall2
-          wallMapRef.current[row][col] = Math.random() < 0.6 ? wall1Ref.current : wall2Ref.current;
+         
+          wallMapRef.current[row][col] =  wall1Ref.current 
 
           // Bush por cima: 70% bush, 30% miniBush
           overlayMapRef.current[row][col] = Math.random() < 0.7 ? bushRef.current : miniBushRef.current;
@@ -97,7 +94,7 @@ export default function StaticMaze() {
         if (val === 1) {
           // Parede + overlay (bush/miniBush)
           p5.image(wallMapRef.current[row][col], x, y, cellSize, cellSize);
-          p5.image(overlayMapRef.current[row][col], x, y, 25, 25);
+          p5.image(overlayMapRef.current[row][col], x, y, 20, 20);
 
         } else if (val === 0 || val === 2) {
           // Caminho com textura aleatória
