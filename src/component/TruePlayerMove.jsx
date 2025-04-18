@@ -11,6 +11,7 @@ export default function TruePlayerMove() {
   const [lastValidDirection, setLastValidDirection] = useState("down");
   const [pathStack, setPathStack] = useState([]);
   const [moveSpeed, setMoveSpeed] = useState(300);
+  const [playAgain, setPlayAgain] = useState(false)
 
   const visited = useRef(new Set());
 
