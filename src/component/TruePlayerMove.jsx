@@ -10,6 +10,7 @@ export default function TruePlayerMove() {
   const [moveDirection, setMoveDirection] = useState(null);
   const [lastValidDirection, setLastValidDirection] = useState("down");
   const [pathStack, setPathStack] = useState([]);
+  const [playAgain, setPlayAgain] = useState(false);
 
   const visited = useRef(new Set());
 
@@ -122,12 +123,14 @@ export default function TruePlayerMove() {
           <button  disabled={isAutoMoving} onClick={() => {
             setIsAutoMoving(true);
             setExitFound(false);
+            if(!playAgain){
             setPathStack([playerPosition]);
             visited.current = new Set([`${playerPosition.x},${playerPosition.y}`]);
-          }}>
+          }}}>
             Iniciar Movimento Automático
           </button>
           <button onClick={() => {
+            setPlayAgain(true);
             setIsAutoMoving(false);
             setMoveDirection(null);
           }} style={{ marginLeft: '10px' }}
