@@ -141,10 +141,15 @@ export default function TruePlayerMove() {
           <button onClick={() => {
             setMoveSpeed(prev => {
             if (prev === 300) return 150;   
-            if (prev === 150) return 100;   
+            if (prev === 150) return 100;
+            if (prev === 100) return 50;
+            if (prev === 50) return 25;   
             return 300;});
             }} style={{ marginLeft: '10px' }}>
-            Velocidade: { moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : "3x"} ⏩
+            Velocidade: { moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} ⏩
+          </button>
+          <button>
+            Gerar Novo Mapa: 
           </button>
         </div>
         {exitFound && <p style={{ color: 'green' }}>Saída encontrada!</p>}
