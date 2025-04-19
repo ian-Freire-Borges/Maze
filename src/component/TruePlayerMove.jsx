@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RenderPlayerMove from './RenderPlayerMove';
+import "./TruePlayerMove.css"
+import pause from "../assets/pause.png"
+import play from "../assets/play.png"
+import speedUp from "../assets/speedup.png"
+
 
 
 export default function TruePlayerMove({setScreen,mazeLayout }) {
@@ -122,9 +127,9 @@ export default function TruePlayerMove({setScreen,mazeLayout }) {
   }, [isAutoMoving, playerPosition, exitFound, pathStack]);
 
   return (
-    <div>
-      <div style={{ position: 'absolute', top: -40, left: -80 }}>
-        <div style={{ marginBottom: '10px' }}>
+    <div className='container-total'>
+      <div style={{ position: 'absolute', top: -50, left: -80 }} className='container-button'>
+        <div className='coitaner-for-mov'>
           <button  disabled={isAutoMoving} onClick={() => {
             setIsAutoMoving(true);
             setExitFound(false);
@@ -132,7 +137,7 @@ export default function TruePlayerMove({setScreen,mazeLayout }) {
             setPathStack([playerPosition]);
             visited.current = new Set([`${playerPosition.x},${playerPosition.y}`]);
           }}}>
-            Iniciar Movimento Automático
+            Iniciar Movimento Automático <img src={play}/>
           </button>
           <button onClick={() => {
             setPlayAgain(true);
@@ -140,8 +145,9 @@ export default function TruePlayerMove({setScreen,mazeLayout }) {
             setMoveDirection(null);
           }} style={{ marginLeft: '10px' }}
           disabled={!isAutoMoving}>
-            Parar
+            Parar <img src={pause}/>
           </button>
+         </div>
           <button onClick={() => {
             setMoveSpeed(prev => {
             if (prev === 300) return 150;   
@@ -149,11 +155,9 @@ export default function TruePlayerMove({setScreen,mazeLayout }) {
             if (prev === 100) return 50;
             if (prev === 50) return 25;   
             return 300;});
-            }} style={{ marginLeft: '10px' }}>
-            Velocidade: { moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} ⏩
+            }}>
+            Velocidade: { moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} <img src={speedUp} />
           </button>
-        </div>
-        {exitFound && <p style={{ color: 'green' }}>Saída encontrada!</p>}
       </div>
       <RenderPlayerMove
         position={playerPosition}

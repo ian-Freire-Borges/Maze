@@ -1,5 +1,8 @@
 .maze-wrapper {
-    position: relative;
-    margin: 20px 0;
     margin-top: 3rem;
+    position: relative;
+    background-color: #1a1a2e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+    display: inline-block;
   }

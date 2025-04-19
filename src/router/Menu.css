@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive; /* Fonte retrô! */
+    background: url('../assets/background.png') no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+  .menu-container {
+    width: 400px; /* menos largo */
+    height: 300px; /* menos alto */
+    margin: auto;
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 50, 0.6);
+    border-radius: 20px;
+    box-shadow: 6px 6px 0 #000;
+    text-align: center;
+  }
+  @keyframes pulseTitle {
+    0% {
+      transform: scale(1);
+      text-shadow: 2px 2px 0px #000;
+    }
+    50% {
+      transform: scale(1.1);
+      text-shadow: 4px 4px 0px #000;
+    }
+    100% {
+      transform: scale(1);
+      text-shadow: 2px 2px 0px #000;
+    }
+  }
+  
+  .menu-title {
+    font-size: 2.5rem;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 0px #000;
+    animation: pulseTitle 2s infinite;
+    margin-bottom: 20px;
+  }
+  
+  .menu-button {
+    background: linear-gradient(to right, #00d2ff, #3a7bd5);
+    border: 2px solid #fff;
+    border-radius: 8px;
+    padding: 16px 32px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .menu-button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+  }
