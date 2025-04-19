@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Sketch from 'react-p5';
-import { mazeLayout } from './MazeMap';
+
 
 import wall1 from "../assets/FlorestWall.png";
 import door from "../assets/pixel_door.png";
@@ -12,7 +12,7 @@ import tile5 from "../assets/tile5.png";
 import bush from "../assets/Tree1.png";
 import miniBush from "../assets/Tree2.png";
 
-export default function StaticMaze() {
+export default function StaticMaze({ mazeLayout }) {
   const cellSize = 20;
 
   const wall1Ref = useRef();

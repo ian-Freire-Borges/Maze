@@ -1,9 +1,16 @@
+import { useState } from 'react';
 import matrizes from '../../public/matrizes.json';
 
-const matrizGerada = () => {
-  const indiceAleatorio = Math.floor(Math.random() * matrizes.length);
+export default function useMaze() {
+  const [mazeLayout, setMazeLayout] = useState(() => {
+    const randomIndex = Math.floor(Math.random() * matrizes.length);
+    return matrizes[randomIndex];
+  });
 
-  return matrizes[indiceAleatorio];
+  const gerarNovoMaze = () => {
+    const randomIndex = Math.floor(Math.random() * matrizes.length);
+    setMazeLayout(matrizes[randomIndex]);
+  };
+
+  return { mazeLayout, gerarNovoMaze };
 }
-
-export const mazeLayout = matrizGerada()

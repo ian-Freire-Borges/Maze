@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RenderPlayerMove from './RenderPlayerMove';
-import { mazeLayout } from "./MazeMap";
 
-export default function TruePlayerMove({setScreen}) {
+
+export default function TruePlayerMove({setScreen,mazeLayout }) {
   const [playerPosition, setPlayerPosition] = useState([],[]);
   const [maze, setMaze] = useState(mazeLayout);
   const [isAutoMoving, setIsAutoMoving] = useState(false);

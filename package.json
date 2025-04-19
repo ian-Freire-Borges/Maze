@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "maze": "file:",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-p5": "^1.4.1"
