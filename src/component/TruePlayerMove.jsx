@@ -45,13 +45,14 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
       { dx: 0, dy: -1, dir: "up" },
       { dx: 0, dy: 1, dir: "down" }
     ];
-    if(maze[currentPos.y][currentPos.x]===4){
+    const cellValue = maze[currentPos.y][currentPos.x];
+    if(cellValue===4){
       setGameResult(false);
       setExitFound(true);
         setMoveDirection(null);
         return true;
     }
-    else if(maze[currentPos.y][currentPos.x]===3){
+    else if(cellValue===3){
       setGameResult(true);
       setExitFound(true);
         setMoveDirection(null);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RenderEnemyMove from "./RenderEnemyMove";
 
-export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAutoMoving,setExitFound }) {
+export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAutoMoving,setExitFound, setGameResult }) {
   const [EnemyPosition, setEnemyPosition] = useState([]);
   const [pathStack, setPathStack] = useState([]);
   const [moveDirection, setMoveDirection] = useState("right");
@@ -33,6 +33,7 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
     ];
     if(maze[currentPos.y][currentPos.x]===2){
         setExitFound(true);
+        setGameResult(false);
           setMoveDirection(null);
           return true;
       }
