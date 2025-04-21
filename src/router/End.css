@@ -63,3 +63,17 @@ body {
     transform: scale(1.05);
     background: linear-gradient(to right, #ff416c, #ff4b2b);
   }
+
+  .end-text {
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 0px #000;
+    margin-bottom: 20px;
+  }
+
+  .win-text {
+    color: blue;
+}
+
+.lose-text {
+    color: red;
+}

@@ -3,11 +3,11 @@ import MazeRender from "../component/MazeRender";
 import TruePlayerMove from '../component/TruePlayerMove';
 import "./MazePage.css"
 
-export default function MazePage({ mazeLayout, setScreen}) {
+export default function MazePage({ mazeLayout, setScreen, setGameResult }) {
   return (
     <div className="maze-wrapper">
       <MazeRender mazeLayout={mazeLayout}/>
-      <TruePlayerMove setScreen={setScreen} mazeLayout={mazeLayout} />
+      <TruePlayerMove setScreen={setScreen} mazeLayout={mazeLayout} setGameResult={setGameResult} />
     </div>
   );
 }

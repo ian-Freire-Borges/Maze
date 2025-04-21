@@ -13,6 +13,7 @@ function App() {
   const { mazeLayout, gerarNovoMaze } = useMaze();
   const [mazeKey, setMazeKey] = useState(0);
   const [screen, setScreen] = useState('MENU');
+  const [gameResult, setGameResult] = useState(null);
   const cellSize = 20;
 
   return (
@@ -27,10 +28,14 @@ function App() {
       {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} />}
       {screen === 'MAZE' && (
         <div key={mazeKey}>
-          <MazePage mazeLayout={mazeLayout}  setScreen={setScreen} />
+          <MazePage 
+            mazeLayout={mazeLayout}  
+            setScreen={setScreen} 
+            setGameResult={setGameResult}
+          />
         </div>
       )}
-      {screen === 'END' && <End setScreen={setScreen} />}
+      {screen === 'END' && <End setScreen={setScreen} gameResult={gameResult} />}
     </div>
   );
 }

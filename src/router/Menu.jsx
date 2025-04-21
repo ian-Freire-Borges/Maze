@@ -1,5 +1,5 @@
 import React from 'react';
-import './Menu.css'; // <-- adiciona isso
+import './Menu.css';
 
 function Menu({ setScreen, setMazeKey, gerarNovoMaze }) { 
   return (

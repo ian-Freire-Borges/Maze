@@ -6,7 +6,7 @@ import play from "../assets/play.png";
 import speedUp from "../assets/speedup.png";
 import TrueEnemyMove from './TrueEnemyMove';
 
-export default function TruePlayerMove({ setScreen, mazeLayout }) {
+export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }) {
   const [playerPosition, setPlayerPosition] = useState([], []);
   const [maze, setMaze] = useState(mazeLayout);
   const [isAutoMoving, setIsAutoMoving] = useState(false);
@@ -46,6 +46,13 @@ export default function TruePlayerMove({ setScreen, mazeLayout }) {
       { dx: 0, dy: 1, dir: "down" }
     ];
     if(maze[currentPos.y][currentPos.x]===4){
+      setGameResult(false);
+      setExitFound(true);
+        setMoveDirection(null);
+        return true;
+    }
+    else if(maze[currentPos.y][currentPos.x]===3){
+      setGameResult(true);
       setExitFound(true);
         setMoveDirection(null);
         return true;
@@ -78,8 +85,14 @@ export default function TruePlayerMove({ setScreen, mazeLayout }) {
       const newY = currentPos.y + dy;
       const key = `${newX},${newY}`;
 
-      if (maze[newY]?.[newX] === 3 || maze[newY]?.[newX] === 4) {
-        
+      if (maze[newY]?.[newX] === 3) {
+        setGameResult(true);
+        setExitFound(true);
+        setMoveDirection(null);
+        return true;
+      }
+      if (maze[newY]?.[newX] === 4) {
+        setGameResult(false);
         setExitFound(true);
         setMoveDirection(null);
         return true;
