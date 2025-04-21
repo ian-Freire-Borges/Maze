@@ -65,7 +65,7 @@ export default function StaticMaze({ mazeLayout }) {
           // Bush por cima: 70% bush, 30% miniBush
           overlayMapRef.current[row][col] = Math.random() < 0.7 ? bushRef.current : miniBushRef.current;
 
-        } else if (val === 0 || val === 2) {
+        } else if (val === 0 || val === 2 || val === 4) {
           // Caminho: 40% tile3, 30% tile5, 30% tile4
           const rand = Math.random();
           if (rand < 0.4) {
@@ -96,7 +96,7 @@ export default function StaticMaze({ mazeLayout }) {
           p5.image(wallMapRef.current[row][col], x, y, cellSize, cellSize);
           p5.image(overlayMapRef.current[row][col], x, y, 20, 20);
 
-        } else if (val === 0 || val === 2) {
+        } else if (val === 0 || val === 2 || val === 4) {
           // Caminho com textura aleatória
           p5.image(pathMapRef.current[row][col], x, y, cellSize, cellSize);
 
