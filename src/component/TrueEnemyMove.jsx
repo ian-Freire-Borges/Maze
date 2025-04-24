@@ -31,10 +31,11 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       { dx: 0, dy: -1 }, // cima
       { dx: 0, dy: 1 }   // baixo
     ];
+    
     if(maze[currentPos.y][currentPos.x]===2){
         setExitFound(true);
         setGameResult(false);
-          setMoveDirection(null);
+
           return true;
       }
     for (const { dx, dy } of directions) {
@@ -42,14 +43,19 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       const newY = currentPos.y + dy;
       const key = `${newX},${newY}`;
 
-      if (maze[newY]?.[newX] === 0 && !visited.current.has(key) ) {
+      if ((maze[newY]?.[newX] === 0 || maze[newY]?.[newX] === 3) && !visited.current.has(key) ) {
         if (dx < 0) setMoveDirection("left");
         if (dx > 0) setMoveDirection("right");
 
         setMaze(prevMaze => {
           const newMaze = prevMaze.map(row => [...row]);
+          if(maze[newY]?.[newX] === 3){
+            newMaze[currentPos.y][currentPos.x] = 3;
+          newMaze[newY][newX] = 4;
+          }else{
           newMaze[currentPos.y][currentPos.x] = 0;
           newMaze[newY][newX] = 4;
+          }
 
           setEnemyPosition({ x: newX, y: newY });
           setPathStack(prev => [...prev, { x: newX, y: newY }]);
@@ -61,6 +67,7 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       }
     
       if(maze[newY]?.[newX] === 2){
+        setGameResult(false);
         setExitFound(true);
         setMaze(prevMaze => {
             const newMaze = prevMaze.map(row => [...row]);
@@ -70,10 +77,9 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
             setEnemyPosition({ x: newX, y: newY });
             setPathStack(prev => [...prev, { x: newX, y: newY }]);
             visited.current.add(key);
-  
+          
             return newMaze;
           });
-        
           setMoveDirection(null);
           return true;
      
@@ -97,6 +103,14 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
     if (prevPos.x < EnemyPosition.x) setMoveDirection("left");
     if (prevPos.x > EnemyPosition.x) setMoveDirection("right");
 
+    if (maze[prevPos.y]?.[prevPos.x] === 2) {
+      setGameResult(false);
+      setExitFound(true);
+      
+      return 
+    }
+
+
     setPathStack(newPath);
     setEnemyPosition(prevPos);
 
@@ -114,10 +128,10 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
     const moveInterval = setInterval(() => {
       const moved = tryMovePlayer(EnemyPosition);
       if (!moved) backtrack();
-    }, moveSpeed);
+    }, moveSpeed * 2);
 
     return () => clearInterval(moveInterval);
-  }, [isAutoMoving, EnemyPosition, exitFound, pathStack]);
+  }, [isAutoMoving, EnemyPosition, exitFound]);
 
   return (
     <div>

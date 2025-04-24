@@ -9,11 +9,13 @@ import useMaze from "./component/MazeMap"
 import MazePage from './router/MazePage';
 
 
-function App() {  
-  const { mazeLayout, gerarNovoMaze } = useMaze();
+function App() { 
+  const [nivel, setNivel] = useState(1);
+  const { mazeLayout, gerarNovoMaze } = useMaze(nivel);
   const [mazeKey, setMazeKey] = useState(0);
   const [screen, setScreen] = useState('MENU');
   const [gameResult, setGameResult] = useState(null);
+  
   const cellSize = 20;
 
   return (
@@ -25,13 +27,14 @@ function App() {
         backgroundSize: 'cover',
       }}
     >
-      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} />}
+      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} />}
       {screen === 'MAZE' && (
         <div key={mazeKey}>
           <MazePage 
             mazeLayout={mazeLayout}  
             setScreen={setScreen} 
             setGameResult={setGameResult}
+            nivel={nivel}
           />
         </div>
       )}

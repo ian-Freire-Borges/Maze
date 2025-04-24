@@ -14,7 +14,6 @@ import miniBush from "../assets/Tree2.png";
 
 export default function StaticMaze({ mazeLayout }) {
   const cellSize = 20;
-
   const wall1Ref = useRef();
   const doorRef = useRef();
   const tile3Ref = useRef();

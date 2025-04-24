@@ -1,25 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RenderPlayerMove from './RenderPlayerMove';
 import "./TruePlayerMove.css";
-import pause from "../assets/pause.png";
-import play from "../assets/play.png";
-import speedUp from "../assets/speedup.png";
-import TrueEnemyMove from './TrueEnemyMove';
 
-export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }) {
+
+export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving}) {
   const [playerPosition, setPlayerPosition] = useState([], []);
-  const [maze, setMaze] = useState(mazeLayout);
-  const [isAutoMoving, setIsAutoMoving] = useState(false);
-  const [exitFound, setExitFound] = useState(false);
   const [moveDirection, setMoveDirection] = useState(null);
   const [lastValidDirection, setLastValidDirection] = useState("down");
-  const [pathStack, setPathStack] = useState([]);
-  const [moveSpeed, setMoveSpeed] = useState(300);
-  const [playAgain, setPlayAgain] = useState(false);
-  const [pathStackClone, setPathStackClone] = useState([]);
+ 
 
+  const back= useRef(false);
+  const pathStackRef = useRef([]);
+  const pathStackCloneRef = useRef([]);
   const enemyAlertRef = useRef(false);
   const visited = useRef(new Set());
+  const superVisited = useRef(new Set());
+  const playerPanic = useRef(false);
+  const stepsInPanic = useRef(0);
+
 
   useEffect(() => {
     const findInitialPosition = () => {
@@ -34,7 +32,7 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
     };
     const startPos = findInitialPosition();
     setPlayerPosition(startPos);
-    setPathStack([startPos]);
+    pathStackRef.current = [startPos]; // Atualiza a ref
     visited.current = new Set([`${startPos.x},${startPos.y}`]);
   }, []);
 
@@ -49,30 +47,45 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
     if(cellValue===4){
       setGameResult(false);
       setExitFound(true);
-        setMoveDirection(null);
-        return true;
+      setMoveDirection(null);
+      return true;
     }
-    else if(cellValue===3){
+
+    if(cellValue===3){
       setGameResult(true);
       setExitFound(true);
-        setMoveDirection(null);
-        return true;
+      setMoveDirection(null);
+      return true;
     }
+    if(!playerPanic.current){
     if (!enemyAlertRef.current) {
       for (const { dx, dy } of directions) {
         const newX = currentPos.x + dx;
         const newY = currentPos.y + dy;
-        const key = `${newX},${newY}`;
+        const key = `${newX},${newY}`; 
 
+        
         if (maze[newY]?.[newX] === 0 || maze[newY]?.[newX] === 4) {
           let dx2 = dx;
           let dy2 = dy;
           while (maze[currentPos.y + dy2]?.[currentPos.x + dx2] === 0 || maze[currentPos.y + dy2]?.[currentPos.x + dx2] === 4) {
             if (maze[currentPos.y + dy2]?.[currentPos.x + dx2] === 4) {
-              console.log("🚨 2 ALERTA! Inimigo detectado!");
+              console.log("🚨 ALERTA! Inimigo detectado!");
+              if(back.current===true){
+              superVisited.current.clear();
+              superVisited.current.add(key);
+              superVisited.current.add(`${currentPos.x},${currentPos.y}`);
+              console.log(key)
+              console.log(currentPos.y,currentPos.x )
+              playerPanic.current = true; 
+              return;
+              }else{
               visited.current.add(key);
               enemyAlertRef.current = true;
-              setPathStackClone(pathStack);
+              pathStackCloneRef.current = [...pathStackRef.current];
+              return;
+              }
+              
             }
             dx2 += dx;
             dy2 += dy;
@@ -80,6 +93,7 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
         }
       }
     }
+  }
 
     for (const { dx, dy, dir } of directions) {
       const newX = currentPos.x + dx;
@@ -92,23 +106,26 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
         setMoveDirection(null);
         return true;
       }
-      if (maze[newY]?.[newX] === 4) {
-        setGameResult(false);
-        setExitFound(true);
-        setMoveDirection(null);
-        return true;
-      }
-
-      if (maze[newY]?.[newX] === 0 && !visited.current.has(key)) {
+      
+      if (
+        (!playerPanic.current && maze[newY]?.[newX] === 0 && !visited.current.has(key)) ||
+        (playerPanic.current && maze[newY]?.[newX] === 0 && !superVisited.current.has(key))
+      )  {
+        back.current=false
+        console.log(stepsInPanic.current)
+        console.log("front");
+        console.log(superVisited.current)
+        console.log(pathStackRef.current)
         if (enemyAlertRef.current) {
           const last = Array.from(visited.current).at(-1);
           if (last) {
             visited.current.delete(last);
           }
-          setPathStackClone([]);
+          enemyAlertRef.current = false;
+          console.log("tirei alerta");
+          console.log(enemyAlertRef.current);
         }
-        enemyAlertRef.current = false;
-
+        
         setMaze(prevMaze => {
           const newMaze = prevMaze.map(row => [...row]);
           newMaze[currentPos.y][currentPos.x] = 0;
@@ -117,9 +134,19 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
           setPlayerPosition({ x: newX, y: newY });
           setMoveDirection(dir);
           setLastValidDirection(dir);
-          setPathStack(prev => [...prev, { x: newX, y: newY }]);
+          pathStackRef.current = [...pathStackRef.current, { x: newX, y: newY }]; 
           visited.current.add(key);
-
+          if(playerPanic.current){
+            console.log(key);
+             stepsInPanic.current++;
+             superVisited.current.add(`${currentPos.x},${currentPos.y}`);
+              if(stepsInPanic.current>=4){
+                superVisited.current.clear();
+                playerPanic.current=false
+                console.log("saiu do panico")
+                stepsInPanic.current = 0;
+              }
+          }
           return newMaze;
         });
         return true;
@@ -130,29 +157,40 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
   };
 
   const backtrack = () => {
-    if (pathStack.length <= 1) {
-      setIsAutoMoving(false);
-      return;
+    back.current=true;
+    if(playerPanic.current){
+      return
+    }
+    console.log("back ativado")
+    if (pathStackRef.current.length <= 1) {
+      visited.current.clear();
+      return false;
     }
 
     let newPath, prevPos;
 
     if (enemyAlertRef.current) {
-      newPath = pathStackClone.slice(0, -1);
+      newPath = pathStackCloneRef.current.slice(0, -1);
       if (newPath.length <= 1) {
         visited.current.clear();
-        return;}
+        return ;
+      }
       prevPos = newPath[newPath.length - 1];
-      setPathStack(prev => [...prev, { x: prevPos.x, y: prevPos.y }]);
-      setPathStackClone(newPath);
+      pathStackRef.current = [...pathStackRef.current, prevPos];
+      pathStackCloneRef.current = newPath;
+     
     } else {
-      newPath = pathStack.slice(0, -1);
+      newPath = pathStackRef.current.slice(0, -1);
       prevPos = newPath[newPath.length - 1];
-      setPathStack(newPath);
+      pathStackRef.current = newPath;  
     }
 
+    
+    
+   
     const dx = prevPos.x - playerPosition.x;
     const dy = prevPos.y - playerPosition.y;
+    
 
     let dir = null;
     if (dx === -1) dir = "left";
@@ -160,9 +198,18 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
     else if (dy === -1) dir = "up";
     else if (dy === 1) dir = "down";
 
+  
     setPlayerPosition(prevPos);
     setMoveDirection(dir);
     setLastValidDirection(dir);
+
+    if (maze[prevPos.y]?.[prevPos.x] === 4) {
+      setGameResult(false);
+      setExitFound(true);
+      
+      return 
+    }
+  
 
     setMaze(prevMaze => {
       const newMaze = prevMaze.map(row => [...row]);
@@ -170,12 +217,16 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
       newMaze[prevPos.y][prevPos.x] = 2;
       return newMaze;
     });
+    return ;
   };
 
   useEffect(() => {
     if (!isAutoMoving || exitFound) {
       if (exitFound) {
-        setTimeout(() => setScreen("END"), 300);
+        enemyAlertRef.current = false;
+        playerPanic.current = false;
+        superVisited.current.clear();
+        setScreen("END")
       }
       return;
     }
@@ -184,59 +235,29 @@ export default function TruePlayerMove({ setScreen, mazeLayout, setGameResult  }
       const moved = tryMovePlayer(playerPosition);
       if (!moved) {
         backtrack();
+       
       }
+      if(maze[playerPosition.y][playerPosition.x]===4){
+        setExitFound(true);
+        setGameResult(false);
+
+          return ;
+      }
+  
     }, moveSpeed);
 
     return () => clearInterval(moveInterval);
-  }, [isAutoMoving, playerPosition, exitFound, pathStack]);
+  }, [isAutoMoving, playerPosition, exitFound]);
 
   return (
     <div className='container-total'>
-      <div style={{ position: 'absolute', top: -50, left: -80 }} className='container-button'>
-        <div className='coitaner-for-mov'>
-          <button disabled={isAutoMoving} onClick={() => {
-            setIsAutoMoving(true);
-            setExitFound(false);
-            if (!playAgain) {
-              setPathStack([playerPosition]);
-              visited.current = new Set([`${playerPosition.x},${playerPosition.y}`]);
-            }
-          }}>
-            Iniciar Movimento Automático <img src={play} />
-          </button>
-          <button onClick={() => {
-            setPlayAgain(true);
-            setIsAutoMoving(false);
-            setMoveDirection(null);
-          }} style={{ marginLeft: '10px' }} disabled={!isAutoMoving}>
-            Parar <img src={pause} />
-          </button>
-        </div>
-        <button onClick={() => {
-          setMoveSpeed(prev => {
-            if (prev === 300) return 150;
-            if (prev === 150) return 100;
-            if (prev === 100) return 50;
-            if (prev === 50) return 25;
-            return 300;
-          });
-        }}>
-          Velocidade: {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} <img src={speedUp} />
-        </button>
-      </div>
       <RenderPlayerMove
         position={playerPosition}
         moveDirection={moveDirection}
         lastDirection={lastValidDirection}
-      />
-      <TrueEnemyMove
-        setMaze={setMaze}
-        maze={maze}
-        exitFound={exitFound}
-        moveSpeed={moveSpeed}
-        isAutoMoving={isAutoMoving}
-        setExitFound={setExitFound}
+        isAlert={enemyAlertRef.current}
+        isPanic={playerPanic.current}
       />
     </div>
   );
-}
+} 
