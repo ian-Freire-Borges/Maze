@@ -60,7 +60,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
         </button>
       </div>
 
-      {nivel === 2 && (
+      {nivel != 1 && (
         <TrueEnemyMove
           setMaze={setMaze}
           maze={maze}
