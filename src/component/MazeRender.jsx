@@ -39,12 +39,11 @@ export default function StaticMaze({ mazeLayout }) {
   };
 
   const setup = (p5, canvasParentRef) => {
-    const canvas = p5.createCanvas(
+    p5.createCanvas(
       mazeLayout[0].length * cellSize,
       mazeLayout.length * cellSize
     ).parent(canvasParentRef);
 
-    // Gerar os mapas estáticos de texturas
     wallMapRef.current = [];
     pathMapRef.current = [];
     overlayMapRef.current = [];
@@ -58,14 +57,9 @@ export default function StaticMaze({ mazeLayout }) {
         const val = mazeLayout[row][col];
 
         if (val === 1) {
-         
-          wallMapRef.current[row][col] =  wall1Ref.current 
-
-          // Bush por cima: 70% bush, 30% miniBush
+          wallMapRef.current[row][col] = wall1Ref.current;
           overlayMapRef.current[row][col] = Math.random() < 0.7 ? bushRef.current : miniBushRef.current;
-
         } else if (val === 0 || val === 2 || val === 4) {
-          // Caminho: 40% tile3, 30% tile5, 30% tile4
           const rand = Math.random();
           if (rand < 0.4) {
             pathMapRef.current[row][col] = tile3Ref.current;
@@ -91,17 +85,23 @@ export default function StaticMaze({ mazeLayout }) {
         const val = mazeLayout[row][col];
 
         if (val === 1) {
-          // Parede + overlay (bush/miniBush)
-          p5.image(wallMapRef.current[row][col], x, y, cellSize, cellSize);
-          p5.image(overlayMapRef.current[row][col], x, y, 20, 20);
+          const wall = wallMapRef.current[row][col];
+          const overlay = overlayMapRef.current[row][col];
+          if (wall) p5.image(wall, x, y, cellSize, cellSize);
+          if (overlay) p5.image(overlay, x, y, cellSize, cellSize);
 
         } else if (val === 0 || val === 2 || val === 4) {
-          // Caminho com textura aleatória
-          p5.image(pathMapRef.current[row][col], x, y, cellSize, cellSize);
+          const path = pathMapRef.current[row][col];
+          if (path) p5.image(path, x, y, cellSize, cellSize);
 
         } else if (val === 3) {
-          // Porta
-          p5.image(doorRef.current, x, y, cellSize, cellSize);
+          if (doorRef.current) {
+            p5.image(doorRef.current, x, y, cellSize, cellSize);
+          } else {
+
+            p5.fill(150, 50, 50);
+            p5.rect(x, y, cellSize, cellSize);
+          }
         }
       }
     }

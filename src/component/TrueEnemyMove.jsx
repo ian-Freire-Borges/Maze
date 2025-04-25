@@ -121,15 +121,13 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       return 
     }
 
-    if(maze[prevPos.y]?.[prevPos.x] === 3){
-      onDoorBack.current=true;
-    }
     setPathStack(newPath);
     setEnemyPosition(prevPos);
 
     setMaze(prevMaze => {
       const newMaze = prevMaze.map(row => [...row]);
       if(onDoorBack.current){
+        console.log("entasarou")
         onDoorBack.current=false
         newMaze[EnemyPosition.y][EnemyPosition.x] = 3;
         newMaze[prevPos.y][prevPos.x] = 4;
@@ -140,6 +138,10 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       }
       return newMaze;
     });
+    if(maze[prevPos.y]?.[prevPos.x] === 3){
+      console.log("entrou no door")
+      onDoorBack.current=true;
+    }
   };
 
   useEffect(() => {
