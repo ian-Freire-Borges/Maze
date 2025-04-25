@@ -17,36 +17,50 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
     
     <div className="maze-wrapper">
       <MazeRender mazeLayout={maze}/>
-      <TruePlayerMove setScreen={setScreen}  setGameResult={setGameResult}  maze={maze} setMaze={setMaze} setExitFound={setExitFound} exitFound={exitFound} moveSpeed={moveSpeed} isAutoMoving={isAutoMoving}/>
+      <TruePlayerMove 
+        setScreen={setScreen}  
+        setGameResult={setGameResult}  
+        maze={maze} 
+        setMaze={setMaze} 
+        setExitFound={setExitFound} 
+        exitFound={exitFound} 
+        moveSpeed={moveSpeed} 
+        isAutoMoving={isAutoMoving}
+      />
+      
       <div style={{ position: 'absolute', top: -80, left: -150 }} className='container-button'>
-              <div className='coitaner-for-mov'>
-                <button disabled={isAutoMoving} onClick={() => {
-                  setIsAutoMoving(true);
-                  setExitFound(false);
-                  
-                }}>
-                  Iniciar Movimento Automático <img src={play} />
-                </button>
-                <button onClick={() => {
-                  setIsAutoMoving(false);
-                }} style={{ marginLeft: '10px' }} disabled={!isAutoMoving}>
-                  Parar <img src={pause} />
-                </button>
-              </div>
-              <button onClick={() => {
-                setMoveSpeed(prev => {
-                  if (prev === 300) return 150;
-                  if (prev === 150) return 100;
-                  if (prev === 100) return 50;
-                  if (prev === 50) return 25;
-                  return 300;
-                });
-              }}>
-                Velocidade: {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} <img src={speedUp} />
-              </button>
-            </div>
+        <div className='coitaner-for-mov'>
+          <button disabled={isAutoMoving} onClick={() => {
+            setIsAutoMoving(true);
+            setExitFound(false);
+          }}>
+            Iniciar Movimento Automático <img src={play} />
+          </button>
+          <button onClick={() => setIsAutoMoving(false)} style={{ marginLeft: '10px' }} disabled={!isAutoMoving}>
+            Parar <img src={pause} />
+          </button>
+        </div>
+        
+        <button onClick={() => {
+          setMoveSpeed(prev => {
+            if (prev === 300) return 150;
+            if (prev === 150) return 100;
+            if (prev === 100) return 50;
+            if (prev === 50) return 25;
+            return 300;
+          });
+        }}>
+          Velocidade: {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} <img src={speedUp} />
+        </button>
+        <button 
+          className="back-button"
+          onClick={() => setScreen("MENU")}
+        >
+          Voltar ao Menu
+        </button>
+      </div>
 
-     {nivel===2 && (
+      {nivel === 2 && (
         <TrueEnemyMove
           setMaze={setMaze}
           maze={maze}
@@ -55,8 +69,8 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
           isAutoMoving={isAutoMoving}
           setExitFound={setExitFound}
           setGameResult={setGameResult}
-             />
-         )}
+        />
+      )}
     </div>
   );
 }

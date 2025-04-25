@@ -1,51 +1,80 @@
 .maze-wrapper {
-    margin-top: 3rem;
-    position: relative;
-    background-color: #1a1a2e;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #000;
-    display: inline-block;
-  }
-  .container-button {
-    display: flex;
-    justify-content: center; 
-    gap: 6rem;
-    margin-left: 6rem;
+  margin-top: 3rem;
+  position: relative;
+  background-color: #1a1a2e;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #000;
+  display: inline-block;
+}
+.container-button {
+  display: flex;
+  justify-content: center; 
+  gap: 6rem;
+  margin-left: 6rem;
 }
 .container-button button {
-  background-color: #2d2d2d; /* Cor de fundo escura */
-  color: #e0e0e0; /* Texto claro */
+  background: linear-gradient(to right, #00d2ff, #3a7bd5);
+  color: #e0f0ff;
   border: none;
   padding: 8px 16px;
-  font-family: 'Press Start 2P', 'Courier New', monospace; /* Fonte retrô */
+  font-family: 'Press Start 2P', 'Courier New', monospace;
   font-size: 12px;
   cursor: pointer;
   box-shadow: 
-      4px 0 0 0 #1a1a1a, /* Sombra lateral (direita) */
-      0 4px 0 0 #1a1a1a, /* Sombra inferior */
-      4px 4px 0 0 #1a1a1a; /* Sombra diagonal (efeito pixelado) */
+      4px 0 0 0 #1a5a9a,
+      0 4px 0 0 #1a5a9a,
+      4px 4px 0 0 #1a5a9a;
   position: relative;
   transition: all 0.1s ease;
-  image-rendering: pixelated; /* Melhora visualização em pixel art */
+  image-rendering: pixelated;
 }
 
-/* Efeito de "pressionado" */
-.container-button button:active {
-  transform: translate(2px, 2px); /* Movimento para baixo */
+.container-button .coitaner-for-mov button:nth-child(2) {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: #ffe0e0;
   box-shadow: 
-      2px 0 0 0 #1a1a1a,
-      0 2px 0 0 #1a1a1a,
-      2px 2px 0 0 #1a1a1a;
+      4px 0 0 0 #9a1a3a,
+      0 4px 0 0 #9a1a3a,
+      4px 4px 0 0 #9a1a3a;
+  margin-left: 10px;
 }
 
-/* Botão desabilitado */
-.container-button button:disabled {
-  background-color:  #2d2d2d;
-  color: #e0e0e0;
- opacity: 0.5;
+.back-button {
+  background: linear-gradient(to right, #9e9e9e, #616161) !important;
+  color: #f0f0f0 !important;
+  box-shadow: 
+      4px 0 0 0 #4a4a4a,
+      0 4px 0 0 #4a4a4a,
+      4px 4px 0 0 #4a4a4a !important;
+}
+.container-button button:active,
+.back-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 
+      2px 0 0 0 #1a3a7a,
+      0 2px 0 0 #1a3a7a,
+      2px 2px 0 0 #1a3a7a !important;
 }
 
-/* Efeito hover (opcional) */
-.container-button button:hover:not(:disabled) {
-  background-color: #3a3a3a;
+.container-button .coitaner-for-mov button:nth-child(2):active {
+  box-shadow: 
+      2px 0 0 0 #7a1a1a,
+      0 2px 0 0 #7a1a1a,
+      2px 2px 0 0 #7a1a1a !important;
+}
+
+.container-button button:hover:not(:disabled),
+.back-button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.container-button button:disabled,
+.back-button:disabled {
+  background: #3a3a3a !important;
+  color: #a0a0a0 !important;
+  opacity: 0.7;
+  box-shadow: 
+      4px 0 0 0 #1a1a1a,
+      0 4px 0 0 #1a1a1a,
+      4px 4px 0 0 #1a1a1a !important;
 }
