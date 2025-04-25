@@ -14,21 +14,9 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
   const [moveSpeed, setMoveSpeed] = useState(300);
   const [isAutoMoving, setIsAutoMoving] = useState(false);
   return (
-    
-    <div className="maze-wrapper">
-      <MazeRender mazeLayout={maze}/>
-      <TruePlayerMove 
-        setScreen={setScreen}  
-        setGameResult={setGameResult}  
-        maze={maze} 
-        setMaze={setMaze} 
-        setExitFound={setExitFound} 
-        exitFound={exitFound} 
-        moveSpeed={moveSpeed} 
-        isAutoMoving={isAutoMoving}
-      />
+    <>
       
-      <div style={{ position: 'absolute', top: -80, left: -150 }} className='container-button'>
+      <div  className='container-button'>
         <div className='coitaner-for-mov'>
           <button disabled={isAutoMoving} onClick={() => {
             setIsAutoMoving(true);
@@ -59,6 +47,19 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
           Voltar ao Menu
         </button>
       </div>
+      <div className="maze-wrapper">
+      <MazeRender mazeLayout={maze}/>
+      <TruePlayerMove 
+        setScreen={setScreen}  
+        setGameResult={setGameResult}  
+        maze={maze} 
+        setMaze={setMaze} 
+        setExitFound={setExitFound} 
+        exitFound={exitFound} 
+        moveSpeed={moveSpeed} 
+        isAutoMoving={isAutoMoving}
+      />
+      
 
       {nivel != 1 && (
         <TrueEnemyMove
@@ -71,6 +72,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
           setGameResult={setGameResult}
         />
       )}
-    </div>
+      </div>
+      </>
   );
 }

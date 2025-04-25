@@ -7,6 +7,8 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
   const [moveDirection, setMoveDirection] = useState("right");
 
   const visited = useRef(new Set());
+  const onDoor = useRef(false);
+  const onDoorBack = useRef(false);
 
   useEffect(() => {
     const findInitialPosition = () => {
@@ -47,14 +49,23 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
         if (dx < 0) setMoveDirection("left");
         if (dx > 0) setMoveDirection("right");
 
+        
         setMaze(prevMaze => {
           const newMaze = prevMaze.map(row => [...row]);
-          if(maze[newY]?.[newX] === 3){
-            newMaze[currentPos.y][currentPos.x] = 3;
-          newMaze[newY][newX] = 4;
+         if(newMaze[newY][newX]===3){
+            onDoor.current=true;
+            newMaze[currentPos.y][currentPos.x] = 0;
+            newMaze[newY][newX] = 4;
           }else{
+            if(onDoor.current){
+              newMaze[currentPos.y][currentPos.x] = 3;
+              newMaze[newY][newX] = 4;
+              onDoor.current=false
+              console.log("foiiii")
+            }else{
           newMaze[currentPos.y][currentPos.x] = 0;
           newMaze[newY][newX] = 4;
+            }
           }
 
           setEnemyPosition({ x: newX, y: newY });
@@ -110,14 +121,23 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       return 
     }
 
-
+    if(maze[prevPos.y]?.[prevPos.x] === 3){
+      onDoorBack.current=true;
+    }
     setPathStack(newPath);
     setEnemyPosition(prevPos);
 
     setMaze(prevMaze => {
       const newMaze = prevMaze.map(row => [...row]);
+      if(onDoorBack.current){
+        onDoorBack.current=false
+        newMaze[EnemyPosition.y][EnemyPosition.x] = 3;
+        newMaze[prevPos.y][prevPos.x] = 4;
+
+      }else{
       newMaze[EnemyPosition.y][EnemyPosition.x] = 0;
       newMaze[prevPos.y][prevPos.x] = 4;
+      }
       return newMaze;
     });
   };
