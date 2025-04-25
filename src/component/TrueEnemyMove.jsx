@@ -139,8 +139,11 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       return newMaze;
     });
     if(maze[prevPos.y]?.[prevPos.x] === 3){
+      setTimeout(() => {
+        onDoorBack.current=true;
+      }, moveSpeed * 2);
       console.log("entrou no door")
-      onDoorBack.current=true;
+      
     }
   };
 

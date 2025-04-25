@@ -22,14 +22,14 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
             setIsAutoMoving(true);
             setExitFound(false);
           }}>
-            Iniciar Movimento Automático <img src={play} />
+            <img src={play} />
           </button>
-          <button onClick={() => setIsAutoMoving(false)} style={{ marginLeft: '10px' }} disabled={!isAutoMoving}>
-            Parar <img src={pause} />
+          <button onClick={() => setIsAutoMoving(false)} disabled={!isAutoMoving}>
+            <img src={pause} />
           </button>
         </div>
         
-        <button onClick={() => {
+        <button className="speed-button" onClick={() => {
           setMoveSpeed(prev => {
             if (prev === 300) return 150;
             if (prev === 150) return 100;
@@ -38,7 +38,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
             return 300;
           });
         }}>
-          Velocidade: {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} <img src={speedUp} />
+          {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} <img src={speedUp} />
         </button>
         <button 
           className="back-button"

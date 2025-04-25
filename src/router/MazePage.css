@@ -1,80 +1,144 @@
+/* Maze Container */
 .maze-wrapper {
-  margin-top: 3rem;
+  margin-top: 1rem;
   position: relative;
   background-color: #1a1a2e;
   border-radius: 10px;
   box-shadow: 0 0 10px #000;
   display: inline-block;
+  margin-top: 4rem;
 }
+
+/* Button Container */
 .container-button {
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
   display: flex;
-  justify-content: center; 
-  gap: 6rem;
-  margin-left: 6rem;
+  gap: 4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  
 }
+
+/* Movement Buttons Container */
+.coitaner-for-mov {
+  display: flex;
+  gap: 4rem;
+ 
+}
+
+/* Base Button Styles (Circular) */
 .container-button button {
-  background: linear-gradient(to right, #00d2ff, #3a7bd5);
-  color: #e0f0ff;
-  border: none;
-  padding: 8px 16px;
+  position: absolute;
+  /* Circular Shape */
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 0;
+  
+  /* Content Alignment */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* Text Styles */
   font-family: 'Press Start 2P', 'Courier New', monospace;
-  font-size: 12px;
+  font-size: 10px;
+  line-height: 1.3;
+  text-align: center;
+  
+  /* Visual Styles */
+  border: none;
   cursor: pointer;
-  box-shadow: 
-      4px 0 0 0 #1a5a9a,
-      0 4px 0 0 #1a5a9a,
-      4px 4px 0 0 #1a5a9a;
   position: relative;
   transition: all 0.1s ease;
   image-rendering: pixelated;
+  
+  /* Shadow Effect */
+  box-shadow: 
+    4px 0 0 0 #1a5a9a,
+    0 4px 0 0 #1a5a9a,
+    4px 4px 0 0 #1a5a9a;
 }
 
+/* Play Button (Blue) */
+.container-button button:first-child {
+  background: linear-gradient(to right, #00d2ff, #3a7bd5);
+  color: #e0f0ff;
+}
+
+/* Stop Button (Red) */
 .container-button .coitaner-for-mov button:nth-child(2) {
   background: linear-gradient(to right, #ff416c, #ff4b2b);
   color: #ffe0e0;
   box-shadow: 
-      4px 0 0 0 #9a1a3a,
-      0 4px 0 0 #9a1a3a,
-      4px 4px 0 0 #9a1a3a;
-  margin-left: 10px;
+    4px 0 0 0 #9a1a3a,
+    0 4px 0 0 #9a1a3a,
+    4px 4px 0 0 #9a1a3a;
 }
 
+/* Back Button (Gray) */
 .back-button {
   background: linear-gradient(to right, #9e9e9e, #616161) !important;
   color: #f0f0f0 !important;
   box-shadow: 
-      4px 0 0 0 #4a4a4a,
-      0 4px 0 0 #4a4a4a,
-      4px 4px 0 0 #4a4a4a !important;
+    4px 0 0 0 #4a4a4a,
+    0 4px 0 0 #4a4a4a,
+    4px 4px 0 0 #4a4a4a !important;
 }
-.container-button button:active,
-.back-button:active {
-  transform: translate(2px, 2px);
+
+/* Speed Button (Special) */
+.speed-button {
+  background: linear-gradient(to right, #00d2ff, #3a7bd5) !important;
+  color: #e0f0ff !important;
   box-shadow: 
-      2px 0 0 0 #1a3a7a,
-      0 2px 0 0 #1a3a7a,
-      2px 2px 0 0 #1a3a7a !important;
+    4px 0 0 0 #1a5a9a,
+    0 4px 0 0 #1a5a9a,
+    4px 4px 0 0 #1a5a9a !important;
+}
+
+/* Button Icons */
+.container-button button img {
+  width: 35px;
+  height: 35px;
+  image-rendering: pixelated;
+}
+
+/* Hover Effects */
+.container-button button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+/* Active/Pressed Effects */
+.container-button button:active {
+  transform: scale(0.95) translate(1px, 1px);
+  box-shadow: 
+    2px 0 0 0 #1a3a7a,
+    0 2px 0 0 #1a3a7a,
+    2px 2px 0 0 #1a3a7a !important;
 }
 
 .container-button .coitaner-for-mov button:nth-child(2):active {
   box-shadow: 
-      2px 0 0 0 #7a1a1a,
-      0 2px 0 0 #7a1a1a,
-      2px 2px 0 0 #7a1a1a !important;
+    2px 0 0 0 #7a1a1a,
+    0 2px 0 0 #7a1a1a,
+    2px 2px 0 0 #7a1a1a !important;
 }
 
-.container-button button:hover:not(:disabled),
-.back-button:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-
+/* Disabled State */
 .container-button button:disabled,
 .back-button:disabled {
   background: #3a3a3a !important;
   color: #a0a0a0 !important;
   opacity: 0.7;
   box-shadow: 
-      4px 0 0 0 #1a1a1a,
-      0 4px 0 0 #1a1a1a,
-      4px 4px 0 0 #1a1a1a !important;
+    4px 0 0 0 #1a1a1a,
+    0 4px 0 0 #1a1a1a,
+    4px 4px 0 0 #1a1a1a !important;
+  transform: none !important;
 }

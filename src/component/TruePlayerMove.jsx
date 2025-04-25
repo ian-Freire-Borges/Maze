@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RenderPlayerMove from './RenderPlayerMove';
-import "./TruePlayerMove.css";
 
 
 export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving}) {
