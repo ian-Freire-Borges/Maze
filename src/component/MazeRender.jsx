@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import Sketch from 'react-p5';
-import wall1 from "../assets/FlorestWall.png";
-import door from "../assets/pixel_door.png";
+import wall1 from "../assets/Florestwall.png";
+import door from "../assets/pixel_door.png"
 import tile3 from "../assets/tile3.png";
 import tile4 from "../assets/tile4.png";
 import tile5 from "../assets/tile5.png";
