@@ -6,6 +6,7 @@ import pause from "../assets/pause.png";
 import play from "../assets/play.png";
 import speedUp from "../assets/speedup.png";
 import TrueEnemyMove from '../component/TrueEnemyMove';
+import volta from "../assets/voltar.png"
 
 export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) {
   const [maze, setMaze] = useState(mazeLayout);
@@ -42,7 +43,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
           <button onClick={() => setIsAutoMoving(false)} disabled={!isAutoMoving}>
             <img src={pause} />
           </button>
-        </div>
+        
         
         <button className="speed-button" onClick={() => {
           setMoveSpeed(prev => {
@@ -53,13 +54,16 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
             return 300;
           });
         }}>
-          {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'} <img src={speedUp} />
+           <img src={speedUp} />
         </button>
+        <span className="speed-text">
+            {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'}
+          </span>
+        </div>
         <button 
           className="back-button"
           onClick={() => setScreen("MENU")}
-        >
-          Voltar ao Menu
+        ><img src={volta} />
         </button>
       </div>
       <div className="maze-wrapper" ref={mazeWrapperRef}>

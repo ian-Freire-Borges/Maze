@@ -9,29 +9,9 @@
   height: 600px;
   overflow: hidden;
   position: relative;
-}
-@media (max-width: 1100px) {
-  .maze-wrapper {
-    width: 840px;
-    height: 420px; 
-   
-  }
+  
 }
 
-@media (max-width: 900px) {
-  .maze-wrapper {
-    width: 600px;
-    height: 300px; 
-   
-  }
-}
-@media (max-width: 600px) {
-  .maze-wrapper {
-    width: 400px;
-    height: 200px; 
-   
-  }
-}
 .maze-container {
   display: flex;
   position: relative; 
@@ -50,13 +30,14 @@ canvas {
 
 /* Button Container */
 .container-button {
+  margin-top: 0.8rem;
   position: fixed;
   top: 0px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   display: flex;
-  gap: 4rem;
+  gap: 8rem;
   padding: 0.5rem 1rem;
   border-radius: 12px;
   
@@ -73,8 +54,8 @@ canvas {
 .container-button button {
   position: absolute;
   /* Circular Shape */
-  width: 60px;
-  height: 60px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   padding: 0;
   
@@ -89,61 +70,18 @@ canvas {
   font-size: 10px;
   line-height: 1.3;
   text-align: center;
-  
-  /* Visual Styles */
+ 
   border: none;
   cursor: pointer;
   position: relative;
   transition: all 0.1s ease;
   image-rendering: pixelated;
-  
-  /* Shadow Effect */
-  box-shadow: 
-    4px 0 0 0 #1a5a9a,
-    0 4px 0 0 #1a5a9a,
-    4px 4px 0 0 #1a5a9a;
+
 }
 
-/* Play Button (Blue) */
-.container-button button:first-child {
-  background: linear-gradient(to right, #00d2ff, #3a7bd5);
-  color: #e0f0ff;
-}
-
-/* Stop Button (Red) */
-.container-button .coitaner-for-mov button:nth-child(2) {
-  background: linear-gradient(to right, #ff416c, #ff4b2b);
-  color: #ffe0e0;
-  box-shadow: 
-    4px 0 0 0 #9a1a3a,
-    0 4px 0 0 #9a1a3a,
-    4px 4px 0 0 #9a1a3a;
-}
-
-/* Back Button (Gray) */
-.back-button {
-  background: linear-gradient(to right, #9e9e9e, #616161) !important;
-  color: #f0f0f0 !important;
-  box-shadow: 
-    4px 0 0 0 #4a4a4a,
-    0 4px 0 0 #4a4a4a,
-    4px 4px 0 0 #4a4a4a !important;
-}
-
-/* Speed Button (Special) */
-.speed-button {
-  background: linear-gradient(to right, #00d2ff, #3a7bd5) !important;
-  color: #e0f0ff !important;
-  box-shadow: 
-    4px 0 0 0 #1a5a9a,
-    0 4px 0 0 #1a5a9a,
-    4px 4px 0 0 #1a5a9a !important;
-}
-
-/* Button Icons */
 .container-button button img {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   image-rendering: pixelated;
 }
 
@@ -153,31 +91,94 @@ canvas {
   transform: scale(1.05);
 }
 
-/* Active/Pressed Effects */
+
 .container-button button:active {
-  transform: scale(0.95) translate(1px, 1px);
-  box-shadow: 
-    2px 0 0 0 #1a3a7a,
-    0 2px 0 0 #1a3a7a,
-    2px 2px 0 0 #1a3a7a !important;
+  transform: scale(0.95) translate(1px, 1px);;
 }
 
-.container-button .coitaner-for-mov button:nth-child(2):active {
-  box-shadow: 
-    2px 0 0 0 #7a1a1a,
-    0 2px 0 0 #7a1a1a,
-    2px 2px 0 0 #7a1a1a !important;
-}
 
-/* Disabled State */
 .container-button button:disabled,
 .back-button:disabled {
-  background: #3a3a3a !important;
-  color: #a0a0a0 !important;
   opacity: 0.7;
-  box-shadow: 
-    4px 0 0 0 #1a1a1a,
-    0 4px 0 0 #1a1a1a,
-    4px 4px 0 0 #1a1a1a !important;
-  transform: none !important;
+}
+
+.speed-text {
+  margin-top: 1.2rem;
+  margin-left: -2rem;
+  font-size: 1.4rem; 
+  
+}
+
+@media (max-width: 1200px), (max-height: 600px) {
+ 
+  .maze-wrapper {
+    margin-top: 1rem;
+    width: 840px;
+    height: 420px; 
+   
+  }
+}
+
+@media (max-width: 900px), (max-height: 500px) {
+  .maze-wrapper {
+    margin-top: -4rem;
+    width: 600px;
+    height: 300px; 
+   
+  }
+
+}
+@media (max-width: 600px), (max-height: 350px) {
+  .maze-wrapper {
+    width: 440px;
+    height: 220px;
+    
+   
+  }
+  .container-button button {
+    margin-top: 3rem;
+    
+    
+  }
+
+  .coitaner-for-mov {
+    gap: 2rem;
+  }
+  .speed-text {
+    margin-left: -0.8rem;
+    margin-top: 4rem;
+     
+  }
+  
+  
+}
+
+
+@media (max-width: 450px) ,(max-height: 250px) {
+  .coitaner-for-mov {
+    gap: 2rem;
+  }
+  .container-button {
+    margin-top: 1rem;
+    gap: 2rem;
+  }
+
+    
+  .container-button button {
+    width: 20px;
+    height: 20px;
+    
+    
+  }
+  .speed-text {
+    margin-left: -0.8rem;
+    margin-top: 0.4rem;
+    font-size: 0.8rem; 
+  }
+    .maze-wrapper {
+      margin-top: 1rem;
+      width: 260px;
+      height: 520px; 
+     
+    }
 }
