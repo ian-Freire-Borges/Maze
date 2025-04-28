@@ -154,7 +154,7 @@ canvas {
 
 @media (max-width: 450px){
   .coitaner-for-mov {
-    gap: 2rem;
+    gap: 3rem;
   }
   .container-button {
     margin-top: -1.6rem;
@@ -170,7 +170,7 @@ canvas {
     
   }
   .speed-text {
-    margin-left: -1.2rem;
+    margin-left: -1.5rem;
     margin-top: 4.5rem;
     font-size: 1rem; 
   }
@@ -178,5 +178,10 @@ canvas {
       width: 260px;
       height: 520px; 
      
+    }
+    .container-button button img {
+      width: 70px;
+      height: 70px;
+      image-rendering: pixelated;
     }
 }
