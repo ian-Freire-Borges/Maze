@@ -2,7 +2,12 @@ import { useEffect, useRef } from 'react';
 import Sketch from 'react-p5';
 import enemySprite from "../assets/Free Chicken Sprites.png";
 
-export default function RenderEnemyMove({ position, cellSize = 20, style, moveDirection = "right" }) {
+export default function RenderEnemyMove({
+  position,
+  cellDimensions,
+  style,
+  moveDirection = "right",
+}) {
   const p5Ref = useRef();
   const spriteSheetRef = useRef();
   const animationFrames = useRef([]);
@@ -11,14 +16,16 @@ export default function RenderEnemyMove({ position, cellSize = 20, style, moveDi
 
   const totalFrames = 4;
   const animationSpeed = 0.07;
-  const spriteSize = cellSize * 1.2;
+
+  const { cellWidth, cellHeight } = cellDimensions;
+  const spriteSize = Math.min(cellWidth, cellHeight) * 1.1; // Ajuste o sprite para ocupar 80% da célula
 
   const preload = (p5) => {
     spriteSheetRef.current = p5.loadImage(enemySprite);
   };
 
   const setup = (p5, canvasParentRef) => {
-    const canvas = p5.createCanvas(cellSize, cellSize).parent(canvasParentRef);
+    const canvas = p5.createCanvas(cellWidth, cellHeight).parent(canvasParentRef);
     p5.noStroke();
     p5Ref.current = canvas;
 
@@ -51,32 +58,42 @@ export default function RenderEnemyMove({ position, cellSize = 20, style, moveDi
       p5.push();
       p5.imageMode(p5.CENTER);
 
+      // Ajusta a direção da imagem se o inimigo estiver indo para a esquerda
       if (moveDirection === "left") {
-        p5.translate(cellSize, 0);
+        p5.translate(cellWidth, 0);
         p5.scale(-1, 1);
       }
 
-      p5.image(currentImg, cellSize / 2, cellSize / 2, spriteSize, spriteSize);
+      // Desenha o inimigo no centro da célula
+      p5.image(currentImg, cellWidth / 2, cellHeight / 2, spriteSize, spriteSize);
       p5.pop();
     } else {
       p5.fill(255, 0, 0);
-      p5.ellipse(cellSize / 2, cellSize / 2, spriteSize);
+      p5.ellipse(cellWidth / 2, cellHeight / 2, spriteSize);
     }
   };
 
   useEffect(() => {
     p5Ref.current?._p5Instance?.redraw();
-  }, [position, moveDirection]);
+  }, [position, moveDirection, cellDimensions]); // Dependência de `cellDimensions` para redesenhar o inimigo
+
+  // Cálculo da posição do inimigo com base nas dimensões das células
+  const left = position.x * cellWidth + (cellWidth - spriteSize) / 2;
+  const top = position.y * cellHeight + (cellHeight - spriteSize) / 2;
 
   return (
-    <div style={{
-      position: 'absolute',
-      left: `${position.x * cellSize}px`,
-      top: `${position.y * cellSize}px`,
-      pointerEvents: 'none',
-      zIndex: 2,
-      ...style
-    }}>
+    <div
+      style={{
+        position: "absolute",
+        left: `${left}px`,
+        top: `${top}px`,
+        width: `${spriteSize}px`,
+        height: `${spriteSize}px`,
+        pointerEvents: "none",
+        zIndex: 2,
+        ...style,
+      }}
+    >
       <Sketch preload={preload} setup={setup} draw={draw} />
     </div>
   );

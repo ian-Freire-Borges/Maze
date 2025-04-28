@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; 
 import MazeRender from "../component/MazeRender";
 import TruePlayerMove from '../component/TruePlayerMove';
 import "./MazePage.css"
@@ -13,6 +12,22 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
   const [exitFound, setExitFound] = useState(false);
   const [moveSpeed, setMoveSpeed] = useState(300);
   const [isAutoMoving, setIsAutoMoving] = useState(false);
+  const mazeWrapperRef = useRef();
+  const [cellDimensions, setCellDimensions] = useState({ cellWidth: 20, cellHeight: 20 });
+  const [mazeReady, setMazeReady] = useState(false);
+
+  const handleCellDimensionsChange = (newDimensions) => {
+    setCellDimensions(newDimensions);
+    
+  };
+  useEffect(() => {
+    // Este useEffect simula a renderização do labirinto, após o qual o labirinto estará pronto.
+    const timer = setTimeout(() => {
+      setMazeReady(true); // Aqui você define o estado como pronto para renderizar o player
+    }, 500); // Simula um tempo de carregamento do labirinto (ajuste conforme necessário)
+
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <>
       
@@ -47,8 +62,10 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
           Voltar ao Menu
         </button>
       </div>
-      <div className="maze-wrapper">
-      <MazeRender mazeLayout={maze}/>
+      <div className="maze-wrapper" ref={mazeWrapperRef}>
+      <div className="maze-container">
+      <MazeRender mazeLayout={maze} wrapperRef={mazeWrapperRef} onCellDimensionsChange={handleCellDimensionsChange}/>
+      {mazeReady && (
       <TruePlayerMove 
         setScreen={setScreen}  
         setGameResult={setGameResult}  
@@ -58,10 +75,11 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
         exitFound={exitFound} 
         moveSpeed={moveSpeed} 
         isAutoMoving={isAutoMoving}
+        cellDimensions={cellDimensions}
       />
-      
+      )}
 
-      {nivel != 1 && (
+      {mazeReady && nivel != 1 && (
         <TrueEnemyMove
           setMaze={setMaze}
           maze={maze}
@@ -70,8 +88,10 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
           isAutoMoving={isAutoMoving}
           setExitFound={setExitFound}
           setGameResult={setGameResult}
+          cellDimensions={cellDimensions}
         />
       )}
+      </div>
       </div>
       </>
   );

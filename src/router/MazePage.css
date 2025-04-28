@@ -1,12 +1,51 @@
-/* Maze Container */
 .maze-wrapper {
-  margin-top: 1rem;
-  position: relative;
-  background-color: #1a1a2e;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #000;
-  display: inline-block;
   margin-top: 4rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1200px;
+  height: 600px;
+  overflow: hidden;
+  position: relative;
+}
+@media (max-width: 1100px) {
+  .maze-wrapper {
+    width: 840px;
+    height: 420px; 
+   
+  }
+}
+
+@media (max-width: 900px) {
+  .maze-wrapper {
+    width: 600px;
+    height: 300px; 
+   
+  }
+}
+@media (max-width: 600px) {
+  .maze-wrapper {
+    width: 400px;
+    height: 200px; 
+   
+  }
+}
+.maze-container {
+  display: flex;
+  position: relative; 
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
 }
 
 /* Button Container */
@@ -103,8 +142,8 @@
 
 /* Button Icons */
 .container-button button img {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   image-rendering: pixelated;
 }
 

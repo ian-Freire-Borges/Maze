@@ -16,7 +16,7 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel}) {
         Iniciar Maze
       </button>
       <div className='opçoes'>
-      <label for="Nivel">Escolha um Nivel:</label>
+      <label htmlFor="Nivel">Escolha um Nivel:</label>
         <select id="nivel" name="nivel"
         value={nivel}
         onChange={(e) => setNivel(Number(e.target.value))}>

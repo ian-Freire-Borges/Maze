@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import RenderPlayerMove from './RenderPlayerMove';
 
 
-export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving}) {
+export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions,}) {
   const [playerPosition, setPlayerPosition] = useState([], []);
   const [moveDirection, setMoveDirection] = useState(null);
   const [lastValidDirection, setLastValidDirection] = useState("down");
@@ -16,6 +16,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
   const superVisited = useRef(new Set());
   const playerPanic = useRef(false);
   const stepsInPanic = useRef(0);
+
 
 
   useEffect(() => {
@@ -69,19 +70,20 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
           let dy2 = dy;
           while (maze[currentPos.y + dy2]?.[currentPos.x + dx2] === 0 || maze[currentPos.y + dy2]?.[currentPos.x + dx2] === 4) {
             if (maze[currentPos.y + dy2]?.[currentPos.x + dx2] === 4) {
-              console.log("🚨 ALERTA! Inimigo detectado!");
+              console.log("🚨");
               if(back.current===true){
+                console.log("🚨alerta back panic");
               superVisited.current.clear();
               superVisited.current.add(key);
               superVisited.current.add(`${currentPos.x},${currentPos.y}`);
-              console.log(key)
-              console.log(currentPos.y,currentPos.x )
               playerPanic.current = true; 
               return;
               }else{
+                console.log("🚨 ALERTA! Inimigo detectado!");
               visited.current.add(key);
               enemyAlertRef.current = true;
               pathStackCloneRef.current = [...pathStackRef.current];
+              
               return;
               }
               
@@ -105,19 +107,17 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
         setMoveDirection(null);
         return true;
       }
-      
       if (
         (!playerPanic.current && maze[newY]?.[newX] === 0 && !visited.current.has(key)) ||
         (playerPanic.current && maze[newY]?.[newX] === 0 && !superVisited.current.has(key))
-      )  {
+      )  
+      {
         back.current=false
-        console.log(stepsInPanic.current)
         console.log("front");
-        console.log(superVisited.current)
-        console.log(pathStackRef.current)
         if (enemyAlertRef.current) {
           const last = Array.from(visited.current).at(-1);
           if (last) {
+            console.log("daletei utimo visited");
             visited.current.delete(last);
           }
           enemyAlertRef.current = false;
@@ -136,10 +136,9 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
           pathStackRef.current = [...pathStackRef.current, { x: newX, y: newY }]; 
           visited.current.add(key);
           if(playerPanic.current){
-            console.log(key);
              stepsInPanic.current++;
              superVisited.current.add(`${currentPos.x},${currentPos.y}`);
-              if(stepsInPanic.current>=4){
+              if(stepsInPanic.current>=7){
                 superVisited.current.clear();
                 playerPanic.current=false
                 console.log("saiu do panico")
@@ -158,20 +157,30 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
   const backtrack = () => {
     back.current=true;
     if(playerPanic.current){
-      return
+      stepsInPanic.current++;
+      if(stepsInPanic.current>=7){
+        superVisited.current.clear();
+        playerPanic.current=false
+        console.log("saiu do panico no back")
+        stepsInPanic.current = 0;
+      }
+      return ;
     }
     console.log("back ativado")
     if (pathStackRef.current.length <= 1) {
       visited.current.clear();
-      return false;
+      console.log("🚨🚨🚨🚨🚨🚨todas visited linpo")
+      return;
     }
 
     let newPath, prevPos;
 
     if (enemyAlertRef.current) {
+      console.log("alerta ativado no back")
       newPath = pathStackCloneRef.current.slice(0, -1);
-      if (newPath.length <= 1) {
-        visited.current.clear();
+      if (newPath.length === 0) {
+        console.log("alerta ativado no back e playerPanic linpo")
+       
         return ;
       }
       prevPos = newPath[newPath.length - 1];
@@ -185,7 +194,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
     }
 
     
-    
+    console.log("back ativado")
    
     const dx = prevPos.x - playerPosition.x;
     const dy = prevPos.y - playerPosition.y;
@@ -249,13 +258,14 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
   }, [isAutoMoving, playerPosition, exitFound]);
 
   return (
-    <div className='container-total'>
+    <div >
       <RenderPlayerMove
         position={playerPosition}
         moveDirection={moveDirection}
         lastDirection={lastValidDirection}
         isAlert={enemyAlertRef.current}
         isPanic={playerPanic.current}
+        cellDimensions={cellDimensions}
       />
     </div>
   );
