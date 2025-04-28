@@ -1,11 +1,15 @@
-*{
+* {
   padding: 0;
   margin: 0;
-  color: #111010;
+  box-sizing: border-box;
 }
-body,
-html {
+
+
+html, body, #root {
   min-height: 100vh;
   height: 100%;
-  
+  width: 100%;
+  overscroll-behavior: none;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; 
 }
