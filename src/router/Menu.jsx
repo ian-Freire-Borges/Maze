@@ -20,10 +20,12 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel}) {
         <select id="nivel" name="nivel"
         value={nivel}
         onChange={(e) => setNivel(Number(e.target.value))}>
-          <option value={1}>Nivel :1</option>
-          <option value={2}>Nivel :2</option> 
-          <option value={3}>Nivel :3</option>
-          <option value={4}>Nivel :4</option>
+          <option value={1}>Enchanted Florest</option>
+          <option value={2}>Mushroom kingdom</option> 
+          <option value={3}>Secret Dungeon</option>
+          {window.innerWidth > 450 &&(
+          <option value={0}>Demo</option>
+        )}
       </select>
       </div>
     </div>

@@ -83,7 +83,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
       />
       )}
 
-      {mazeReady && nivel != 1 && (
+      {mazeReady && nivel != 0 && (
         <TrueEnemyMove
           setMaze={setMaze}
           maze={maze}

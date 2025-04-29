@@ -77,3 +77,9 @@ body {
 .lose-text {
     color: red;
 }
+@media (max-width: 450px){
+  .end-container {
+    width: 270px; 
+    height: 400px;
+  }
+}

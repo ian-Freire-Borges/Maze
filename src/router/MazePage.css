@@ -175,8 +175,9 @@ canvas {
     font-size: 1rem; 
   }
     .maze-wrapper {
-      width: 260px;
-      height: 520px; 
+      margin-bottom: -1.3rem;
+      width: 240px;
+      height: 480px; 
      
     }
     .container-button button img {
