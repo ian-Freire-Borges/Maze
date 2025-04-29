@@ -123,6 +123,10 @@ body {
 
   @media (max-width: 450px){
     .menu-container {
-      width: 270px; 
+      width: 290px; 
       height: 400px;}
+
+      .menu-title {
+        font-size: 1.8rem;
+      }
   }

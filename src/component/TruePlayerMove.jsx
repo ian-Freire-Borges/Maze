@@ -43,13 +43,12 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
       { dx: 0, dy: -1, dir: "up" },
       { dx: 0, dy: 1, dir: "down" }
     ];
-    const cellValue = maze[currentPos.y][currentPos.x];
-    if(cellValue===4){
-      setGameResult(false);
-      setExitFound(true);
-      setMoveDirection(null);
-      return true;
+    
+    for (let i = directions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [directions[i], directions[j]] = [directions[j], directions[i]];
     }
+    const cellValue = maze[currentPos.y][currentPos.x];
 
     if(cellValue===3){
       setGameResult(true);
@@ -57,6 +56,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
       setMoveDirection(null);
       return true;
     }
+
     if(!playerPanic.current){
     if (!enemyAlertRef.current) {
       for (const { dx, dy } of directions) {
