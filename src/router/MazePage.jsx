@@ -16,6 +16,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
   const mazeWrapperRef = useRef();
   const [cellDimensions, setCellDimensions] = useState({ cellWidth: 20, cellHeight: 20 });
   const [mazeReady, setMazeReady] = useState(false);
+  const [score, setScore] = useState(0);
 
   const handleCellDimensionsChange = (newDimensions) => {
     setCellDimensions(newDimensions);
@@ -80,6 +81,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
         moveSpeed={moveSpeed} 
         isAutoMoving={isAutoMoving}
         cellDimensions={cellDimensions}
+        setScore={setScore}
       />
       )}
 

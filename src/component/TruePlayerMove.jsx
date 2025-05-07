@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RenderPlayerMove from './RenderPlayerMove';
+import PlayerInteractiveObject from './PlayerInteractiveObject';
 
 
-export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions,}) {
+export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore}) {
   const [playerPosition, setPlayerPosition] = useState([], []);
   const [moveDirection, setMoveDirection] = useState(null);
   const [lastValidDirection, setLastValidDirection] = useState("down");
@@ -266,6 +267,12 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
         isAlert={enemyAlertRef.current}
         isPanic={playerPanic.current}
         cellDimensions={cellDimensions}
+      />
+      <PlayerInteractiveObject
+      maze={maze}
+      playerPosition={playerPosition}
+      cellDimensions={cellDimensions}
+      setScore={setScore}
       />
     </div>
   );
