@@ -5,8 +5,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1200px;
-  height: 600px;
+  width: 1100px;
+  height: 550px;
   overflow: hidden;
   position: relative;
   
@@ -37,7 +37,7 @@ canvas {
   transform: translateX(-50%);
   z-index: 1000;
   display: flex;
-  gap: 8rem;
+  gap: 24rem;
   padding: 0.5rem 1rem;
   border-radius: 12px;
   
@@ -53,7 +53,7 @@ canvas {
 /* Base Button Styles (Circular) */
 .container-button button {
   position: absolute;
-  /* Circular Shape */
+  margin-top: 0.8rem;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -80,8 +80,8 @@ canvas {
 }
 
 .container-button button img {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   image-rendering: pixelated;
 }
 
@@ -103,8 +103,8 @@ canvas {
 }
 
 .speed-text {
-  margin-top: 1.2rem;
-  margin-left: -2rem;
+  margin-top: 2.4rem;
+  margin-left: -3rem;
   font-size: 1.4rem; 
   
 }
@@ -117,6 +117,12 @@ canvas {
     height: 420px; 
    
   }
+  .container-button button {
+    margin-top: 1.2rem;
+  }
+  .speed-text {
+    margin-top: 2.8rem;
+  }
  
   
 }
@@ -128,8 +134,20 @@ canvas {
    
   }
 
+  .container-button {
+    gap: 8rem;
+  }
+
+  .container-button button {
+    margin-top: 3.6rem;
+  
+  }
+  .speed-text {
+    margin-top: 5.3rem;
+  }
+
 }
-@media (max-width: 600px), (max-height: 350px) {
+@media (max-width: 600px), (max-height: 450px) {
   .maze-wrapper {
     width: 440px;
     height: 220px;
@@ -148,6 +166,32 @@ canvas {
     
   }
   
+  
+}
+@media (max-width: 500px), (max-height: 400px) {
+  
+  .container-button button {
+    width: 10px;
+    height: 10px;
+    
+    
+    
+  }
+  .container-button button img {
+    height: 40px;
+    width: 40px;
+    image-rendering: pixelated;
+    
+  }
+  .container-button button {
+    margin-top: 1.6rem;
+  
+  }
+  .speed-text {
+    margin-left: -1rem;
+    margin-top: 2rem;
+    font-size: 1rem; 
+  }
   
 }
 
