@@ -188,7 +188,6 @@ canvas {
   
   }
   .speed-text {
-    margin-left: -1rem;
     margin-top: 2rem;
     font-size: 1rem; 
   }
@@ -198,30 +197,30 @@ canvas {
 
 @media (max-width: 450px){
   .coitaner-for-mov {
-    gap: 3rem;
+    gap: 3.2rem;
   }
   .container-button {
     margin-top: -1.6rem;
-    gap: 2rem;
+    gap: 3rem;
   }
 
     
   .container-button button {
-    width: 20px;
-    height: 20px;
-    margin-top: 3.2rem;
+    width: 10px;
+    height: 10px;
+    margin-top: 2.7rem;
     
     
   }
   .speed-text {
     margin-left: -1.5rem;
-    margin-top: 4.5rem;
+    margin-top: 3.8rem;
     font-size: 1rem; 
   }
     .maze-wrapper {
       margin-bottom: -1.3rem;
-      width: 242px;
-      height: 480px; 
+      width:290px;
+      height: 580px; 
      
     }
     .container-button button img {

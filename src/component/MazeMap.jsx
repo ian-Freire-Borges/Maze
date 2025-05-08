@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import mapaMobileLv1 from "../../public/mapaMobileNv1.json"  // 16 x 32
-import mapaMobileLv2 from "../../public/mapaMobileNv2.json"  // 20 x 40
+import mapaMobileLv2 from "../../public/mapaMobileNv2.json"  // 22 x 44
 import mapaMobileLv3 from "../../public/mapaMobileNv3.json"  // 24 x 48
 import matrizes1 from '../../public/mapaNv1.json' // 30 x 15
 import matrizes2 from '../../public/mapaNv2.json';  // 40 x 20
