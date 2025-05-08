@@ -8,7 +8,7 @@ import speedUp from "../assets/speedup.png";
 import TrueEnemyMove from '../component/TrueEnemyMove';
 import volta from "../assets/voltar.png"
 
-export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) {
+export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,setScore,score}) {
   const [maze, setMaze] = useState(mazeLayout);
   const [exitFound, setExitFound] = useState(false);
   const [moveSpeed, setMoveSpeed] = useState(300);
@@ -16,7 +16,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel}) 
   const mazeWrapperRef = useRef();
   const [cellDimensions, setCellDimensions] = useState({ cellWidth: 20, cellHeight: 20 });
   const [mazeReady, setMazeReady] = useState(false);
-  const [score, setScore] = useState(0);
+  
 
   const handleCellDimensionsChange = (newDimensions) => {
     setCellDimensions(newDimensions);

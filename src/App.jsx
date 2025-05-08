@@ -15,6 +15,7 @@ function App() {
   const [mazeKey, setMazeKey] = useState(0);
   const [screen, setScreen] = useState('MENU');
   const [gameResult, setGameResult] = useState(null);
+  const [score, setScore] = useState(0);
   
   const cellSize = 20;
 
@@ -35,10 +36,12 @@ function App() {
             setScreen={setScreen} 
             setGameResult={setGameResult}
             nivel={nivel}
+            setScore={setScore}
+            score={score}
           />
         </div>
       )}
-      {screen === 'END' && <End setScreen={setScreen} gameResult={gameResult} />}
+      {screen === 'END' && <End setScreen={setScreen} gameResult={gameResult} score={score}/>}
     </div>
   );
 }
