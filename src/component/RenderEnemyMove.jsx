@@ -18,7 +18,7 @@ export default function RenderEnemyMove({
   const animationSpeed = 0.07;
 
   const { cellWidth, cellHeight } = cellDimensions;
-  const spriteSize = Math.min(cellWidth, cellHeight) * 1.1; // Ajuste o sprite para ocupar 80% da célula
+  const spriteSize = Math.min(cellWidth, cellHeight); // O tamanho do sprite será o mesmo que o do player
 
   const preload = (p5) => {
     spriteSheetRef.current = p5.loadImage(enemySprite);
@@ -85,8 +85,8 @@ export default function RenderEnemyMove({
     <div
       style={{
         position: "absolute",
-        left: `${left}px`,
-        top: `${top}px`,
+        left: `${left}px`,  // Centralizando o inimigo na célula
+        top: `${top}px`,    // Centralizando o inimigo na célula
         width: `${spriteSize}px`,
         height: `${spriteSize}px`,
         pointerEvents: "none",

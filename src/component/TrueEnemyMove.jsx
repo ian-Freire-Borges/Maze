@@ -136,8 +136,8 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
   }, [isAutoMoving, EnemyPosition, exitFound]);
 
   return (
-    <div>
+    <>
       <RenderEnemyMove position={EnemyPosition} moveDirection={moveDirection}  cellDimensions={cellDimensions}/>
-    </div>
+    </>
   );
 }

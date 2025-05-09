@@ -12,20 +12,11 @@
   
 }
 
-.maze-container {
-  display: flex;
-  position: relative; 
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
 canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain;
+  object-fit: fill;
 }
 
 /* Button Container */
@@ -113,8 +104,8 @@ canvas {
  
   .maze-wrapper {
     
-    width: 840px;
-    height: 420px; 
+    width: 800px;
+    height: 400px; 
    
   }
   .container-button button {
@@ -129,8 +120,8 @@ canvas {
 
 @media (max-width: 900px), (max-height: 500px) {
   .maze-wrapper {
-    width: 600px;
-    height: 300px;
+    width: 652px;
+    height: 326px;
    
   }
 
@@ -149,8 +140,8 @@ canvas {
 }
 @media (max-width: 600px), (max-height: 450px) {
   .maze-wrapper {
-    width: 440px;
-    height: 220px;
+    width: 420px;
+    height: 210px;
     
    
   }

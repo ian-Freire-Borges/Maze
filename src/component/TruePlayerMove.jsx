@@ -259,7 +259,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
   }, [isAutoMoving, playerPosition, exitFound]);
 
   return (
-    <div >
+    <>
       <RenderPlayerMove
         position={playerPosition}
         moveDirection={moveDirection}
@@ -274,6 +274,6 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
       cellDimensions={cellDimensions}
       setScore={setScore}
       />
-    </div>
+    </>
   );
 } 

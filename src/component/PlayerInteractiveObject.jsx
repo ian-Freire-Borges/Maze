@@ -1,18 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Sketch from 'react-p5';
 import imgCoin from '../assets/coin_rot_anim.png';
 
 const SPRITE_FRAME_COUNT = 6;
-const FRAME_WIDTH = 32; // Largura de cada frame da moeda
-const SPRITE_DURATION = 100; // Tempo por frame (ms)
 
-const PlayerInteractiveObject = ({ 
-  maze, 
-  playerPosition, 
-  cellDimensions, 
-  setScore
-}) => {
+export default function RenderCoins({
+  maze,
+  playerPosition,
+  cellDimensions,
+  setScore,
+}) {
+  const spriteSheetRef = useRef(null);
+  const animationFrames = useRef([]);
+  const frameCount = useRef(0);
   const itemPositionsRef = useRef(null);
-  const [frameIndex, setFrameIndex] = useState(0);
+  const totalFrames = SPRITE_FRAME_COUNT;
+  const animationSpeed = 0.15;
+
+  const { cellWidth, cellHeight } = cellDimensions;
+  const spriteSize = Math.min(cellWidth, cellHeight) * 1.1;
 
   if (itemPositionsRef.current === null) {
     const positions = [];
@@ -35,51 +41,71 @@ const PlayerInteractiveObject = ({
   useEffect(() => {
     const playerKey = `${playerPosition.x},${playerPosition.y}`;
     const index = itemPositionsRef.current.findIndex(
-      pos => `${pos.x},${pos.y}` === playerKey
+      (pos) => `${pos.x},${pos.y}` === playerKey
     );
 
     if (index !== -1) {
       itemPositionsRef.current.splice(index, 1);
-      setScore(prev => prev + 20);
+      setScore((prev) => prev + 20);
     }
   }, [playerPosition, setScore]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFrameIndex(prev => (prev + 1) % SPRITE_FRAME_COUNT);
-    }, SPRITE_DURATION);
+  const preload = (p5) => {
+    spriteSheetRef.current = p5.loadImage(imgCoin);
+  };
 
-    return () => clearInterval(interval);
-  }, []);
+  const setup = (p5, canvasParentRef) => {
+    const canvas = p5
+      .createCanvas(cellWidth * maze[0].length, cellHeight * maze.length)
+      .parent(canvasParentRef);
+    p5.noStroke();
+
+    const frameWidth = spriteSheetRef.current.width / totalFrames;
+    const frameHeight = spriteSheetRef.current.height;
+
+    for (let i = 0; i < totalFrames; i++) {
+      animationFrames.current.push(
+        spriteSheetRef.current.get(
+          i * frameWidth,
+          0,
+          frameWidth,
+          frameHeight
+        )
+      );
+    }
+  };
+
+  const draw = (p5) => {
+    p5.clear();
+
+    frameCount.current += animationSpeed;
+    const currentFrame = Math.floor(frameCount.current) % totalFrames;
+    const currentImg = animationFrames.current[currentFrame];
+
+    if (!currentImg) return;
+
+    itemPositionsRef.current.forEach(({ x, y }) => {
+      const px = x * cellWidth + cellWidth / 2;
+      const py = y * cellHeight + cellHeight / 2;
+
+      p5.push();
+      p5.imageMode(p5.CENTER);
+      p5.image(currentImg, px, py, spriteSize, spriteSize);
+      p5.pop();
+    });
+  };
 
   return (
-    <>
-      {itemPositionsRef.current.map(({ x, y }, index) => {
-        const { cellWidth, cellHeight } = cellDimensions;
-        const left = x * cellWidth;
-        const top = y * cellHeight;
-
-        return (
-          <div
-            key={index}
-            style={{
-              position: 'absolute',
-              left,
-              top,
-              width: cellWidth,
-              height: cellHeight,
-              backgroundImage: `url(${imgCoin})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: `${FRAME_WIDTH * SPRITE_FRAME_COUNT}px ${cellHeight}px`,
-              backgroundPosition: `-${frameIndex * FRAME_WIDTH}px 0px`,
-              imageRendering: 'pixelated', // para manter o estilo retrô
-              zIndex: 5
-            }}
-          />
-        );
-      })}
-    </>
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        pointerEvents: 'none',
+        zIndex: 3,
+      }}
+    >
+      <Sketch preload={preload} setup={setup} draw={draw} />
+    </div>
   );
-};
-
-export default PlayerInteractiveObject;
+}

@@ -68,7 +68,6 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
         </button>
       </div>
       <div className="maze-wrapper" ref={mazeWrapperRef}>
-      <div className="maze-container">
       <MazeRender mazeLayout={maze} wrapperRef={mazeWrapperRef} onCellDimensionsChange={handleCellDimensionsChange}/>
       {mazeReady && (
       <TruePlayerMove 
@@ -97,7 +96,6 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
           cellDimensions={cellDimensions}
         />
       )}
-      </div>
       </div>
       </>
   );
