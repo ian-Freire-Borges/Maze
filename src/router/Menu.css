@@ -20,6 +20,7 @@ body {
     border-radius: 20px;
     box-shadow: 6px 6px 0 #000;
     text-align: center;
+    
   }
   @keyframes pulseTitle {
     0% {
@@ -80,6 +81,7 @@ body {
     -moz-appearance: none;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    font-family: 'Press Start 2P', cursive; 
   }
   
   .opçoes select:focus {
@@ -114,6 +116,7 @@ body {
     text-transform: uppercase;
     box-shadow: 4px 4px 0 #000;
     transition: all 0.2s ease-in-out;
+    font-family: 'Press Start 2P', cursive; 
   }
   
   .menu-button:hover {
@@ -123,6 +126,7 @@ body {
 
   @media (max-width: 450px){
     .menu-container {
+      margin-top: 6rem;
       width: 290px; 
       height: 400px;}
 
