@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import MazeRender from './component/MazeRender';
-import TruePlayerMove from './component/TruePlayerMove';
 import Menu from './router/Menu';
 import './App.css';
-import backgroundImage from './assets/tilesetOpenGameBackground.png';
+import floretImage from './assets/tilesetOpenGameBackground.png';
+import cristal from "./assets/caveRemasteredV7.png"
 import End from './router/End';
 import useMaze from "./component/MazeMap"
 import MazePage from './router/MazePage';
@@ -18,6 +17,10 @@ function App() {
   const [score, setScore] = useState(0);
   
   const cellSize = 20;
+   let backgroundImage =floretImage;
+  if(nivel === 2){
+    backgroundImage = cristal
+  }
 
   return (
     <div

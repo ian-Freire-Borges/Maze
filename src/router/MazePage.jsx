@@ -68,7 +68,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
         </button>
       </div>
       <div className="maze-wrapper" ref={mazeWrapperRef}>
-      <MazeRender mazeLayout={maze} wrapperRef={mazeWrapperRef} onCellDimensionsChange={handleCellDimensionsChange}/>
+      <MazeRender mazeLayout={maze} wrapperRef={mazeWrapperRef} onCellDimensionsChange={handleCellDimensionsChange} nivel={nivel}/>
       {mazeReady && (
       <TruePlayerMove 
         setScreen={setScreen}  

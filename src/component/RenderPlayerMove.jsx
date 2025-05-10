@@ -25,8 +25,6 @@ export default function RenderPlayerMove({
   const spriteWidth = cellWidth * 3;  // Aumenta o tamanho do sprite
   const spriteHeight = cellHeight * 3;
 
-  const overlayMapRef = useRef(); // Ref para a sobreposição de imagem
-
   const preload = (p5) => {
     spriteSheetRef.current = p5.loadImage(char);
   };
@@ -62,6 +60,7 @@ export default function RenderPlayerMove({
     const centerX = spriteWidth / 2;
     const centerY = spriteHeight / 2;
 
+    // Lógica de animação do personagem
     if (moveDirection) {
       frameCount.current += animationSpeed;
       currentFrame.current = Math.floor(frameCount.current) % totalFrames;
@@ -86,45 +85,25 @@ export default function RenderPlayerMove({
       p5.ellipse(centerX, centerY, spriteWidth);
     }
 
-    // Efeitos visuais de alerta ou pânico
+    // Efeito de alerta (luz amarela)
     if (isAlert || isPanic) {
       p5.push();
       p5.translate(centerX, centerY);
 
       const time = p5.millis() * 0.005;
-      const numParticles = isPanic ? 20 : 12;
-      const radius = isPanic ? 25 : 15;
-      const baseColor = isPanic ? [255, 0, 0] : [255, 215, 0];
-      const size = isPanic ? 8 : 6;
 
-      p5.blendMode(p5.ADD);
-      const ctx = p5.drawingContext;
-      ctx.shadowBlur = isPanic ? 25 : 20;
-      ctx.shadowColor = `rgba(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]}, 1)`; // Corrigido para usar a string rgba
+      // Tamanho da luz - pulsando com o tempo
+      const lightSize = Math.sin(time * 2.5) * 8 + 24;
 
-      for (let i = 0; i < numParticles; i++) {
-        const angle = (i / numParticles) * p5.TWO_PI + time * 0.5;
-        const x = radius * Math.cos(angle);
-        const y = radius * Math.sin(angle);
-        const flicker = p5.random(180, 255);
+      // Cor da luz
+      const lightColor = isPanic
+        ? [255, 0, 0, 150]  // Vermelho para pânico
+        : [255, 255, 0, 150];  // Amarelo para alerta
 
-        p5.noStroke();
-        p5.fill(baseColor[0], baseColor[1], baseColor[2], flicker);
-        p5.ellipse(x, y, size);
-      }
-
-      const pulseSize = isPanic
-        ? Math.sin(time * 3) * 6 + 12
-        : Math.sin(time * 2.5) * 4 + 10;
-
-      const pulseColor = isPanic
-        ? [255, 0, 0, 180]
-        : [255, 215, 0, 160];
-
+      // Desenha a luz ao redor do personagem
       p5.noStroke();
-      p5.fill(...pulseColor);
-      p5.ellipse(0, 0, pulseSize);
-
+      p5.fill(...lightColor);
+      p5.ellipse(0, 0, lightSize); // Desenha a luz como um círculo em torno do personagem
       p5.pop();
     }
   };

@@ -94,6 +94,7 @@ canvas {
 }
 
 .speed-text {
+  color: rgb(90, 134, 134);
   margin-top: 2.4rem;
   margin-left: -3rem;
   font-size: 1.4rem; 
