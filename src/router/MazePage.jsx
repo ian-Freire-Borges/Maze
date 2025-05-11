@@ -91,6 +91,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
 
       {mazeReady && nivel != 0 && (
         <TrueEnemyMove
+          key="enemy1"
           setMaze={setMaze}
           maze={maze}
           exitFound={exitFound}
@@ -100,8 +101,24 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
           setGameResult={setGameResult}
           cellDimensions={cellDimensions}
           mazeRef={mazeRef}
+          enemyId={1}
         />
       )}
+       {mazeReady && nivel === 2 && (
+      <TrueEnemyMove
+          key="enemy2"
+          setMaze={setMaze}
+          maze={maze}
+          exitFound={exitFound}
+          moveSpeed={moveSpeed}
+          isAutoMoving={isAutoMoving}
+          setExitFound={setExitFound}
+          setGameResult={setGameResult}
+          cellDimensions={cellDimensions}
+          mazeRef={mazeRef}
+          enemyId={2}
+        />
+       )}
       </div>
       </>
   );

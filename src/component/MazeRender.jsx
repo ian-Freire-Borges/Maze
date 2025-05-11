@@ -176,7 +176,7 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
             }
           }
         } 
-        else if (val === 0 || val === 2 || val === 4) {
+        else if (val === 0 || val === 2 || val === 4 || val === 5) {
           const rand = Math.random();
           pathMapRef.current[row][col] = 
             rand < 0.4 ? floorRefs.flor1.current :
@@ -276,7 +276,7 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
             }
           }
         } 
-        else if ([0, 2, 4].includes(val)) {
+        else if ([0, 2, 4,5].includes(val)) {
           p5.image(pathMapRef.current[row][col], x, y, cellSize, cellSize);
         } 
         else if (val === 3) {

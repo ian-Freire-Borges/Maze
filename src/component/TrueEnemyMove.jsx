@@ -9,7 +9,8 @@ export default function TrueEnemyMove({
   setExitFound, 
   setGameResult, 
   cellDimensions,
-  mazeRef 
+  mazeRef,
+  enemyId
 }) {
   const [enemyPosition, setEnemyPosition] = useState({ x: 0, y: 0 });
   const [moveDirection, setMoveDirection] = useState("right");
@@ -30,7 +31,7 @@ export default function TrueEnemyMove({
       const currentMaze = mazeRef.current;
       for (let row = 0; row < currentMaze.length; row++) {
         for (let col = 0; col < currentMaze[row].length; col++) {
-          if (currentMaze[row][col] === 4) {
+          if ((enemyId === 1 && currentMaze[row][col] === 4)||(enemyId === 2 && currentMaze[row][col] === 5) ) {
             return { x: col, y: row };
           }
         }
