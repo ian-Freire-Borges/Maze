@@ -1,4 +1,4 @@
-  import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
   import RenderPlayerMove from './RenderPlayerMove';
   import PlayerInteractiveObject from './PlayerInteractiveObject';
 
@@ -164,7 +164,7 @@
       back.current=true;
       if(playerPanic.current){
         stepsInPanic.current++;
-        if(stepsInPanic.current>=7){
+        if(stepsInPanic.current>=20){
           superVisited.current.clear();
           playerPanic.current=false
           console.log("saiu do panico no back")
@@ -185,8 +185,7 @@
         console.log("alerta ativado no back")
         newPath = pathStackCloneRef.current.slice(0, -1);
         if (newPath.length === 0) {
-          console.log("alerta ativado no back e playerPanic linpo")
-        
+          enemyAlertRef.current = false
           return ;
         }
         prevPos = newPath[newPath.length - 1];
