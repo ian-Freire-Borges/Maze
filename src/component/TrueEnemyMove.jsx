@@ -1,30 +1,51 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RenderEnemyMove from "./RenderEnemyMove";
 
-export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAutoMoving,setExitFound, setGameResult, cellDimensions }) {
-  const [EnemyPosition, setEnemyPosition] = useState([]);
-  const [pathStack, setPathStack] = useState([]);
+export default function TrueEnemyMove({ 
+  setMaze, 
+  exitFound, 
+  moveSpeed, 
+  isAutoMoving, 
+  setExitFound, 
+  setGameResult, 
+  cellDimensions,
+  mazeRef 
+}) {
+  const [enemyPosition, setEnemyPosition] = useState({ x: 0, y: 0 });
   const [moveDirection, setMoveDirection] = useState("right");
+  
+  // Refs para sincronização
+  const pathStackRef = useRef([]);
+  const visitedRef = useRef(new Set());
+  const enemyPosRef = useRef(enemyPosition);
 
-  const visited = useRef(new Set());
+  // Atualiza a ref da posição quando o estado muda
+  useEffect(() => {
+    enemyPosRef.current = enemyPosition;
+  }, [enemyPosition]);
 
+  // Inicializa a posição do inimigo
   useEffect(() => {
     const findInitialPosition = () => {
-      for (let row = 0; row < maze.length; row++) {
-        for (let col = 0; col < maze[row].length; col++) {
-          if (maze[row][col] === 4) {
+      const currentMaze = mazeRef.current;
+      for (let row = 0; row < currentMaze.length; row++) {
+        for (let col = 0; col < currentMaze[row].length; col++) {
+          if (currentMaze[row][col] === 4) {
             return { x: col, y: row };
           }
         }
       }
+      return { x: 1, y: 1 };
     };
+    
     const startPos = findInitialPosition();
     setEnemyPosition(startPos);
-    setPathStack([startPos]);
-    visited.current = new Set([`${startPos.x},${startPos.y}`]);
-  }, []);
+    pathStackRef.current = [startPos];
+    visitedRef.current = new Set([`${startPos.x},${startPos.y}`]);
+  }, [mazeRef]);
 
-  const tryMovePlayer = (currentPos) => {
+  const tryMoveEnemy = (currentPos) => {
+    const currentMaze = mazeRef.current;
     const directions = [
       { dx: -1, dy: 0 }, // esquerda
       { dx: 1, dy: 0 },  // direita
@@ -32,112 +53,118 @@ export default function TrueEnemyMove({ setMaze,maze, exitFound, moveSpeed, isAu
       { dx: 0, dy: 1 }   // baixo
     ];
 
+    // Embaralha as direções
     for (let i = directions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [directions[i], directions[j]] = [directions[j], directions[i]];
     }
     
-    if(maze[currentPos.y][currentPos.x]===2){
-        setExitFound(true);
-        setGameResult(false);
+    // Verifica se encontrou o jogador
+    if (currentMaze[currentPos.y][currentPos.x] === 2) {
+      handlePlayerCaught(currentPos);
+      return true;
+    }
 
-          return true;
-      }
+    // Tenta mover em todas as direções
     for (const { dx, dy } of directions) {
       const newX = currentPos.x + dx;
       const newY = currentPos.y + dy;
       const key = `${newX},${newY}`;
 
-      if (maze[newY]?.[newX] === 0  && !visited.current.has(key) ) {
-        if (dx < 0) setMoveDirection("left");
-        if (dx > 0) setMoveDirection("right");
-
-        
-        setMaze(prevMaze => {
-          const newMaze = prevMaze.map(row => [...row]);
-              newMaze[currentPos.y][currentPos.x] = 0;
-              newMaze[newY][newX] = 4;
-            
-          
-          setEnemyPosition({ x: newX, y: newY });
-          setPathStack(prev => [...prev, { x: newX, y: newY }]);
-          visited.current.add(key);
-
-          return newMaze;
-        });
+      if (currentMaze[newY]?.[newX] === 0 && !visitedRef.current.has(key)) {
+        moveEnemy(currentPos, newX, newY, dx);
         return true;
       }
-    
-      if(maze[newY]?.[newX] === 2){
-        setGameResult(false);
-        setExitFound(true);
-        setMaze(prevMaze => {
-            const newMaze = prevMaze.map(row => [...row]);
-            newMaze[currentPos.y][currentPos.x] = 0;
-            newMaze[newY][newX] = 4;
-  
-            setEnemyPosition({ x: newX, y: newY });
-            setPathStack(prev => [...prev, { x: newX, y: newY }]);
-            visited.current.add(key);
-          
-            return newMaze;
-          });
-          setMoveDirection(null);
-          return true;
-     
-    }
-     
+      
+      // Verifica se encontrou o jogador na nova posição
+      if (currentMaze[newY]?.[newX] === 2) {
+        handlePlayerCaught({ x: newX, y: newY }, currentPos);
+        return true;
+      }
     }
 
     return false;
   };
 
+  const moveEnemy = (currentPos, newX, newY, dx) => {
+    // Atualiza a direção
+    if (dx < 0) setMoveDirection("left");
+    if (dx > 0) setMoveDirection("right");
+
+    // Atualiza o labirinto e a posição
+    setMaze(prevMaze => {
+      const newMaze = prevMaze.map(row => [...row]);
+      newMaze[currentPos.y][currentPos.x] = 0;
+      newMaze[newY][newX] = 4;
+      return newMaze;
+    });
+
+    setEnemyPosition({ x: newX, y: newY });
+    pathStackRef.current = [...pathStackRef.current, { x: newX, y: newY }];
+    visitedRef.current.add(`${newX},${newY}`);
+  };
+
+  const handlePlayerCaught = (playerPos, enemyPos = enemyPosRef.current) => {
+    setMaze(prevMaze => {
+      const newMaze = prevMaze.map(row => [...row]);
+      newMaze[enemyPos.y][enemyPos.x] = 0;
+      newMaze[playerPos.y][playerPos.x] = 4;
+      return newMaze;
+    });
+
+    setEnemyPosition(playerPos);
+    setGameResult(false);
+    setExitFound(true);
+    setMoveDirection(null);
+  };
+
   const backtrack = () => {
-    if (pathStack.length <= 1) {
-      visited.current = new Set();
+    if (pathStackRef.current.length <= 1) {
+      visitedRef.current = new Set();
       return;
     }
 
-    const newPath = pathStack.slice(0, -1);
+    const newPath = pathStackRef.current.slice(0, -1);
     const prevPos = newPath[newPath.length - 1];
 
-    // define direção reversa
-    if (prevPos.x < EnemyPosition.x) setMoveDirection("left");
-    if (prevPos.x > EnemyPosition.x) setMoveDirection("right");
+    // Define direção reversa
+    if (prevPos.x < enemyPosRef.current.x) setMoveDirection("left");
+    if (prevPos.x > enemyPosRef.current.x) setMoveDirection("right");
 
-    if (maze[prevPos.y]?.[prevPos.x] === 2) {
-      setGameResult(false);
-      setExitFound(true);
-      
-      return 
+    // Verifica se encontrou o jogador
+    if (mazeRef.current[prevPos.y]?.[prevPos.x] === 2) {
+      handlePlayerCaught(prevPos);
+      return;
     }
 
-    setPathStack(newPath);
-    setEnemyPosition(prevPos);
-
+    // Atualiza o labirinto e a posição
     setMaze(prevMaze => {
       const newMaze = prevMaze.map(row => [...row]);
-        newMaze[EnemyPosition.y][EnemyPosition.x] = 0; 
-        newMaze[prevPos.y][prevPos.x] = 4; 
-      
+      newMaze[enemyPosRef.current.y][enemyPosRef.current.x] = 0;
+      newMaze[prevPos.y][prevPos.x] = 4;
       return newMaze;
     });
+
+    setEnemyPosition(prevPos);
+    pathStackRef.current = newPath;
   };
 
   useEffect(() => {
     if (!isAutoMoving || exitFound) return;
 
     const moveInterval = setInterval(() => {
-      const moved = tryMovePlayer(EnemyPosition);
+      const moved = tryMoveEnemy(enemyPosRef.current);
       if (!moved) backtrack();
     }, moveSpeed * 2);
 
     return () => clearInterval(moveInterval);
-  }, [isAutoMoving, EnemyPosition, exitFound]);
+  }, [isAutoMoving, exitFound, moveSpeed]);
 
   return (
-    <>
-      <RenderEnemyMove position={EnemyPosition} moveDirection={moveDirection}  cellDimensions={cellDimensions}/>
-    </>
+    <RenderEnemyMove 
+      position={enemyPosition} 
+      moveDirection={moveDirection}  
+      cellDimensions={cellDimensions}
+    />
   );
 }

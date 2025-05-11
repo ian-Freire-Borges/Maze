@@ -16,12 +16,15 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
   const mazeWrapperRef = useRef();
   const [cellDimensions, setCellDimensions] = useState({ cellWidth: 20, cellHeight: 20 });
   const [mazeReady, setMazeReady] = useState(false);
-  
+  const mazeRef = useRef(maze);
 
   const handleCellDimensionsChange = (newDimensions) => {
     setCellDimensions(newDimensions);
     
   };
+   useEffect(() => {
+      mazeRef.current = maze;
+    }, [maze]);
   useEffect(() => {
     // Este useEffect simula a renderização do labirinto, após o qual o labirinto estará pronto.
     const timer = setTimeout(() => {
@@ -82,6 +85,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
         isAutoMoving={isAutoMoving}
         cellDimensions={cellDimensions}
         setScore={setScore}
+        mazeRef={mazeRef}
       />
       )}
 
@@ -95,6 +99,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
           setExitFound={setExitFound}
           setGameResult={setGameResult}
           cellDimensions={cellDimensions}
+          mazeRef={mazeRef}
         />
       )}
       </div>

@@ -21,7 +21,7 @@ import dungeoflor3 from "../assets/DungeonTile02.png";
 import dungeoflor4 from "../assets/DungeonTile04.png";
 
 export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsChange, nivel }) {
-  
+  // Refs
   const wallRefs = {
     wall1: useRef(),
     wall2: useRef(),

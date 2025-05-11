@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react'; 
 import Menu from './router/Menu';
 import './App.css';
 import menuImage from './assets/tilesetOpenGameBackground.png';
@@ -21,6 +21,7 @@ function App() {
   const [score, setScore] = useState(0);
   const [devMode, setDevMove] = useState()
   const [levelCheck , setLevelCheck] = useState(false);
+  
   
   const cellSize = 20;
    let backgroundImage =menuImage;
