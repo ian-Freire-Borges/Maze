@@ -1,0 +1,61 @@
+.Win button {
+  margin-top: 3rem;
+  background: linear-gradient(to right, #00d2ff, #3a7bd5);
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 #000;
+  transition: all 0.2s ease-in-out;
+  font-family: 'Press Start 2P', cursive; 
+  cursor: pointer;
+}
+ @keyframes pulseTitle {
+    0% {
+      transform: scale(1);
+      text-shadow: 2px 2px 0px #000;
+    }
+    50% {
+      transform: scale(1.1);
+      text-shadow: 4px 4px 0px #000;
+    }
+    100% {
+      transform: scale(1);
+      text-shadow: 2px 2px 0px #000;
+    }
+  }
+h1{
+    color: #ffffff;
+    animation: pulseTitle 2s infinite;
+}
+.score-container{
+    margin-top: 2rem;
+}
+
+.score-container h2{
+    font-size: 1rem;
+    color: #8b6274;
+}
+
+.Win button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to right, #ff4141, #ff4b2b);
+}
+.Win-container {
+    width: 400px; /* menos largo */
+    height: 300px; /* menos alto */
+    margin: auto;
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    background-color: rgba(0, 0, 50, 0.6);
+    border-radius: 20px;
+    box-shadow: 6px 6px 0 #000;
+    text-align: center;
+  }

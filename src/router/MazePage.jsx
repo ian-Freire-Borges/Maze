@@ -8,7 +8,7 @@ import speedUp from "../assets/speedup.png";
 import TrueEnemyMove from '../component/TrueEnemyMove';
 import volta from "../assets/voltar.png"
 
-export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,setScore,score}) {
+export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,setScore,score,devMode}) {
   const [maze, setMaze] = useState(mazeLayout);
   const [exitFound, setExitFound] = useState(false);
   const [moveSpeed, setMoveSpeed] = useState(300);
@@ -50,8 +50,9 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
           setMoveSpeed(prev => {
             if (prev === 300) return 150;
             if (prev === 150) return 100;
+            if(devMode){
             if (prev === 100) return 50;
-            if (prev === 50) return 25;
+            if (prev === 50) return 25;}
             return 300;
           });
         }}>

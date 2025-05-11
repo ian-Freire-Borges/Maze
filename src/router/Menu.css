@@ -5,10 +5,41 @@ body {
     background: url('../assets/background.png') no-repeat center center fixed;
     background-size: cover;
   }
+
+  .devMode-container {
+  margin-top: 2rem;
+}
+
+.devMode-container button {
+   background: linear-gradient(to right, #00d2ff, #3a7bd5);
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 #000;
+  transition: all 0.2s ease-in-out;
+  font-family: 'Press Start 2P', cursive; 
+  cursor: pointer;
+}
+
+.devMode-container button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to right, #ff4141, #ff4b2b);
+}
+
+.dev-button.active {
+  background-color: #00c853; /* verde vivo para indicar ativo */
+  border-color: #00e676;
+  color: rgb(255, 255, 255);
+  box-shadow: 0 0 10px #00e676;
+}
   
   .menu-container {
     width: 400px; 
-    height: 300px;
+    height: 400px;
     margin: auto;
     margin-top: 10vh;
     display: flex;
@@ -81,7 +112,9 @@ body {
     -moz-appearance: none;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    font-family: 'Press Start 2P', cursive; 
+    font-family: 'Press Start 2P', cursive;
+    width: 17rem;
+    height: 2.4rem;
   }
   
   .opçoes select:focus {
@@ -103,6 +136,7 @@ body {
     font-weight: bold;
     padding: 10px;
     text-transform: uppercase;
+    
   }
   .menu-button {
     background: linear-gradient(to right, #00d2ff, #3a7bd5);
@@ -122,6 +156,56 @@ body {
   .menu-button:hover {
     transform: scale(1.05);
     background: linear-gradient(to right, #ff416c, #ff4b2b);
+  }
+  .scoreBoard-container button{
+     background: linear-gradient(to right, #00d2ff, #3a7bd5);
+    border: 2px solid #fff;
+    border-radius: 8px;
+    margin-top: 2rem;
+    padding: 10px 16px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Press Start 2P', cursive; 
+     width: 17rem;
+    height: 2.4rem;
+  }
+  .nameLevel-container label {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 1px 1px #000;
+  font-family: 'Press Start 2P', cursive;
+}
+  .nameLevel-container{
+  margin-top: 2rem;
+  }
+  .nivel-titulo{
+     margin-top: 1rem;
+  background: rgba(0, 210, 255, 0.2); /* fundo translúcido suave */
+  border-left: 6px solid #00d2ff;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', cursive;
+  width: 17rem;
+  height: auto;
+  box-shadow: none;
+  cursor: default;
+  border-radius: 0;
+  text-align: left;
+  }
+
+  .scoreBoard-container button:hover{
+    transform: scale(1.05);
+    background: linear-gradient(to right, #ff4141, #ff4b2b);
+    color: #fff;
   }
 
   @media (max-width: 450px){

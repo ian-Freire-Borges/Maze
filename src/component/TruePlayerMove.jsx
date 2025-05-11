@@ -8,7 +8,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
   const [moveDirection, setMoveDirection] = useState(null);
   const [lastValidDirection, setLastValidDirection] = useState("down");
  
-
+  const win= useRef(false);
   const back= useRef(false);
   const pathStackRef = useRef([]);
   const pathStackCloneRef = useRef([]);
@@ -52,6 +52,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
     const cellValue = maze[currentPos.y][currentPos.x];
 
     if(cellValue===3){
+      win.current=true;
       setGameResult(true);
       setExitFound(true);
       setMoveDirection(null);
@@ -103,6 +104,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
       const key = `${newX},${newY}`;
 
       if (maze[newY]?.[newX] === 3) {
+        win.current=true;
         setGameResult(true);
         setExitFound(true);
         setMoveDirection(null);
@@ -139,7 +141,7 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
           if(playerPanic.current){
              stepsInPanic.current++;
              superVisited.current.add(`${currentPos.x},${currentPos.y}`);
-              if(stepsInPanic.current>=7){
+              if(stepsInPanic.current>=20){
                 superVisited.current.clear();
                 playerPanic.current=false
                 console.log("saiu do panico")
@@ -235,7 +237,11 @@ export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze
         enemyAlertRef.current = false;
         playerPanic.current = false;
         superVisited.current.clear();
-        setScreen("END")
+        if(win.current){
+        setScreen("WINNER")}
+        else{
+          setScreen("END")
+        }
       }
       return;
     }

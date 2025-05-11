@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import Menu from './router/Menu';
 import './App.css';
-import floretImage from './assets/tilesetOpenGameBackground.png';
+import menuImage from './assets/tilesetOpenGameBackground.png';
 import cristal from "./assets/caveRemasteredV7.png"
+import lavacave from "./assets/lavacave.jpg"
 import End from './router/End';
 import useMaze from "./component/MazeMap"
 import MazePage from './router/MazePage';
+import Win from './router/Win';
+import florestimage from './assets/6271267.jpg'
+import winerimg from './assets/freepik__pixel-art-background-for-a-victory-screen-confetti__20051.png'
 
 
 function App() { 
@@ -15,11 +19,20 @@ function App() {
   const [screen, setScreen] = useState('MENU');
   const [gameResult, setGameResult] = useState(null);
   const [score, setScore] = useState(0);
+  const [devMode, setDevMove] = useState()
+  const [levelCheck , setLevelCheck] = useState(false);
   
   const cellSize = 20;
-   let backgroundImage =floretImage;
-  if(nivel === 2){
-    backgroundImage = cristal
+   let backgroundImage =menuImage;
+  if(levelCheck){
+     backgroundImage = winerimg;
+  }
+  else if(nivel === 2){
+    backgroundImage = cristal;
+  }else if(nivel == 3 ){
+     backgroundImage = lavacave ;
+  }else if((devMode && nivel === 1)||(nivel === 1 && screen === 'MAZE')){
+    backgroundImage = florestimage
   }
 
   return (
@@ -31,7 +44,7 @@ function App() {
         backgroundSize: 'cover',
       }}
     >
-      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} />}
+      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode}/>}
       {screen === 'MAZE' && (
         <div key={mazeKey}>
           <MazePage 
@@ -41,10 +54,12 @@ function App() {
             nivel={nivel}
             setScore={setScore}
             score={score}
+            devMode={devMode}
           />
         </div>
       )}
       {screen === 'END' && <End setScreen={setScreen} gameResult={gameResult} score={score}/>}
+      {screen === 'WINNER' && <Win setScreen={setScreen} gameResult={gameResult} score={score} nivel={nivel} setNivel={setNivel}setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} levelCheck={levelCheck} setLevelCheck={setLevelCheck}/>}
     </div>
   );
 }
