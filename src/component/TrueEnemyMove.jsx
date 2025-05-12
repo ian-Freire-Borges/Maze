@@ -153,11 +153,17 @@ export default function TrueEnemyMove({
 
   useEffect(() => {
     if (!isAutoMoving || exitFound) return;
-
+        let adjustedSpeed;
+        if(enemyId===1){
+        adjustedSpeed = 2;
+      }
+       else if(enemyId===2){
+         adjustedSpeed = 1.5;
+       }
     const moveInterval = setInterval(() => {
       const moved = tryMoveEnemy(enemyPosRef.current);
       if (!moved) backtrack();
-    }, moveSpeed * 2);
+    }, moveSpeed * adjustedSpeed);
 
     return () => clearInterval(moveInterval);
   }, [isAutoMoving, exitFound, moveSpeed]);
