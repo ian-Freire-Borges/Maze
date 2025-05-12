@@ -168,6 +168,7 @@ export default function TrueEnemyMove({
       moveDirection={moveDirection}  
       cellDimensions={cellDimensions}
       maze={maze}
+      enemyId={enemyId}
     />
   );
 }

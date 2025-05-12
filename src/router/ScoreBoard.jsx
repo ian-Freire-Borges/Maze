@@ -22,7 +22,7 @@ const ScoreBoard = ({setScreen}) => {
       <ul className="score-list">
         {scores.map((score) => (
           <li key={score.id}>
-            <span className='score-info'><strong>{score.nick}</strong>: {score.score} pts</span>
+            <span className='score-info'><strong>{score.nick}</strong> - {score.score} pts</span>
             <button
               className="delete-button"
               onClick={() => handleDelete(score.id)}

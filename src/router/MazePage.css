@@ -123,19 +123,19 @@ canvas {
 
 @media (max-width: 1920px) {
   .maze-wrapper {
-    width: 1200px;
-    height: 600px; 
+    width: 1140px;
+    height: 558.63px; 
    
   }
   .container-button {
     gap: 12rem;
   }
   .container-button button {
-    margin-top: 1.2rem;
+    margin-top: 0.6rem;
     
   }
   .speed-text {
-    margin-top: 3.5rem;
+    margin-top: 2.4rem;
     
   }
   

@@ -1,30 +1,37 @@
 import { useEffect, useRef } from 'react';
 import Sketch from 'react-p5';
-import enemySprite from "../assets/Free Chicken Sprites.png";
+import enemySprite1 from "../assets/DinoSprites - vita.png";
+import enemySprite2 from "../assets/DinoSprites - vita1.png"
 
 export default function RenderEnemyMove({
   position,
   moveDirection = "right",
   cellDimensions,
-  maze // Adicionado para o tamanho do canvas
+  maze,// Adicionado para o tamanho do canvas
+  enemyId
 }) {
+  let enemySprite
+  if(enemyId === 1){
+    enemySprite = enemySprite1;
+  }else if(enemyId === 2){
+    enemySprite = enemySprite2;
+  }
   const p5Ref = useRef();
   const spriteSheetRef = useRef();
   const animationFrames = useRef([]);
   const currentFrame = useRef(0);
   const frameCount = useRef(0);
 
-  const totalFrames = 4;
-  const animationSpeed = 0.07;
+  const totalFrames = 10; // Número de frames no sprite sheet
+  const animationSpeed = 0.1;
   const { cellWidth, cellHeight } = cellDimensions;
-  const spriteSize = Math.min(cellWidth, cellHeight) * 1.3; // Tamanho aumentado
+  const spriteSize = Math.min(cellWidth, cellHeight) * 1.3; // Tamanho do sprite ajustado
 
   const preload = (p5) => {
     spriteSheetRef.current = p5.loadImage(enemySprite);
   };
 
   const setup = (p5, canvasParentRef) => {
-    // Canvas do tamanho do labirinto (igual ao que funcionou no player)
     const canvas = p5.createCanvas(
       cellWidth * maze[0].length,
       cellHeight * maze.length
@@ -34,13 +41,13 @@ export default function RenderEnemyMove({
 
     if (spriteSheetRef.current) {
       const frameWidth = spriteSheetRef.current.width / totalFrames;
-      const frameHeight = spriteSheetRef.current.height / 2; // Pega apenas a linha inferior (inimigo)
+      const frameHeight = spriteSheetRef.current.height; // Ajustando para a altura total da imagem
 
       for (let frame = 0; frame < totalFrames; frame++) {
         animationFrames.current.push(
           spriteSheetRef.current.get(
             frame * frameWidth,
-            frameHeight, // Usa apenas a segunda linha (inimigo para direita)
+            0, // Pega da linha 0, já que há apenas uma linha de sprites
             frameWidth,
             frameHeight
           )

@@ -17,6 +17,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
   const [cellDimensions, setCellDimensions] = useState({ cellWidth: 20, cellHeight: 20 });
   const [mazeReady, setMazeReady] = useState(false);
   const mazeRef = useRef(maze);
+  const [dynamicSize, setDynamicSize] = useState(null);
 
   const handleCellDimensionsChange = (newDimensions) => {
     setCellDimensions(newDimensions);
@@ -33,6 +34,20 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
 
     return () => clearTimeout(timer);
   }, []);
+    useEffect(() => {
+    if (mazeWrapperRef.current) {
+      const styles = getComputedStyle(mazeWrapperRef.current);
+      const baseWidth = parseFloat(styles.width);   // pega width do CSS
+  //  const baseHeight = parseFloat(styles.height); // pega height do CSS
+
+
+      setDynamicSize({
+        width: baseWidth ,
+        height: baseWidth  * (49.02 / 100)
+      });
+    }
+  }, [nivel]);
+
   return (
     <>
       
@@ -71,7 +86,11 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
         ><img src={volta} />
         </button>
       </div>
-      <div className="maze-wrapper" ref={mazeWrapperRef}>
+      <div className="maze-wrapper" ref={mazeWrapperRef} style={dynamicSize ? {
+        width: `${dynamicSize.width}px`,
+        height: `${dynamicSize.height}px`
+      } : {}}
+    >
       <MazeRender mazeLayout={maze} wrapperRef={mazeWrapperRef} onCellDimensionsChange={handleCellDimensionsChange} nivel={nivel}/>
       {mazeReady && (
       <TruePlayerMove 
