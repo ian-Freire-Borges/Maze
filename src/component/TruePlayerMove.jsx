@@ -276,6 +276,7 @@ import React, { useState, useEffect, useRef } from 'react';
           isAlert={enemyAlertRef.current}
           isPanic={playerPanic.current}
           cellDimensions={cellDimensions}
+          maze={maze}
         />
         <PlayerInteractiveObject
         maze={maze}

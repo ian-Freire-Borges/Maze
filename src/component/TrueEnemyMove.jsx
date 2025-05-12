@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import RenderEnemyMove from "./RenderEnemyMove";
 
 export default function TrueEnemyMove({ 
-  setMaze, 
+  setMaze,
+  maze, 
   exitFound, 
   moveSpeed, 
   isAutoMoving, 
@@ -166,6 +167,7 @@ export default function TrueEnemyMove({
       position={enemyPosition} 
       moveDirection={moveDirection}  
       cellDimensions={cellDimensions}
+      maze={maze}
     />
   );
 }

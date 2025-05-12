@@ -4,9 +4,9 @@ import enemySprite from "../assets/Free Chicken Sprites.png";
 
 export default function RenderEnemyMove({
   position,
-  cellDimensions,
-  style,
   moveDirection = "right",
+  cellDimensions,
+  maze // Adicionado para o tamanho do canvas
 }) {
   const p5Ref = useRef();
   const spriteSheetRef = useRef();
@@ -16,28 +16,31 @@ export default function RenderEnemyMove({
 
   const totalFrames = 4;
   const animationSpeed = 0.07;
-
   const { cellWidth, cellHeight } = cellDimensions;
-  const spriteSize = Math.min(cellWidth, cellHeight); // O tamanho do sprite será o mesmo que o do player
+  const spriteSize = Math.min(cellWidth, cellHeight) * 1.3; // Tamanho aumentado
 
   const preload = (p5) => {
     spriteSheetRef.current = p5.loadImage(enemySprite);
   };
 
   const setup = (p5, canvasParentRef) => {
-    const canvas = p5.createCanvas(cellWidth, cellHeight).parent(canvasParentRef);
+    // Canvas do tamanho do labirinto (igual ao que funcionou no player)
+    const canvas = p5.createCanvas(
+      cellWidth * maze[0].length,
+      cellHeight * maze.length
+    ).parent(canvasParentRef);
     p5.noStroke();
     p5Ref.current = canvas;
 
     if (spriteSheetRef.current) {
-      const frameWidth = spriteSheetRef.current.width / 4;
-      const frameHeight = spriteSheetRef.current.height / 2;
+      const frameWidth = spriteSheetRef.current.width / totalFrames;
+      const frameHeight = spriteSheetRef.current.height / 2; // Pega apenas a linha inferior (inimigo)
 
       for (let frame = 0; frame < totalFrames; frame++) {
         animationFrames.current.push(
           spriteSheetRef.current.get(
             frame * frameWidth,
-            frameHeight,
+            frameHeight, // Usa apenas a segunda linha (inimigo para direita)
             frameWidth,
             frameHeight
           )
@@ -48,6 +51,9 @@ export default function RenderEnemyMove({
 
   const draw = (p5) => {
     p5.clear();
+    
+    const centerX = position.x * cellWidth + cellWidth / 2;
+    const centerY = position.y * cellHeight + cellHeight / 2;
 
     frameCount.current += animationSpeed;
     currentFrame.current = Math.floor(frameCount.current) % totalFrames;
@@ -55,45 +61,33 @@ export default function RenderEnemyMove({
     const currentImg = animationFrames.current[currentFrame.current];
 
     if (currentImg) {
-      p5.push();
       p5.imageMode(p5.CENTER);
-
-      // Ajusta a direção da imagem se o inimigo estiver indo para a esquerda
+      
+      // Flip horizontal para direção esquerda
       if (moveDirection === "left") {
-        p5.translate(cellWidth, 0);
+        p5.push();
+        p5.translate(centerX, centerY);
         p5.scale(-1, 1);
+        p5.image(currentImg, 0, 0, spriteSize, spriteSize);
+        p5.pop();
+      } else {
+        p5.image(currentImg, centerX, centerY, spriteSize, spriteSize);
       }
-
-      // Desenha o inimigo no centro da célula
-      p5.image(currentImg, cellWidth / 2, cellHeight / 2, spriteSize, spriteSize);
-      p5.pop();
-    } else {
-      p5.fill(255, 0, 0);
-      p5.ellipse(cellWidth / 2, cellHeight / 2, spriteSize);
     }
   };
 
   useEffect(() => {
     p5Ref.current?._p5Instance?.redraw();
-  }, [position, moveDirection, cellDimensions]); // Dependência de `cellDimensions` para redesenhar o inimigo
-
-  // Cálculo da posição do inimigo com base nas dimensões das células
-  const left = position.x * cellWidth + (cellWidth - spriteSize) / 2;
-  const top = position.y * cellHeight + (cellHeight - spriteSize) / 2;
+  }, [position, moveDirection]);
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: `${left}px`,  // Centralizando o inimigo na célula
-        top: `${top}px`,    // Centralizando o inimigo na célula
-        width: `${spriteSize}px`,
-        height: `${spriteSize}px`,
-        pointerEvents: "none",
-        zIndex: 2,
-        ...style,
-      }}
-    >
+    <div style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      pointerEvents: 'none',
+      zIndex: 2
+    }}>
       <Sketch preload={preload} setup={setup} draw={draw} />
     </div>
   );

@@ -1,45 +1,53 @@
-import { useEffect, useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import Sketch from 'react-p5';
 import char from "../assets/Basic Charakter Spritesheet.png";
-import "./Render.css";
 
 export default function RenderPlayerMove({
   position,
   moveDirection = null,
   lastDirection = "down",
-  style,
   isAlert = false,
   isPanic = false,
   cellDimensions,
+  maze
 }) {
-  const p5Ref = useRef();
   const spriteSheetRef = useRef();
   const animationFrames = useRef({ down: [], left: [], right: [], up: [] });
   const currentFrame = useRef(0);
   const frameCount = useRef(0);
+  const canvasRef = useRef();
 
+  // Configurações de animação
   const totalFrames = 4;
   const animationSpeed = 0.1;
-
   const { cellWidth, cellHeight } = cellDimensions;
-  const spriteWidth = cellWidth * 3;  // Aumenta o tamanho do sprite
-  const spriteHeight = cellHeight * 3;
+  
+  // Tamanho do sprite (ajustado para ficar proporcional)
+  const spriteWidth = cellWidth * 3;
+const spriteHeight = cellHeight * 3;
 
   const preload = (p5) => {
     spriteSheetRef.current = p5.loadImage(char);
   };
 
   const setup = (p5, canvasParentRef) => {
-    const canvas = p5.createCanvas(spriteWidth, spriteHeight).parent(canvasParentRef);
+    // Canvas do tamanho do labirinto (igual às moedas)
+    const canvas = p5.createCanvas(
+      cellWidth * maze[0].length,
+      cellHeight * maze.length
+    ).parent(canvasParentRef);
+    
     p5.noStroke();
-    p5Ref.current = canvas;
+    canvasRef.current = canvas;
 
+    // Carrega os frames da spritesheet
     if (spriteSheetRef.current) {
       const frameWidth = spriteSheetRef.current.width / totalFrames;
       const frameHeight = spriteSheetRef.current.height / 4;
 
       const directionsOrder = ["down", "up", "left", "right"];
       directionsOrder.forEach((dir, rowIndex) => {
+        animationFrames.current[dir] = [];
         for (let frame = 0; frame < totalFrames; frame++) {
           animationFrames.current[dir].push(
             spriteSheetRef.current.get(
@@ -56,18 +64,20 @@ export default function RenderPlayerMove({
 
   const draw = (p5) => {
     p5.clear();
+    
+    // Posição centralizada (cálculo idêntico às moedas)
+    const centerX = position.x * cellWidth + cellWidth / 2;
+    const centerY = position.y * cellHeight + cellHeight / 2;
 
-    const centerX = spriteWidth / 2;
-    const centerY = spriteHeight / 2;
-
-    // Lógica de animação do personagem
+    // Lógica de animação
     if (moveDirection) {
       frameCount.current += animationSpeed;
       currentFrame.current = Math.floor(frameCount.current) % totalFrames;
     } else {
-      currentFrame.current = 0;
+      currentFrame.current = 1; // Frame estático quando parado
     }
 
+    // Renderização do sprite
     const directionToShow = moveDirection || lastDirection;
     const currentFrames = animationFrames.current[directionToShow];
 
@@ -80,55 +90,37 @@ export default function RenderPlayerMove({
         spriteWidth,
         spriteHeight
       );
-    } else {
-      p5.fill(0, 255, 0);
-      p5.ellipse(centerX, centerY, spriteWidth);
     }
 
-    // Efeito de alerta (luz amarela)
+    // Efeitos visuais
     if (isAlert || isPanic) {
       p5.push();
       p5.translate(centerX, centerY);
-
+      
       const time = p5.millis() * 0.005;
-
-      // Tamanho da luz - pulsando com o tempo
       const lightSize = Math.sin(time * 2.5) * 8 + 24;
-
-      // Cor da luz
-      const lightColor = isPanic
-        ? [255, 0, 0, 150]  // Vermelho para pânico
-        : [255, 255, 0, 150];  // Amarelo para alerta
-
-      // Desenha a luz ao redor do personagem
+      
       p5.noStroke();
-      p5.fill(...lightColor);
-      p5.ellipse(0, 0, lightSize); // Desenha a luz como um círculo em torno do personagem
+      p5.fill(isPanic ? [255, 0, 0, 150] : [255, 255, 0, 150]);
+      p5.ellipse(0, 0, lightSize);
+      
       p5.pop();
     }
   };
 
+  // Atualização quando as props mudam
   useEffect(() => {
-    p5Ref.current?._p5Instance?.redraw();
+    canvasRef.current?._p5Instance?.redraw();
   }, [position, moveDirection, lastDirection, isAlert, isPanic]);
 
-  // Cálculo da posição do personagem
-  const left = position.x * cellWidth + (cellWidth - spriteWidth) / 2;
-  const top = position.y * cellHeight + (cellHeight - spriteHeight) / 2;
-
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: `${left}px`,
-        top: `${top}px`,
-        width: `${spriteWidth}px`,
-        height: `${spriteHeight}px`,
-        pointerEvents: "none",
-        zIndex: 2,
-        ...style,
-      }}
-    >
+    <div style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      pointerEvents: 'none',
+      zIndex: 2 // Acima do labirinto, abaixo das moedas
+    }}>
       <Sketch preload={preload} setup={setup} draw={draw} />
     </div>
   );
