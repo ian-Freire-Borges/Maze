@@ -102,6 +102,45 @@ canvas {
   
 }
 
+@media (max-width: 2560px) {
+  .maze-wrapper {
+    width: 2100px;
+    height: 1050px; 
+   
+  }
+  .container-button {
+    gap: 12rem;
+  }
+  .container-button button {
+    margin-top: 1.2rem;
+    
+  }
+  .speed-text {
+    margin-top: 3.5rem;
+    
+  }
+}
+
+@media (max-width: 1920px) {
+  .maze-wrapper {
+    width: 1200px;
+    height: 600px; 
+   
+  }
+  .container-button {
+    gap: 12rem;
+  }
+  .container-button button {
+    margin-top: 1.2rem;
+    
+  }
+  .speed-text {
+    margin-top: 3.5rem;
+    
+  }
+  
+}
+
 @media (max-width: 1200px), (max-height: 600px) {
  
   .maze-wrapper {
