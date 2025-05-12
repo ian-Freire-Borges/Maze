@@ -10,6 +10,7 @@ import MazePage from './router/MazePage';
 import Win from './router/Win';
 import florestimage from './assets/6271267.jpg'
 import winerimg from './assets/freepik__pixel-art-background-for-a-victory-screen-confetti__20051.png'
+import ScoreBoard from './router/ScoreBoard';
 
 
 function App() { 
@@ -28,11 +29,17 @@ function App() {
   if(levelCheck){
      backgroundImage = winerimg;
   }
+  else if(screen === 'SCORE'){
+    
+  }
+  else if(!devMode &&  screen === 'MENU'){
+      backgroundImage =menuImage
+  }
   else if(nivel === 2){
     backgroundImage = cristal;
   }else if(nivel == 3 ){
      backgroundImage = lavacave ;
-  }else if((devMode && nivel === 1)||(nivel === 1 && screen === 'MAZE')){
+  }else if((devMode && nivel === 1)||(nivel === 1 && screen != 'MENU')){
     backgroundImage = florestimage
   }
 
@@ -61,6 +68,7 @@ function App() {
       )}
       {screen === 'END' && <End setScreen={setScreen} gameResult={gameResult} score={score}/>}
       {screen === 'WINNER' && <Win setScreen={setScreen} gameResult={gameResult} score={score} nivel={nivel} setNivel={setNivel}setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} levelCheck={levelCheck} setLevelCheck={setLevelCheck}/>}
+      {screen === "SCORE" && <ScoreBoard setScreen={setScreen}/>}
     </div>
   );
 }

@@ -1,0 +1,130 @@
+.scoreboard-wrapper {
+  padding-top: 5vh;
+  padding-bottom: 3vh;
+  display: flex;
+  justify-content: center;
+}
+
+.scoreboard-container {
+  width: 400px;
+  padding: 2rem 1rem;
+  background-color: rgba(0, 0, 50, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 0 10px #00f, 0 0 20px #00f inset;
+  border: 2px solid #00f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: pulseBorder 4s infinite;
+}
+
+@keyframes pulseBorder {
+  0%, 100% {
+    box-shadow: 0 0 10px #00f, 0 0 20px #00f inset;
+  }
+  50% {
+    box-shadow: 0 0 20px #0ff, 0 0 30px #0ff inset;
+  }
+}
+
+.scoreboard-container h2 {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 18px;
+  color: #0ff;
+  text-shadow: 2px 2px #000;
+  margin-bottom: 20px;
+  animation: pulseTitle 2s infinite;
+}
+
+@keyframes pulseTitle {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 2px 2px 0px #000;
+  }
+  50% {
+    transform: scale(1.1);
+    text-shadow: 4px 4px 0px #000;
+  }
+}
+
+.score-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.score-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 8px 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 0 #000;
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  border: 1px solid #0ff;
+}
+
+.score-info {
+  text-align: left;
+  flex-grow: 1;
+  min-width: 200px;
+  animation: pulseTitle 2s infinite;
+}
+
+.delete-button {
+  font-family: 'Press Start 2P', cursive;
+  background-color: #f00;
+  color: white;
+  border: 2px solid #fff;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 8px;
+  transition: all 0.2s;
+}
+
+.delete-button:hover {
+  background-color: #c00;
+  transform: scale(1.1);
+  box-shadow: 2px 2px #000;
+}
+
+.back-button button {
+  margin-top: 1rem;
+  background: linear-gradient(to right, #00d2ff, #3a7bd5);
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 #000;
+  transition: all 0.2s ease-in-out;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.back-button button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(to right, #ff4141, #ff4b2b);
+}
+
+@media (max-width: 450px) {
+  .scoreboard-container {
+    width: 90%;
+  }
+  .score-list li {
+    font-size: 9px;
+  }
+  .delete-button span {
+    display: none;
+  }
+  .delete-button {
+    transform: translateX(-18px);
+  }
+}

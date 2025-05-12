@@ -67,7 +67,9 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
       </div>
           )}
       <div className='scoreBoard-container'>
-          <button>ScoreBoard</button>
+          <button  onClick={() => {
+          setScreen("SCORE");
+        }}>ScoreBoard</button>
       </div>
     </div>
   );
