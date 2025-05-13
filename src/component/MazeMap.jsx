@@ -2,11 +2,12 @@ import { useState } from 'react';
 import mapaMobileLv1 from "../../public/Mobile1.json"  // 17 x 33
 import mapaMobileLv2 from "../../public/Mobile2.json"  // 23 x 45
 import mapaMobileLv3 from "../../public/Mobile3.json"  // 27 x 51
-import matrizes1 from '../../public/mapaNv1.json' // 35 x 19
-import matrizes2 from '../../public/mapaNv2.json';  // 45 x 25
-import matrizes3 from '../../public/mapaNv3.json';  // 55 x 29
-import matrizes4 from "../../public/mapaNv4.json";
-import demo from '../../public/mapaForDemo.json';   // 63 x 31
+import mapaMobileLv4 from "../../public/Mobile4.json"  // 31 x 57
+import matrizes1 from '../../public/mapaNv1.json' // 47 x 23 0,4893617021276596
+import matrizes2 from '../../public/mapaNv2.json';  // 51 x 25 0,4901960784313725
+import matrizes3 from '../../public/mapaNv3.json';  // 59 x 29 0,4915254237288136
+import matrizes4 from "../../public/mapaNv4.json";   // 63 x 31 0,4920634920634921
+import demo from '../../public/mapaForDemo.json';   // 63 x 31 0,4920634920634921
 
 export default function useMaze(nivel) {
   const escolherMatrizes = () => {
@@ -15,8 +16,10 @@ export default function useMaze(nivel) {
       return mapaMobileLv1;
     } else if (window.innerWidth <= 450 && nivel === 2) {
       return mapaMobileLv2;
-    } else{
+    } else if (window.innerWidth <= 450 && nivel === 3) {
       return mapaMobileLv3;
+    } else{
+      return mapaMobileLv4;
     }
     } else {
       if(nivel === 1){
