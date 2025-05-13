@@ -31,6 +31,9 @@ export default function RenderCoins({
       case 3:
         mutiCoin = 8;
         break;
+      case 4:
+        mutiCoin = 10;
+        break;
       default:
         mutiCoin = 4;
         break;
@@ -65,6 +68,9 @@ export default function RenderCoins({
         break;
       case 3:
         mutiplier = 2;
+        break;
+      case 4:
+        mutiplier = 2.5;
         break;
       default:
         mutiplier = 1;

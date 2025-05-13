@@ -11,6 +11,7 @@ import Win from './router/Win';
 import florestimage from './assets/6271267.jpg'
 import winerimg from './assets/freepik__pixel-art-background-for-a-victory-screen-confetti__20051.png'
 import ScoreBoard from './router/ScoreBoard';
+import iceimg from './assets/5.png'
 
 
 function App() { 
@@ -30,15 +31,17 @@ function App() {
      backgroundImage = winerimg;
   }
   else if(screen === 'SCORE'){
-    
+    backgroundImage=menuImage
   }
   else if(!devMode &&  screen === 'MENU'){
       backgroundImage =menuImage
   }
   else if(nivel === 2){
     backgroundImage = cristal;
-  }else if(nivel == 3 ){
+  }else if(nivel === 3 ){
      backgroundImage = lavacave ;
+  }else if(nivel === 4 ){
+    backgroundImage = iceimg
   }else if((devMode && nivel === 1)||(nivel === 1 && screen != 'MENU')){
     backgroundImage = florestimage
   }

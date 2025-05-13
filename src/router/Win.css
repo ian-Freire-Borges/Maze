@@ -45,8 +45,8 @@ h1{
   background: linear-gradient(to right, #ff4141, #ff4b2b);
 }
 .Win-container {
-    width: 400px; /* menos largo */
-    height: 300px; /* menos alto */
+    width: 400px; 
+    height: 350px; 
     margin: auto;
     margin-top: 10vh;
     display: flex;

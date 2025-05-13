@@ -5,6 +5,7 @@ import mapaMobileLv3 from "../../public/Mobile3.json"  // 27 x 51
 import matrizes1 from '../../public/mapaNv1.json' // 35 x 19
 import matrizes2 from '../../public/mapaNv2.json';  // 45 x 25
 import matrizes3 from '../../public/mapaNv3.json';  // 55 x 29
+import matrizes4 from "../../public/mapaNv4.json";
 import demo from '../../public/mapaForDemo.json';   // 63 x 31
 
 export default function useMaze(nivel) {
@@ -22,8 +23,10 @@ export default function useMaze(nivel) {
         return matrizes1;
       } else if(nivel === 2){
         return matrizes2;
-      } else if (nivel ===3){
+      } else if (nivel === 3){
         return matrizes3;
+      }else if (nivel === 4){
+        return matrizes4
       }else{
         return demo
       }

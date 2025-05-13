@@ -24,6 +24,10 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
       return <h2 className="nivel-titulo">Crystal Cave</h2>;
     case 3:
       return <h2 className="nivel-titulo">Volcano Bowels</h2>;
+    case 4:
+      return <h2 className="nivel-titulo">Perma Frost</h2>;
+    case 0:
+      return <h2 className="nivel-titulo">Demo</h2>;
    
   }
 };
@@ -55,6 +59,7 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
           <option value={1}>Enchanted Florest</option>
           <option value={2}>Crystal Cave</option> 
           <option value={3}>Volcano Bowels</option>
+          <option value={4}>Perma Frost</option>
           {window.innerWidth > 450 &&(
           <option value={0}>Demo</option>
         )}

@@ -19,6 +19,15 @@ import dungeoflor1 from "../assets/DungeonTile00.png";
 import dungeoflor2 from "../assets/DungeonTile01.png";
 import dungeoflor3 from "../assets/DungeonTile02.png";
 import dungeoflor4 from "../assets/DungeonTile04.png";
+import nv4tile from "../assets/nivel4tile.png";
+import nv4tile2 from "../assets/nivel4tile2.png"
+import nv4wall from "../assets/nivel4tileWall.png";
+import nv4tileobjct from "../assets/nivel4tileobject.png"
+import nv4wallobjct1 from "../assets/wallobject1.png";
+import nv4wallobjct2 from "../assets/wallobject2.png";
+import nv4wallobjct3 from "../assets/wallobject3.png";
+import nv4wallobjct4 from "../assets/wallobject4.png";
+import nv4wallobjct5 from "../assets/wallobject5.png";
 
 export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsChange, nivel }) {
   // Refs
@@ -39,7 +48,7 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
     object2: useRef(),
     object3: useRef(),
     object4: useRef(),
-    object5: useRef()
+    object5: useRef(),
   };
   
   const doorRef = useRef();
@@ -47,10 +56,10 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
   const pathMapRef = useRef([]);
   const overlayMapRef = useRef([]);
   const cellSizeRef = useRef(20);
+  const snowParticlesRef = useRef([]);
   const [canvasKey, setCanvasKey] = useState(0);
   const [wrapperReady, setWrapperReady] = useState(false);
 
- 
   const getAssetsForLevel = () => {
     switch(nivel) {
       case 2: 
@@ -67,6 +76,13 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
           objects: [],
           hasOverlayObjects: false
         };
+      case 4: 
+        return {
+          walls: [nv4wall],
+          floors: [nv4tile, nv4tile2, nv4tile],
+          objects: [nv4wallobjct1, nv4wallobjct2, nv4wallobjct3, nv4wallobjct4, nv4wallobjct5],
+          hasOverlayObjects: true
+        };
       default: 
         return {
           walls: [florestwall],
@@ -79,7 +95,6 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
 
   const assets = getAssetsForLevel();
 
- 
   useEffect(() => {
     if (!wrapperRef?.current) return;
 
@@ -97,7 +112,6 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
     return () => observer.disconnect();
   }, [wrapperRef]);
 
- 
   const preload = (p5) => {
     assets.walls.forEach((wall, index) => {
       wallRefs[`wall${index+1}`].current = p5.loadImage(wall);
@@ -113,7 +127,6 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
     });
   };
 
-  
   const setup = (p5, canvasParentRef) => {
     if (!wrapperReady || !wrapperRef?.current) return;
 
@@ -129,10 +142,22 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
 
     p5.createCanvas(cellSize * cols, cellSize * rows).parent(canvasParentRef);
 
-   
     wallMapRef.current = Array(rows).fill().map(() => Array(cols).fill(null));
     pathMapRef.current = Array(rows).fill().map(() => Array(cols).fill(null));
     overlayMapRef.current = Array(rows).fill().map(() => Array(cols).fill(null));
+
+    // Inicializa partículas de neve para o nível 4
+    if (nivel === 4) {
+      snowParticlesRef.current = Array(100).fill().map(() => ({
+        x: Math.random() * p5.width,
+        y: Math.random() * -p5.height, // Começa acima da tela
+        size: Math.random() * 4 + 2,
+        speed: Math.random() * 1 + 0.5,
+        sway: Math.random() * 0.5 - 0.25,
+        swaySpeed: Math.random() * 0.02 + 0.01,
+        alpha: Math.random() * 100 + 150
+      }));
+    }
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
@@ -142,21 +167,19 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
           wallMapRef.current[row][col] = wallRefs.wall1.current;
           
           if (nivel === 3) {
-            
             if (Math.random() < 0.2) {
               overlayMapRef.current[row][col] = {
                 nextSplash: Math.floor(Math.random() * 30) + 10, 
                 particles: []
               };
             } else {
-              
               overlayMapRef.current[row][col] = {
                 nextSplash: Math.floor(Math.random() * 300) + 180, 
                 particles: []
               };
             }
           } else if (assets.hasOverlayObjects) {
-            if (nivel === 2) {
+            if (nivel === 2 || nivel === 4) {
               const random = Math.random();
               let img;
               if (random <= 0.2) img = objectRefs.object1.current;
@@ -189,7 +212,33 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
     p5.frameRate(30);
   };
 
-  
+  const drawSnow = (p5) => {
+    p5.push();
+    p5.noStroke();
+    
+    snowParticlesRef.current.forEach(particle => {
+      // Atualiza posição da partícula
+      particle.y += particle.speed;
+      particle.x += particle.sway * Math.sin(p5.frameCount * particle.swaySpeed);
+      
+      // Se a partícula sair da tela, reinicia no topo
+      if (particle.y > p5.height) {
+        particle.y = Math.random() * -50;
+        particle.x = Math.random() * p5.width;
+      }
+      
+      // Desenha a partícula de neve
+      p5.fill(255, 255, 255, particle.alpha);
+      p5.ellipse(particle.x, particle.y, particle.size);
+      
+      // Adiciona um pequeno brilho
+      p5.fill(255, 255, 255, particle.alpha * 0.3);
+      p5.ellipse(particle.x, particle.y, particle.size * 1.5);
+    });
+    
+    p5.pop();
+  };
+
   const drawCrystalEffect = (p5, x, y, cellSize, overlay) => {
     const pulse = Math.abs(Math.sin(p5.frameCount * 0.05 + overlay.pulseOffset));
     const pulseThreshold = 0.4;
@@ -209,17 +258,12 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
     }
   };
 
-  
   const drawLavaSplash = (p5, x, y, cellSize, overlayData) => {
-    
     p5.image(wallRefs.wall1.current, x, y, cellSize, cellSize);
 
-    
     if (p5.frameCount > overlayData.nextSplash) {
-    
       overlayData.nextSplash = p5.frameCount + 450 + Math.random() * 450;
       
-    
       for (let i = 0; i < 1 + Math.floor(Math.random() * 2); i++) {
         overlayData.particles.push({
           x: x + cellSize/2 + (Math.random() - 0.5) * cellSize * 0.3,
@@ -233,7 +277,6 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
       }
     }
 
-   
     p5.blendMode(p5.ADD);
     overlayData.particles.forEach(p => {
       p.y += p.speedY;
@@ -246,15 +289,14 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
     });
     p5.blendMode(p5.BLEND);
 
-    
     overlayData.particles = overlayData.particles.filter(p => p.life > 0);
   };
 
-  
   const draw = (p5) => {
     if (!wrapperReady) return;
     const cellSize = cellSizeRef.current;
 
+    // Desenha o labirinto primeiro
     for (let row = 0; row < mazeLayout.length; row++) {
       for (let col = 0; col < mazeLayout[0].length; col++) {
         const x = col * cellSize;
@@ -267,22 +309,27 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
           } else {
             p5.image(wallMapRef.current[row][col], x, y, cellSize, cellSize);
             if (overlayMapRef.current[row][col] && assets.hasOverlayObjects) {
-              if (nivel === 2) {
+              if (nivel === 2 || nivel === 4) {
                 p5.image(overlayMapRef.current[row][col].image, x, y, cellSize, cellSize);
-                drawCrystalEffect(p5, x, y, cellSize, overlayMapRef.current[row][col]);
+                if (nivel === 2) drawCrystalEffect(p5, x, y, cellSize, overlayMapRef.current[row][col]);
               } else {
                 p5.image(overlayMapRef.current[row][col], x, y, cellSize, cellSize);
               }
             }
           }
         } 
-        else if ([0, 2, 4,5].includes(val)) {
+        else if ([0, 2, 4, 5].includes(val)) {
           p5.image(pathMapRef.current[row][col], x, y, cellSize, cellSize);
         } 
         else if (val === 3) {
           p5.image(doorRef.current, x, y, cellSize, cellSize);
         }
       }
+    }
+
+    // Desenha a neve por cima de tudo no nível 4
+    if (nivel === 4) {
+      drawSnow(p5);
     }
   };
 
