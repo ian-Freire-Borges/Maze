@@ -5,7 +5,7 @@ import mapaMobileLv3 from "../../public/Mobile3.json"  // 24 x 48
 import matrizes1 from '../../public/mapaNv1.json' // 35 x 19
 import matrizes2 from '../../public/mapaNv2.json';  // 45 x 25
 import matrizes3 from '../../public/mapaNv3.json';  // 55 x 29
-import demo from '../../public/mapaForDemo.json';   // 35 x 19
+import demo from '../../public/mapaForDemo.json';   // 63 x 31
 
 export default function useMaze(nivel) {
   const escolherMatrizes = () => {

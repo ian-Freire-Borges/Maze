@@ -123,8 +123,8 @@ canvas {
 
 @media (max-width: 1920px) {
   .maze-wrapper {
-    width: 1140px;
-    height: 558.63px; 
+    width: 1000px;
+
    
   }
   .container-button {
@@ -146,7 +146,6 @@ canvas {
   .maze-wrapper {
     
     width: 800px;
-    height: 400px; 
    
   }
   .container-button button {
@@ -162,7 +161,7 @@ canvas {
 @media (max-width: 900px), (max-height: 500px) {
   .maze-wrapper {
     width: 652px;
-    height: 326px;
+
    
   }
 
@@ -182,7 +181,7 @@ canvas {
 @media (max-width: 600px), (max-height: 450px) {
   .maze-wrapper {
     width: 420px;
-    height: 210px;
+
     
    
   }

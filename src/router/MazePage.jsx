@@ -35,6 +35,16 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
     return () => clearTimeout(timer);
   }, []);
     useEffect(() => {
+      let divider;
+      if(nivel === 1 ){
+        divider = 54.2857;
+      }else if(nivel === 2){
+        divider = 55.5556;
+      }else if(nivel === 3) {
+        divider = 52.7273;
+      }else{
+        divider = 49.2063;
+      }
     if (mazeWrapperRef.current) {
       const styles = getComputedStyle(mazeWrapperRef.current);
       const baseWidth = parseFloat(styles.width);   // pega width do CSS
@@ -43,7 +53,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
 
       setDynamicSize({
         width: baseWidth ,
-        height: baseWidth  * (49.02 / 100)
+        height: baseWidth  * (divider / 100)
       });
     }
   }, [nivel]);
