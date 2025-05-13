@@ -29,7 +29,7 @@ const Win = ({ setScreen, gameResult, score, nivel, setNivel, setMazeKey, gerarN
 
   return (
     <div className="Win-container">
-      <h1>Winner Chicken Dinner</h1>
+      <h1>Winner Winner Chicken Dinner</h1>
       <div className='Win'>
         <button onClick={WinNext}>Next Level</button>
       </div>

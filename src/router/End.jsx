@@ -1,79 +1,94 @@
 import React, { useState } from 'react';
-import "./End.css";
+import './End.css';
+import api from '../api';
 
-function End({ setScreen, gameResult ,score }) {
+function End({ setScreen, score }) {
   const [showSaveForm, setShowSaveForm] = useState(false);
   const [nick, setNick] = useState('');
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSaveScore = () => {
-   
- 
+  const handleSaveScore = async () => {
+    if (nick.length < 3 || nick.length > 10) {
+      setError('Nick deve ter entre 3 e 10 caracteres.');
+      return;
+    }
 
-    // Criar objeto de score
-    const scoreData = {
-      id: Date.now(), // ID único baseado no timestamp
-      nick,
-      score,
-      date: new Date().toISOString()
-    };
-
-    // Obter scores existentes ou inicializar array vazio
-    const existingScores = JSON.parse(localStorage.getItem('gameScores')) || [];
-    
-    // Adicionar novo score
-    const updatedScores = [...existingScores, scoreData];
-    
-    // Ordenar por score (maior primeiro) 
-    const topScores = updatedScores
-      .sort((a, b) => b.score - a.score)
-
-    // Salvar no localStorage
-    localStorage.setItem('gameScores', JSON.stringify(topScores));
-    
-    // Resetar estado
-    setShowSaveForm(false);
-    setNick('');
+    setIsSaving(true);
     setError('');
+
+    try {
+      const numericScore = Number(score);
+      if (isNaN(numericScore)) {
+        throw new Error('Score inválido');
+      }
+
+      const response = await api.post('/scoreTop', {
+        name: nick,
+        score: numericScore,
+      });
+
+      if (response.data && response.data.id) {
+        setSaved(true);
+        setShowSaveForm(false);
+        setNick('');
+      } else {
+        throw new Error('Resposta inválida do servidor');
+      }
+    } catch (err) {
+      console.error('Erro ao salvar score:', err);
+      setError(err.response?.data?.error || 'Erro ao salvar score. Tente novamente mais tarde.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
     <div className="end-container">
       <h1 className="end-title">You Lose!</h1>
       <button onClick={() => setScreen("MENU")}>Voltar para o menu</button>
-        {!saved &&(
+
+      {!saved && (
         <div className='save-container'>
-             {!showSaveForm ? (
-               <button onClick={() => setShowSaveForm(true)}>
-                Save Score
-               </button>
-             ) : (
-              <div className='input-container'>
-               <input
-                  type="text"
-                  value={nick}
-                  onChange={(e) => setNick(e.target.value)}
-                  placeholder="Seu nick (3-10 Caracteris)"
-                  maxLength={10}
+          {!showSaveForm ? (
+            <button onClick={() => setShowSaveForm(true)}>Save Score</button>
+          ) : (
+            <div className='input-container'>
+              <input
+                type="text"
+                value={nick}
+                onChange={(e) => setNick(e.target.value)}
+                placeholder="Seu nick (3-10 caracteres)"
+                maxLength={10}
               />
               {error && <p className="error-message">{error}</p>}
               <div className="button-group">
                 <button
+                  onClick={handleSaveScore}
+                  disabled={nick.length < 3 || isSaving}
+                >
+                  {isSaving ? 'Salvando...' : 'Confirmar'}
+                </button>
+                <button 
                   onClick={() => {
-                    handleSaveScore();
-                    setSaved(true);
+                    setShowSaveForm(false);
+                    setError('');
                   }}
-                  disabled={nick.length < 3}
-                >Confirm</button>
-                <button onClick={() => setShowSaveForm(false)}>Cancel</button>
+                  disabled={isSaving}
+                >
+                  Cancelar
+                </button>
               </div>
-               </div>
-             )}
+            </div>
+          )}
         </div>
-        )}
+      )}
+
+      {saved && <p className="success-message">Score salvo com sucesso!</p>}
+
       <div className='score-container'>
-      <h2>Score:{score}</h2>
+        <h2>Score: {score}</h2>
       </div>
     </div>
   );

@@ -1,44 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import "./ScoreBoard.css"
+import './ScoreBoard.css';
+import api from '../api';
 
-const ScoreBoard = ({setScreen}) => {
+const ScoreBoard = ({ setScreen }) => {
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    const storedScores = JSON.parse(localStorage.getItem('gameScores')) || [];
-    setScores(storedScores);
-  }, []);
+    async function fetchScores() {
+      try {
+        const response = await api.get('/scoreTop');
+        setScores(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar scores:', error);
+      }
+    }
 
- const handleDelete = (id) => {
-    const updatedScores = scores.filter(score => score.id !== id);
-    setScores(updatedScores);
-    localStorage.setItem('gameScores', JSON.stringify(updatedScores));
-  };
+    fetchScores();
+  }, []);
 
   return (
     <div className="scoreboard-wrapper">
-    <div className="scoreboard-container">
-      <h2>Top Scores</h2>
-      <ul className="score-list">
-        {scores.map((score) => (
-          <li key={score.id}>
-            <span className='score-info'><strong>{score.nick}</strong> - {score.score} pts</span>
-            <button
-              className="delete-button"
-              onClick={() => handleDelete(score.id)}
-              title="Deletar"
-            >
-              <span className="delete-text">Delete</span> ❌
-            </button>
-          </li>
-        ))}
-      </ul>
-      <div className='back-button'>
-        <button onClick={()=>setScreen("MENU")}>Voltar</button>
+      <div className="scoreboard-container">
+        <h2>Top 10 Scores</h2>
+        <ul className="score-list">
+          {scores.map((score) => (
+            <li key={score.id}>
+              <span className='score-info'>
+                <strong>{score.name}</strong> - {score.score} pts
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div className='back-button'>
+          <button onClick={() => setScreen("MENU")}>Voltar</button>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
 
-export default ScoreBoard
+export default ScoreBoard;
