@@ -134,6 +134,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
         cellDimensions={cellDimensions}
         setScore={setScore}
         mazeRef={mazeRef}
+        nivel={nivel}
       />
       )}
 

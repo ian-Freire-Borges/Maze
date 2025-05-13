@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
   import PlayerInteractiveObject from './PlayerInteractiveObject';
 
 
-  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef}) {
+  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel}) {
     const [playerPosition, setPlayerPosition] = useState([], []);
     const [moveDirection, setMoveDirection] = useState(null);
     const [lastValidDirection, setLastValidDirection] = useState("down");
@@ -283,6 +283,7 @@ import React, { useState, useEffect, useRef } from 'react';
         playerPosition={playerPosition}
         cellDimensions={cellDimensions}
         setScore={setScore}
+        nivel={nivel}
         />
       </>
     );

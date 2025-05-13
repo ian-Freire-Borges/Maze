@@ -9,6 +9,7 @@ export default function RenderCoins({
   playerPosition,
   cellDimensions,
   setScore,
+  nivel
 }) {
   const spriteSheetRef = useRef(null);
   const animationFrames = useRef([]);
@@ -19,6 +20,21 @@ export default function RenderCoins({
 
   const { cellWidth, cellHeight } = cellDimensions;
   const spriteSize = Math.min(cellWidth, cellHeight) * 1.1;
+    let mutiCoin;
+      switch (nivel) {
+      case 1:
+        mutiCoin = 4;
+        break;
+      case 2:
+        mutiCoin = 6;
+        break;
+      case 3:
+        mutiCoin = 8;
+        break;
+      default:
+        mutiCoin = 4;
+        break;
+    }
 
   if (itemPositionsRef.current === null) {
     const positions = [];
@@ -30,7 +46,7 @@ export default function RenderCoins({
       }
     }
 
-    for (let i = 0; i < 4 && emptyCells.length > 0; i++) {
+    for (let i = 0; i < mutiCoin  && emptyCells.length > 0; i++) {
       const index = Math.floor(Math.random() * emptyCells.length);
       positions.push(emptyCells.splice(index, 1)[0]);
     }
@@ -39,6 +55,21 @@ export default function RenderCoins({
   }
 
   useEffect(() => {
+    let mutiplier;
+      switch (nivel) {
+      case 1:
+        mutiplier = 1;
+        break;
+      case 2:
+        mutiplier = 1.5;
+        break;
+      case 3:
+        mutiplier = 2;
+        break;
+      default:
+        mutiplier = 1;
+        break;
+    }
     const playerKey = `${playerPosition.x},${playerPosition.y}`;
     const index = itemPositionsRef.current.findIndex(
       (pos) => `${pos.x},${pos.y}` === playerKey
@@ -46,7 +77,7 @@ export default function RenderCoins({
 
     if (index !== -1) {
       itemPositionsRef.current.splice(index, 1);
-      setScore((prev) => prev + 20);
+      setScore((prev) => prev + (20 * mutiplier));
     }
   }, [playerPosition, setScore]);
 
