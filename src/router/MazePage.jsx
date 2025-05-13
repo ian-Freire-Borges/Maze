@@ -36,6 +36,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
   }, []);
     useEffect(() => {
       let divider;
+      if(window.innerWidth > 450){
       if(nivel === 1 ){
         divider = 54.2857;
       }else if(nivel === 2){
@@ -56,6 +57,24 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult,nivel,se
         height: baseWidth  * (divider / 100)
       });
     }
+  }else{
+    if(nivel === 1 ){
+        divider = 51.5151;
+      }else if(nivel === 2){
+        divider = 51.1111;
+      }else if(nivel === 3) {
+        divider = 52.9411;
+       }
+     if (mazeWrapperRef.current) {
+      const styles = getComputedStyle(mazeWrapperRef.current);
+      const baseHeight = parseFloat(styles.height);
+
+        setDynamicSize({
+        height: baseHeight,
+        width: baseHeight* (divider / 100)
+      });
+     }
+  }
   }, [nivel]);
 
   return (
