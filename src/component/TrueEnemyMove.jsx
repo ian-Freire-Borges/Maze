@@ -202,10 +202,10 @@ useEffect(() => {
     if (!isAutoMoving || exitFound) return;
         let adjustedSpeed;
         if(enemyId===1){
-        adjustedSpeed = 2;
+        adjustedSpeed = 3;
       }
        else if(enemyId===2){
-         adjustedSpeed = 3;
+         adjustedSpeed = 3.;
          if(playerAlert){
           adjustedSpeed = 0.8
          }
