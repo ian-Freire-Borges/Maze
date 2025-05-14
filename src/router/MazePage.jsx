@@ -34,42 +34,41 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
     return () => clearTimeout(timer);
   }, []);
 
+    useEffect(() => {
+    const timer = setTimeout(() => setMazeReady(true), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Calcula tamanho ideal com base em maze n x n
   useEffect(() => {
     const updateSize = () => {
-      let divider;
-      let width = window.innerWidth * 0.76;
-      let height = window.innerHeight;
-
-      if (window.innerWidth > 450) {
-        if (nivel === 1) divider = 48.93617021276596;
-        else if (nivel === 2) divider = 49.01960784313725;
-        else if (nivel === 3) divider = 49.15254237288136;
-        else divider = 49.20634920634921;
-
-        setDynamicSize({
-          width: width,
-          height: width * (divider / 100),
-        });
-      } else {
-        height = window.innerHeight * 0.9;
-        if (nivel === 1) divider = 51.5151;
-        else if (nivel === 2) divider = 51.;
-        else if (nivel === 3) divider = 52.9411;
-        else {
-                divider = 54.3859649122807
-        }
-
-        setDynamicSize({
-          height: height,
-          width: height * (divider / 100),
-        });
+      const rows = maze.length;
+      const cols = maze[0]?.length || 1;
+      let maxHeight;
+      let maxWidth ;
+      if(window.innerWidth <= 450 ){
+          maxHeight = window.innerHeight * 0.9;
+          maxWidth = window.innerWidth * 0.9;
+      }else{
+      maxWidth = window.innerWidth * 0.7;
+      maxHeight = window.innerHeight * 0.85;
       }
+
+      const cellWidth = Math.floor(maxWidth / cols);
+      const cellHeight = Math.floor(maxHeight / rows);
+      const optimalCellSize = Math.min(cellWidth, cellHeight);
+
+      const finalWidth = optimalCellSize * cols;
+      const finalHeight = optimalCellSize * rows;
+
+      setDynamicSize({ width: finalWidth, height: finalHeight });
+      setCellDimensions({ cellWidth: optimalCellSize, cellHeight: optimalCellSize });
     };
 
-    updateSize(); // chama ao montar
+    updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
-  }, [nivel]);
+  }, [maze]);
 
   return (
     <>
