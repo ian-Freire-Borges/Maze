@@ -44,6 +44,22 @@ body {
     animation: pulseTitle 2s infinite;
     margin-bottom: 20px;
   }
+
+  .error-message {
+  color: #ff4b2b;
+  font-size: 10px;
+  margin-top: 8px;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.success-message {
+  color: #00ff88;
+  font-size: 12px;
+  margin-top: 16px;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px #000;
+}
   
 .end-container button {
     background: linear-gradient(to right, #00d2ff, #3a7bd5);
