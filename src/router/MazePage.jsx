@@ -14,14 +14,10 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   const [moveSpeed, setMoveSpeed] = useState(300);
   const [isAutoMoving, setIsAutoMoving] = useState(false);
   const mazeWrapperRef = useRef();
-  const [cellDimensions, setCellDimensions] = useState({ cellWidth: 20, cellHeight: 20 });
+  const [cellDimensions, setCellDimensions] = useState({ });
   const [mazeReady, setMazeReady] = useState(false);
   const mazeRef = useRef(maze);
   const [dynamicSize, setDynamicSize] = useState(null);
-
-  const handleCellDimensionsChange = (newDimensions) => {
-    setCellDimensions(newDimensions);
-  };
 
   useEffect(() => {
     mazeRef.current = maze;
@@ -30,14 +26,11 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   useEffect(() => {
     const timer = setTimeout(() => {
       setMazeReady(true);
-    }, 500);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
-    useEffect(() => {
-    const timer = setTimeout(() => setMazeReady(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
+  
 
   // Calcula tamanho ideal com base em maze n x n
   useEffect(() => {
@@ -50,8 +43,8 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
           maxHeight = window.innerHeight * 0.9;
           maxWidth = window.innerWidth * 0.9;
       }else{
-      maxWidth = window.innerWidth * 0.7;
-      maxHeight = window.innerHeight * 0.85;
+      maxWidth = window.innerWidth * 1;
+      maxHeight = window.innerHeight * .64;
       }
 
       const cellWidth = Math.floor(maxWidth / cols);
@@ -116,7 +109,6 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
         <MazeRender
           mazeLayout={maze}
           wrapperRef={mazeWrapperRef}
-          onCellDimensionsChange={handleCellDimensionsChange}
           nivel={nivel}
         />
 

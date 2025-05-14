@@ -29,7 +29,7 @@ import nv4wallobjct3 from "../assets/wallobject3.png";
 import nv4wallobjct4 from "../assets/wallobject4.png";
 import nv4wallobjct5 from "../assets/wallobject5.png";
 
-export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsChange, nivel }) {
+export default function MazeRender({ mazeLayout, wrapperRef,  nivel }) {
   // Refs
   const wallRefs = {
     wall1: useRef(),
@@ -138,7 +138,7 @@ export default function MazeRender({ mazeLayout, wrapperRef, onCellDimensionsCha
     ));
 
     cellSizeRef.current = cellSize;
-    onCellDimensionsChange?.({ cellWidth: cellSize, cellHeight: cellSize });
+    
 
     p5.createCanvas(cellSize * cols, cellSize * rows).parent(canvasParentRef);
 

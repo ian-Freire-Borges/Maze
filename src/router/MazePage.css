@@ -1,9 +1,7 @@
 .maze-wrapper {
-  margin-top: 4rem;
   border-radius: 20px;
   box-shadow: 0 0 10px #000;
   display: flex;
-  justify-content: center;
   align-items: center;
   overflow: hidden;
   position: relative;
@@ -11,12 +9,6 @@
   
 }
 
-canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: fill;
-}
 
 /* Button Container */
 .container-button {

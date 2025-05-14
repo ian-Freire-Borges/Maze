@@ -207,7 +207,7 @@ useEffect(() => {
        else if(enemyId===2){
          adjustedSpeed = 3.;
          if(playerAlert){
-          adjustedSpeed = 0.8
+          adjustedSpeed = 1
          }
        }
     const moveInterval = setInterval(() => {
