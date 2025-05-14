@@ -1,34 +1,48 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Sketch from 'react-p5';
 import enemySprite1 from "../assets/DinoSprites - vita.png";
-import enemySprite2 from "../assets/DinoSprites - vita1.png"
+import enemySprite2 from "../assets/DinoSprites - vita1.png";
+import enemySprite2Run from "../assets/DinoSprites 2run.png";
 
 export default function RenderEnemyMove({
   position,
   moveDirection = "right",
   cellDimensions,
-  maze,// Adicionado para o tamanho do canvas
-  enemyId
+  maze,
+  enemyId,
+  isAlert
 }) {
-  let enemySprite
-  if(enemyId === 1){
-    enemySprite = enemySprite1;
-  }else if(enemyId === 2){
-    enemySprite = enemySprite2;
-  }
+  const [spriteKey, setSpriteKey] = useState(0);
+  const [currentSprite, setCurrentSprite] = useState(() => {
+    return enemyId === 1 ? enemySprite1 : enemySprite2;
+  });
+  const [totalFrames, setTotalFrames] = useState(10);
+
   const p5Ref = useRef();
   const spriteSheetRef = useRef();
   const animationFrames = useRef([]);
   const currentFrame = useRef(0);
   const frameCount = useRef(0);
 
-  const totalFrames = 10; // Número de frames no sprite sheet
-  const animationSpeed = 0.1;
   const { cellWidth, cellHeight } = cellDimensions;
-  const spriteSize = Math.min(cellWidth, cellHeight) * 1.3; // Tamanho do sprite ajustado
+  const spriteSize = Math.min(cellWidth, cellHeight) * 1.3;
+
+  // Atualiza apenas para o inimigo 2 quando o alerta muda
+  useEffect(() => {
+    if (enemyId === 2) {
+      const newSprite = isAlert ? enemySprite2Run : enemySprite2;
+      const newFrames = isAlert ? 7 : 10;
+      
+      if (newSprite !== currentSprite || newFrames !== totalFrames) {
+        setCurrentSprite(newSprite);
+        setTotalFrames(newFrames);
+        setSpriteKey(prev => prev + 1);
+      }
+    }
+  }, [isAlert, enemyId, currentSprite, totalFrames]);
 
   const preload = (p5) => {
-    spriteSheetRef.current = p5.loadImage(enemySprite);
+    spriteSheetRef.current = p5.loadImage(currentSprite);
   };
 
   const setup = (p5, canvasParentRef) => {
@@ -39,15 +53,20 @@ export default function RenderEnemyMove({
     p5.noStroke();
     p5Ref.current = canvas;
 
+    loadAnimationFrames(p5);
+  };
+
+  const loadAnimationFrames = (p5) => {
+    animationFrames.current = [];
     if (spriteSheetRef.current) {
       const frameWidth = spriteSheetRef.current.width / totalFrames;
-      const frameHeight = spriteSheetRef.current.height; // Ajustando para a altura total da imagem
+      const frameHeight = spriteSheetRef.current.height;
 
       for (let frame = 0; frame < totalFrames; frame++) {
         animationFrames.current.push(
           spriteSheetRef.current.get(
             frame * frameWidth,
-            0, // Pega da linha 0, já que há apenas uma linha de sprites
+            0,
             frameWidth,
             frameHeight
           )
@@ -62,7 +81,7 @@ export default function RenderEnemyMove({
     const centerX = position.x * cellWidth + cellWidth / 2;
     const centerY = position.y * cellHeight + cellHeight / 2;
 
-    frameCount.current += animationSpeed;
+    frameCount.current += 0.1;
     currentFrame.current = Math.floor(frameCount.current) % totalFrames;
 
     const currentImg = animationFrames.current[currentFrame.current];
@@ -70,7 +89,6 @@ export default function RenderEnemyMove({
     if (currentImg) {
       p5.imageMode(p5.CENTER);
       
-      // Flip horizontal para direção esquerda
       if (moveDirection === "left") {
         p5.push();
         p5.translate(centerX, centerY);
@@ -95,7 +113,12 @@ export default function RenderEnemyMove({
       pointerEvents: 'none',
       zIndex: 2
     }}>
-      <Sketch preload={preload} setup={setup} draw={draw} />
+      <Sketch 
+        key={`enemy-${enemyId}-${spriteKey}`}
+        preload={preload} 
+        setup={setup} 
+        draw={draw} 
+      />
     </div>
   );
 }

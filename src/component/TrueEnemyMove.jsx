@@ -15,13 +15,59 @@ export default function TrueEnemyMove({
 }) {
   const [enemyPosition, setEnemyPosition] = useState({ x: 0, y: 0 });
   const [moveDirection, setMoveDirection] = useState("right");
+  const [playerAlert, setPlayerAlert] = useState(false)
   
   // Refs para sincronização
   const pathStackRef = useRef([]);
   const visitedRef = useRef(new Set());
   const enemyPosRef = useRef(enemyPosition);
+  const lookIntervalRef = useRef(null);
+  
 
   // Atualiza a ref da posição quando o estado muda
+  const lookforplayer = (currentPos) => {
+    const currentMaze = mazeRef.current;
+    const directions = [
+      { dx: -1, dy: 0 }, // esquerda
+      { dx: 1, dy: 0 },  // direita
+      { dx: 0, dy: -1 }, // cima
+      { dx: 0, dy: 1 }   // baixo
+    ];
+     for (const { dx, dy } of directions) {
+      const newX = currentPos.x + dx;
+      const newY = currentPos.y + dy;
+      const key = `${newX},${newY}`;
+
+      if(!playerAlert && enemyId === 2){
+      if (currentMaze[newY]?.[newX] === 0 || currentMaze[newY]?.[newX] === 2) {
+            let dx2 = dx;
+            let dy2 = dy;
+            while (currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 0 || currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 2) {
+              if (currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 2) {
+                console.log("eedsasadasd")
+                 setPlayerAlert(true)
+                return;
+                }
+              
+             
+    
+                   dx2 += dx;
+                  dy2 += dy;
+              }
+           
+          }
+        }
+  }
+}
+
+
+useEffect(() => {
+  if (!lookIntervalRef.current) {
+    
+      lookforplayer(enemyPosRef.current);
+  
+  }
+}, [maze]); 
   useEffect(() => {
     enemyPosRef.current = enemyPosition;
   }, [enemyPosition]);
@@ -54,7 +100,7 @@ export default function TrueEnemyMove({
       { dx: 0, dy: -1 }, // cima
       { dx: 0, dy: 1 }   // baixo
     ];
-
+          
     // Embaralha as direções
     for (let i = directions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -72,6 +118,7 @@ export default function TrueEnemyMove({
       const newX = currentPos.x + dx;
       const newY = currentPos.y + dy;
       const key = `${newX},${newY}`;
+
 
       if (currentMaze[newY]?.[newX] === 0 && !visitedRef.current.has(key)) {
         moveEnemy(currentPos, newX, newY, dx);
@@ -158,7 +205,10 @@ export default function TrueEnemyMove({
         adjustedSpeed = 2;
       }
        else if(enemyId===2){
-         adjustedSpeed = 1.5;
+         adjustedSpeed = 3.5;
+         if(playerAlert){
+          adjustedSpeed = 0.5
+         }
        }
     const moveInterval = setInterval(() => {
       const moved = tryMoveEnemy(enemyPosRef.current);
@@ -166,7 +216,7 @@ export default function TrueEnemyMove({
     }, moveSpeed * adjustedSpeed);
 
     return () => clearInterval(moveInterval);
-  }, [isAutoMoving, exitFound, moveSpeed]);
+  }, [isAutoMoving, exitFound, moveSpeed, playerAlert]);
 
   return (
     <RenderEnemyMove 
@@ -175,6 +225,7 @@ export default function TrueEnemyMove({
       cellDimensions={cellDimensions}
       maze={maze}
       enemyId={enemyId}
+      isAlert={playerAlert}
     />
   );
 }

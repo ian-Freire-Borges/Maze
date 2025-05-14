@@ -37,7 +37,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   useEffect(() => {
     const updateSize = () => {
       let divider;
-      let width = window.innerWidth * 0.8;
+      let width = window.innerWidth * 0.76;
       let height = window.innerHeight;
 
       if (window.innerWidth > 450) {
@@ -53,7 +53,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
       } else {
         height = window.innerHeight * 0.9;
         if (nivel === 1) divider = 51.5151;
-        else if (nivel === 2) divider = 51.1111;
+        else if (nivel === 2) divider = 51.;
         else if (nivel === 3) divider = 52.9411;
         else {
                 divider = 54.3859649122807
