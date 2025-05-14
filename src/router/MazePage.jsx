@@ -14,14 +14,10 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   const [moveSpeed, setMoveSpeed] = useState(300);
   const [isAutoMoving, setIsAutoMoving] = useState(false);
   const mazeWrapperRef = useRef();
-  const [cellDimensions, setCellDimensions] = useState({ cellWidth: 20, cellHeight: 20 });
+  const [cellDimensions, setCellDimensions] = useState({ });
   const [mazeReady, setMazeReady] = useState(false);
   const mazeRef = useRef(maze);
   const [dynamicSize, setDynamicSize] = useState(null);
-
-  const handleCellDimensionsChange = (newDimensions) => {
-    setCellDimensions(newDimensions);
-  };
 
   useEffect(() => {
     mazeRef.current = maze;
@@ -30,46 +26,42 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   useEffect(() => {
     const timer = setTimeout(() => {
       setMazeReady(true);
-    }, 500);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
+  
+
+  // Calcula tamanho ideal com base em maze n x n
   useEffect(() => {
     const updateSize = () => {
-      let divider;
-      let width = window.innerWidth * 0.8;
-      let height = window.innerHeight;
-
-      if (window.innerWidth > 450) {
-        if (nivel === 1) divider = 48.93617021276596;
-        else if (nivel === 2) divider = 49.01960784313725;
-        else if (nivel === 3) divider = 49.15254237288136;
-        else divider = 49.20634920634921;
-
-        setDynamicSize({
-          width: width,
-          height: width * (divider / 100),
-        });
-      } else {
-        height = window.innerHeight * 0.9;
-        if (nivel === 1) divider = 51.5151;
-        else if (nivel === 2) divider = 51.1111;
-        else if (nivel === 3) divider = 52.9411;
-        else {
-                divider = 54.3859649122807
-        }
-
-        setDynamicSize({
-          height: height,
-          width: height * (divider / 100),
-        });
+      const rows = maze.length;
+      const cols = maze[0]?.length || 1;
+      let maxHeight;
+      let maxWidth ;
+      if(window.innerWidth <= 450 ){
+          maxHeight = window.innerHeight * 0.9;
+          maxWidth = window.innerWidth * 0.9;
+      }else{
+      maxWidth = window.innerWidth * 1;
+      maxHeight = window.innerHeight * .64;
       }
+
+      const cellWidth = Math.floor(maxWidth / cols);
+      const cellHeight = Math.floor(maxHeight / rows);
+      const optimalCellSize = Math.min(cellWidth, cellHeight);
+
+      const finalWidth = optimalCellSize * cols;
+      const finalHeight = optimalCellSize * rows;
+
+      setDynamicSize({ width: finalWidth, height: finalHeight });
+      setCellDimensions({ cellWidth: optimalCellSize, cellHeight: optimalCellSize });
     };
 
-    updateSize(); // chama ao montar
+    updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
-  }, [nivel]);
+  }, [maze]);
 
   return (
     <>
@@ -117,7 +109,6 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
         <MazeRender
           mazeLayout={maze}
           wrapperRef={mazeWrapperRef}
-          onCellDimensionsChange={handleCellDimensionsChange}
           nivel={nivel}
         />
 
