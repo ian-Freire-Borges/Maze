@@ -12,72 +12,70 @@ export default function RenderEnemyMove({
   enemyId,
   isAlert
 }) {
-  const [spriteKey, setSpriteKey] = useState(0);
-  const [currentSprite, setCurrentSprite] = useState(() => {
-    return enemyId === 1 ? enemySprite1 : enemySprite2;
-  });
-  const [totalFrames, setTotalFrames] = useState(10);
-
-  const p5Ref = useRef();
-  const spriteSheetRef = useRef();
+  const spriteSheetRef = useRef(null);
   const animationFrames = useRef([]);
   const currentFrame = useRef(0);
   const frameCount = useRef(0);
 
+  const [totalFrames, setTotalFrames] = useState(10);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const p5InstanceRef = useRef(null);
   const { cellWidth, cellHeight } = cellDimensions;
   const spriteSize = Math.min(cellWidth, cellHeight) * 1.3;
 
-  // Atualiza apenas para o inimigo 2 quando o alerta muda
+  // Carrega o sprite atual quando muda
   useEffect(() => {
-    if (enemyId === 2) {
-      const newSprite = isAlert ? enemySprite2Run : enemySprite2;
-      const newFrames = isAlert ? 7 : 10;
-      
-      if (newSprite !== currentSprite || newFrames !== totalFrames) {
-        setCurrentSprite(newSprite);
-        setTotalFrames(newFrames);
-        setSpriteKey(prev => prev + 1);
-      }
-    }
-  }, [isAlert, enemyId, currentSprite, totalFrames]);
+    let spritePath;
+    let frameCount;
 
-  const preload = (p5) => {
-    spriteSheetRef.current = p5.loadImage(currentSprite);
+    if (enemyId === 1) {
+      spritePath = enemySprite1;
+      frameCount = 10;
+    } else {
+      spritePath = isAlert ? enemySprite2Run : enemySprite2;
+      frameCount = isAlert ? 7 : 10;
+    }
+
+    setImageLoaded(false);
+    setTotalFrames(frameCount);
+
+    if (p5InstanceRef.current) {
+      p5InstanceRef.current.loadImage(spritePath, (img) => {
+        spriteSheetRef.current = img;
+        extractFrames(img, frameCount);
+        setImageLoaded(true);
+      });
+    }
+  }, [enemyId, isAlert]);
+
+  const extractFrames = (spriteSheet, totalFrames) => {
+    animationFrames.current = [];
+
+    const frameWidth = spriteSheet.width / totalFrames;
+    const frameHeight = spriteSheet.height;
+
+    for (let i = 0; i < totalFrames; i++) {
+      animationFrames.current.push(
+        spriteSheet.get(i * frameWidth, 0, frameWidth, frameHeight)
+      );
+    }
   };
 
   const setup = (p5, canvasParentRef) => {
-    const canvas = p5.createCanvas(
+    p5.createCanvas(
       cellWidth * maze[0].length,
       cellHeight * maze.length
     ).parent(canvasParentRef);
     p5.noStroke();
-    p5Ref.current = canvas;
-
-    loadAnimationFrames(p5);
-  };
-
-  const loadAnimationFrames = (p5) => {
-    animationFrames.current = [];
-    if (spriteSheetRef.current) {
-      const frameWidth = spriteSheetRef.current.width / totalFrames;
-      const frameHeight = spriteSheetRef.current.height;
-
-      for (let frame = 0; frame < totalFrames; frame++) {
-        animationFrames.current.push(
-          spriteSheetRef.current.get(
-            frame * frameWidth,
-            0,
-            frameWidth,
-            frameHeight
-          )
-        );
-      }
-    }
+    p5InstanceRef.current = p5;
   };
 
   const draw = (p5) => {
     p5.clear();
-    
+
+    if (!imageLoaded) return;
+
     const centerX = position.x * cellWidth + cellWidth / 2;
     const centerY = position.y * cellHeight + cellHeight / 2;
 
@@ -88,7 +86,7 @@ export default function RenderEnemyMove({
 
     if (currentImg) {
       p5.imageMode(p5.CENTER);
-      
+
       if (moveDirection === "left") {
         p5.push();
         p5.translate(centerX, centerY);
@@ -101,21 +99,15 @@ export default function RenderEnemyMove({
     }
   };
 
-  useEffect(() => {
-    p5Ref.current?._p5Instance?.redraw();
-  }, [position, moveDirection]);
-
   return (
     <div style={{
       position: 'absolute',
       top: 0,
       left: 0,
       pointerEvents: 'none',
-      zIndex: 2
+      zIndex: 4
     }}>
       <Sketch 
-        key={`enemy-${enemyId}-${spriteKey}`}
-        preload={preload} 
         setup={setup} 
         draw={draw} 
       />

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Sketch from 'react-p5';
 import imgCoin from '../assets/coin_rot_anim.png';
+import door from "../assets/door.png"
 
 const SPRITE_FRAME_COUNT = 6;
 
@@ -9,11 +10,15 @@ export default function RenderCoins({
   playerPosition,
   cellDimensions,
   setScore,
-  nivel
+  nivel,
+  setExitFound,
+  win 
 }) {
   const spriteSheetRef = useRef(null);
+  const doorImageRef = useRef(null);
   const animationFrames = useRef([]);
   const frameCount = useRef(0);
+  const doorPositionsRef = useRef(null);
   const itemPositionsRef = useRef(null);
   const totalFrames = SPRITE_FRAME_COUNT;
   const animationSpeed = 0.15;
@@ -42,6 +47,7 @@ export default function RenderCoins({
   if (itemPositionsRef.current === null) {
     const positions = [];
     const emptyCells = [];
+    let doorPosition = null;
 
     for (let y = 0; y < maze.length; y++) {
       for (let x = 0; x < maze[y].length; x++) {
@@ -53,7 +59,9 @@ export default function RenderCoins({
       const index = Math.floor(Math.random() * emptyCells.length);
       positions.push(emptyCells.splice(index, 1)[0]);
     }
-
+    const index = Math.floor(Math.random() * emptyCells.length);
+     doorPosition = emptyCells.splice(index, 1)[0];
+    doorPositionsRef.current = doorPosition;
     itemPositionsRef.current = positions;
   }
 
@@ -85,10 +93,17 @@ export default function RenderCoins({
       itemPositionsRef.current.splice(index, 1);
       setScore((prev) => prev + (20 * mutiplier));
     }
+      const doorPos =  doorPositionsRef.current;
+
+   if (doorPos && doorPos.x === playerPosition.x && doorPos.y === playerPosition.y) {
+  setExitFound(true);
+  win.current = true;
+}
   }, [playerPosition, setScore]);
 
   const preload = (p5) => {
     spriteSheetRef.current = p5.loadImage(imgCoin);
+     doorImageRef.current = p5.loadImage(door);
   };
 
   const setup = (p5, canvasParentRef) => {
@@ -129,7 +144,16 @@ export default function RenderCoins({
       p5.imageMode(p5.CENTER);
       p5.image(currentImg, px, py, spriteSize, spriteSize);
       p5.pop();
+      
     });
+    if (doorPositionsRef.current && doorImageRef.current) {
+  const px = doorPositionsRef.current.x * cellWidth + cellWidth / 2;
+  const py = doorPositionsRef.current.y * cellHeight + cellHeight / 2;
+  p5.push();
+  p5.imageMode(p5.CENTER);
+  p5.image(doorImageRef.current, px, py, cellWidth, cellHeight);
+  p5.pop();
+}
   };
 
   return (

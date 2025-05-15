@@ -284,6 +284,8 @@ import React, { useState, useEffect, useRef } from 'react';
         cellDimensions={cellDimensions}
         setScore={setScore}
         nivel={nivel}
+        setExitFound={setExitFound}
+        win={win}
         />
       </>
     );

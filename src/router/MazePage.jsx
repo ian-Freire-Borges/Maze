@@ -44,7 +44,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
           maxWidth = window.innerWidth * 0.9;
       }else{
       maxWidth = window.innerWidth * 1;
-      maxHeight = window.innerHeight * .6;
+      maxHeight = window.innerHeight * 0.64;
       }
 
       const cellWidth = Math.floor(maxWidth / cols);
