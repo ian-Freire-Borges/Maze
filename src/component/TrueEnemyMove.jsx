@@ -22,6 +22,7 @@ export default function TrueEnemyMove({
   const visitedRef = useRef(new Set());
   const enemyPosRef = useRef(enemyPosition);
   const lookIntervalRef = useRef(null);
+  const emenyPassRef = useRef(0)
   
 
   // Atualiza a ref da posição quando o estado muda
@@ -33,6 +34,12 @@ export default function TrueEnemyMove({
       { dx: 0, dy: -1 }, // cima
       { dx: 0, dy: 1 }   // baixo
     ];
+    if(playerAlert){
+       emenyPassRef.current++
+       if( emenyPassRef.current>40){
+        setPlayerAlert(false)
+       emenyPassRef.current=0}
+    }
      for (const { dx, dy } of directions) {
       const newX = currentPos.x + dx;
       const newY = currentPos.y + dy;
@@ -73,24 +80,28 @@ useEffect(() => {
   }, [enemyPosition]);
 
   // Inicializa a posição do inimigo
-  useEffect(() => {
-    const findInitialPosition = () => {
-      const currentMaze = mazeRef.current;
-      for (let row = 0; row < currentMaze.length; row++) {
-        for (let col = 0; col < currentMaze[row].length; col++) {
-          if ((enemyId === 1 && currentMaze[row][col] === 4)||(enemyId === 2 && currentMaze[row][col] === 5) ) {
-            return { x: col, y: row };
-          }
-        }
+ useEffect(() => {
+  const currentMaze = mazeRef.current;
+  const validPositions = [];
+
+  for (let row = 0; row < currentMaze.length; row++) {
+    for (let col = 0; col < currentMaze[row].length; col++) {
+      if (currentMaze[row][col] === 0) {
+        validPositions.push({ x: col, y: row });
       }
-      return { x: 1, y: 1 };
-    };
-    
-    const startPos = findInitialPosition();
-    setEnemyPosition(startPos);
-    pathStackRef.current = [startPos];
-    visitedRef.current = new Set([`${startPos.x},${startPos.y}`]);
-  }, [mazeRef]);
+    }
+  }
+
+  
+
+
+  const randomIndex = Math.floor(Math.random() * validPositions.length);
+  const startPos = validPositions[randomIndex];
+
+  setEnemyPosition(startPos);
+  pathStackRef.current = [startPos];
+  visitedRef.current = new Set([`${startPos.x},${startPos.y}`]);
+}, [mazeRef]);
 
   const tryMoveEnemy = (currentPos) => {
     const currentMaze = mazeRef.current;
@@ -205,7 +216,7 @@ useEffect(() => {
         adjustedSpeed = 3;
       }
        else if(enemyId===2){
-         adjustedSpeed = 3;
+         adjustedSpeed = 3.5;
          if(playerAlert){
           adjustedSpeed = 1
          }
