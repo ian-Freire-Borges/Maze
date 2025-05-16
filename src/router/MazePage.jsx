@@ -18,6 +18,8 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   const [mazeReady, setMazeReady] = useState(false);
   const mazeRef = useRef(maze);
   const [dynamicSize, setDynamicSize] = useState(null);
+  const powerPickRef = useRef(false);
+
 
   useEffect(() => {
     mazeRef.current = maze;
@@ -126,10 +128,12 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             setScore={setScore}
             mazeRef={mazeRef}
             nivel={nivel}
+            powerPickRef={powerPickRef}
           />
         )}
 
-        {mazeReady && nivel !== 0 && (
+        {mazeReady && (nivel !== 0 && nivel !== 4)&& (
+          <>
           <TrueEnemyMove
             key="enemy1"
             setMaze={setMaze}
@@ -142,10 +146,28 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             cellDimensions={cellDimensions}
             mazeRef={mazeRef}
             enemyId={1}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
           />
+           <TrueEnemyMove
+            key="enemy1b"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={1}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+          </>
         )}
 
-        {mazeReady && nivel === 2 && (
+        {mazeReady && (nivel ===2 || nivel===4) && (
           <TrueEnemyMove
             key="enemy2"
             setMaze={setMaze}
@@ -158,7 +180,79 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             cellDimensions={cellDimensions}
             mazeRef={mazeRef}
             enemyId={2}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
           />
+        )}
+        {mazeReady && nivel === 3 && (
+          <>
+          <TrueEnemyMove
+            key="enemy3"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+
+           <TrueEnemyMove
+            key="enemyb3"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+          </>
+        
+        )}
+        {mazeReady && nivel===4 && (
+          <>
+          <TrueEnemyMove
+            key="enemy4"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={2}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+             <TrueEnemyMove
+            key="enemy5"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={2}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+          </>
         )}
       </div>
     </>

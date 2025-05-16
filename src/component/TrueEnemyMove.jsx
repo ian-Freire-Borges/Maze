@@ -11,11 +11,14 @@ export default function TrueEnemyMove({
   setGameResult, 
   cellDimensions,
   mazeRef,
-  enemyId
+  enemyId,
+  powerPickRef,
+  setScore
 }) {
   const [enemyPosition, setEnemyPosition] = useState({ x: 0, y: 0 });
   const [moveDirection, setMoveDirection] = useState("right");
   const [playerAlert, setPlayerAlert] = useState(false)
+  const [enemyDead, setEnemyDead] = useState(false)
   
   // Refs para sincronização
   const pathStackRef = useRef([]);
@@ -27,6 +30,7 @@ export default function TrueEnemyMove({
 
   // Atualiza a ref da posição quando o estado muda
   const lookforplayer = (currentPos) => {
+    if(enemyDead){return}
     const currentMaze = mazeRef.current;
     const directions = [
       { dx: -1, dy: 0 }, // esquerda
@@ -36,7 +40,7 @@ export default function TrueEnemyMove({
     ];
     if(playerAlert){
        emenyPassRef.current++
-       if( emenyPassRef.current>40){
+       if( emenyPassRef.current>80){
         setPlayerAlert(false)
        emenyPassRef.current=0}
     }
@@ -101,9 +105,10 @@ useEffect(() => {
   setEnemyPosition(startPos);
   pathStackRef.current = [startPos];
   visitedRef.current = new Set([`${startPos.x},${startPos.y}`]);
-}, [mazeRef]);
+}, []);
 
   const tryMoveEnemy = (currentPos) => {
+    if(enemyDead){return}
     const currentMaze = mazeRef.current;
     const directions = [
       { dx: -1, dy: 0 }, // esquerda
@@ -147,6 +152,7 @@ useEffect(() => {
   };
 
   const moveEnemy = (currentPos, newX, newY, dx) => {
+    if(enemyDead){return}
     // Atualiza a direção
     if (dx < 0) setMoveDirection("left");
     if (dx > 0) setMoveDirection("right");
@@ -168,17 +174,23 @@ useEffect(() => {
     setMaze(prevMaze => {
       const newMaze = prevMaze.map(row => [...row]);
       newMaze[enemyPos.y][enemyPos.x] = 0;
-      newMaze[playerPos.y][playerPos.x] = 4;
+      if(!powerPickRef.current){
+      newMaze[playerPos.y][playerPos.x] = 4;}
       return newMaze;
     });
-
+    if(!powerPickRef.current){
     setEnemyPosition(playerPos);
     setGameResult(false);
     setExitFound(true);
     setMoveDirection(null);
+    }else if (powerPickRef.current){
+       setScore((prev) => prev + 100)
+      setEnemyDead(true)
+    }
   };
 
   const backtrack = () => {
+    if(enemyDead){return}
     if (pathStackRef.current.length <= 1) {
       visitedRef.current = new Set();
       return;
@@ -218,9 +230,11 @@ useEffect(() => {
        else if(enemyId===2){
          adjustedSpeed = 3.5;
          if(playerAlert){
-          adjustedSpeed = 1
+          adjustedSpeed = 1;
          }
-       }
+       }else{
+           adjustedSpeed = 2.5;
+         }
     const moveInterval = setInterval(() => {
       const moved = tryMoveEnemy(enemyPosRef.current);
       if (!moved) backtrack();
@@ -230,13 +244,17 @@ useEffect(() => {
   }, [isAutoMoving, exitFound, moveSpeed, playerAlert]);
 
   return (
-    <RenderEnemyMove 
-      position={enemyPosition} 
-      moveDirection={moveDirection}  
-      cellDimensions={cellDimensions}
-      maze={maze}
-      enemyId={enemyId}
-      isAlert={playerAlert}
-    />
+   <>
+    {!enemyDead && (
+      <RenderEnemyMove 
+        position={enemyPosition} 
+        moveDirection={moveDirection}  
+        cellDimensions={cellDimensions}
+        maze={maze}
+        enemyId={enemyId}
+        isAlert={playerAlert}
+      />
+    )}
+  </>
   );
 }

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
   import PlayerInteractiveObject from './PlayerInteractiveObject';
 
 
-  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel}) {
+  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef}) {
     const [playerPosition, setPlayerPosition] = useState([], []);
     const [moveDirection, setMoveDirection] = useState(null);
     const [lastValidDirection, setLastValidDirection] = useState("down");
@@ -17,6 +17,7 @@ import React, { useState, useEffect, useRef } from 'react';
     const superVisited = useRef(new Set());
     const playerPanic = useRef(false);
     const stepsInPanic = useRef(0);
+    const stepOutOfPowerRef = useRef(0)
 
 
 
@@ -46,6 +47,14 @@ import React, { useState, useEffect, useRef } from 'react';
         { dx: 0, dy: -1, dir: "up" },
         { dx: 0, dy: 1, dir: "down" }
       ];
+      console.log(powerPickRef.current)
+      if(powerPickRef.current){
+        stepOutOfPowerRef.current++
+        if(stepOutOfPowerRef.current>200){
+          powerPickRef.current = false;
+          stepOutOfPowerRef.current = 0;
+        }
+      }
       
       for (let i = directions.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -61,7 +70,7 @@ import React, { useState, useEffect, useRef } from 'react';
         return true;
       }
 
-      if(!playerPanic.current){
+      if(!playerPanic.current && !powerPickRef.current){
       if (!enemyAlertRef.current) {
         for (const { dx, dy } of directions) {
           const newX = currentPos.x + dx;
@@ -113,7 +122,7 @@ import React, { useState, useEffect, useRef } from 'react';
           return true;
         }
         if (
-          (!playerPanic.current && currentMaze[newY]?.[newX] === 0 && !visited.current.has(key)) ||
+          (!playerPanic.current && (currentMaze[newY]?.[newX] === 0 || currentMaze[newY]?.[newX] === 4) && !visited.current.has(key)) ||
           (playerPanic.current && currentMaze[newY]?.[newX] === 0 && !superVisited.current.has(key))
         )  
         {
@@ -216,12 +225,7 @@ import React, { useState, useEffect, useRef } from 'react';
       setMoveDirection(dir);
       setLastValidDirection(dir);
 
-      if (currentMaze[prevPos.y]?.[prevPos.x] === 4) {
-        setGameResult(false);
-        setExitFound(true);
-        
-        return 
-      }
+     
     
 
       setMaze(prevMaze => {
@@ -255,13 +259,7 @@ import React, { useState, useEffect, useRef } from 'react';
           backtrack();
         
         }
-        if(currentMaze[playerPosition.y][playerPosition.x]===4){
-          setExitFound(true);
-          setGameResult(false);
-
-            return ;
-        }
-    
+       
       }, moveSpeed);
 
       return () => clearInterval(moveInterval);
@@ -277,6 +275,7 @@ import React, { useState, useEffect, useRef } from 'react';
           isPanic={playerPanic.current}
           cellDimensions={cellDimensions}
           maze={maze}
+          powerPickRef={powerPickRef}
         />
         <PlayerInteractiveObject
         maze={maze}
@@ -286,6 +285,8 @@ import React, { useState, useEffect, useRef } from 'react';
         nivel={nivel}
         setExitFound={setExitFound}
         win={win}
+        powerPickRef={powerPickRef}
+        stepOutOfPowerRef={stepOutOfPowerRef}
         />
       </>
     );

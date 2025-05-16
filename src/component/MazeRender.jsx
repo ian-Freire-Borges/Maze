@@ -50,7 +50,6 @@ export default function MazeRender({ mazeLayout, wrapperRef,  nivel }) {
     object4: useRef(),
     object5: useRef(),
   };
-  
   const doorRef = useRef();
   const wallMapRef = useRef([]);
   const pathMapRef = useRef([]);

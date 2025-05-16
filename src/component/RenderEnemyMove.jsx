@@ -3,6 +3,7 @@ import Sketch from 'react-p5';
 import enemySprite1 from "../assets/DinoSprites - vita.png";
 import enemySprite2 from "../assets/DinoSprites - vita1.png";
 import enemySprite2Run from "../assets/DinoSprites 2run.png";
+import enemySprite3 from "../assets/DinoSprites - tard (1).png"
 
 export default function RenderEnemyMove({
   position,
@@ -32,9 +33,12 @@ export default function RenderEnemyMove({
     if (enemyId === 1) {
       spritePath = enemySprite1;
       frameCount = 10;
-    } else {
+    } else if (enemyId === 2) {
       spritePath = isAlert ? enemySprite2Run : enemySprite2;
       frameCount = isAlert ? 7 : 10;
+    }else{
+            spritePath = enemySprite3;
+      frameCount = 10;  
     }
 
     setImageLoaded(false);
