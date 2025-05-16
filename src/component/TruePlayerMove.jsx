@@ -47,10 +47,10 @@ import React, { useState, useEffect, useRef } from 'react';
         { dx: 0, dy: -1, dir: "up" },
         { dx: 0, dy: 1, dir: "down" }
       ];
-      console.log(powerPickRef.current)
+      console.log(stepOutOfPowerRef.current)
       if(powerPickRef.current){
         stepOutOfPowerRef.current++
-        if(stepOutOfPowerRef.current>170){
+        if(stepOutOfPowerRef.current>120){
           powerPickRef.current = false;
           stepOutOfPowerRef.current = 0;
         }
@@ -276,6 +276,7 @@ import React, { useState, useEffect, useRef } from 'react';
           cellDimensions={cellDimensions}
           maze={maze}
           powerPickRef={powerPickRef}
+          nivel={nivel}
         />
         <PlayerInteractiveObject
         maze={maze}

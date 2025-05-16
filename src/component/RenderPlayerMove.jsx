@@ -10,7 +10,8 @@ export default function RenderPlayerMove({
   isPanic = false,
   cellDimensions,
   maze,
-  powerPickRef
+  powerPickRef,
+  nivel
 }) {
   const spriteSheetRef = useRef();
   const animationFrames = useRef({ down: [], left: [], right: [], up: [] });
@@ -107,9 +108,27 @@ export default function RenderPlayerMove({
       const particleCount = 1;
       for (let i = 0; i < particleCount; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const radius = Math.random() * 2 + 1.5; // ainda mais próximo
+        const radius = Math.random() * 2 + 1.5;
         const vx = Math.cos(angle) * 0.2;
         const vy = Math.sin(angle) * 0.2;
+            let color;
+    switch(nivel) {
+      case 0:
+      case 1:
+        color = [0, 255, 136]; // Verde cristal (RGB)
+        break;
+      case 2:
+        color = [170, 0, 255]; // Roxo cristal
+        break;
+      case 3:
+        color = [255, 51, 0];  // Vermelho cristal
+        break;
+      case 4:
+        color = [0, 102, 255]; // Azul cristal
+        break;
+      default:
+        color = [0, 255, 136]; // Padrão (verde)
+    }
 
         particlesRef.current.push({
           x: centerX + Math.cos(angle) * radius,
@@ -117,9 +136,10 @@ export default function RenderPlayerMove({
           vx,
           vy,
           alpha: 180,
-          size: Math.random() * 1 + 1.5, // bem pequeno
+          size: Math.random() * 1 + 1.5, 
           angle: angle,
-          rotationSpeed: (Math.random() - 0.5) * 0.1
+          rotationSpeed: (Math.random() - 0.5) * 0.1,
+          color: color
         });
       }
     }
@@ -140,7 +160,7 @@ export default function RenderPlayerMove({
       p5.translate(p.x, p.y);
       p5.rotate(p.angle);
       p5.noStroke();
-      p5.fill(255, 255, 255, p.alpha);
+      p5.fill(...p.color, p.alpha); 
       p5.beginShape();
       p5.vertex(0, -p.size);
       p5.vertex(p.size * 0.5, 0);

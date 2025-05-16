@@ -134,8 +134,9 @@ export default function RenderCoins({
     );
     if (indexP !== -1) {
       poweUpPositionRef.current.splice(indexP, 1);
-      setScore((prev) => prev + 5 * mutiplier);
+      setScore((prev) => prev + 4 * mutiplier);
       powerPickRef.current = true;
+      stepOutOfPowerRef.current = 0;
     }
 
     // Porta
