@@ -27,6 +27,8 @@ export default function TrueEnemyMove({
   const lookIntervalRef = useRef(null);
   const emenyPassRef = useRef(0)
   const enemyDeadRef = useRef(false)
+  const jumpCooldownRef= useRef(false)
+  const jumpCooldownStepRef= useRef(0)
   
 
    const cechkPlayerImpact = (currentPos) => {
@@ -151,11 +153,35 @@ useEffect(() => {
       return true;
     }
 
+    if(enemyId === 3 && jumpCooldownRef.current){
+      jumpCooldownStepRef.current++;
+      if(jumpCooldownStepRef.current>60){
+        jumpCooldownStepRef.current=0;
+        jumpCooldownRef.current=false;
+
+      }
+    }
+
     // Tenta mover em todas as direções
     for (const { dx, dy } of directions) {
       const newX = currentPos.x + dx;
       const newY = currentPos.y + dy;
       const key = `${newX},${newY}`;
+
+      if(enemyId === 3 && !jumpCooldownRef.current){
+        if(currentMaze[newY]?.[newX] === 1){
+          const teleportY = newY+dy;
+          const teleportX = newX+dx;
+            if(teleportY >= 0 && teleportY < currentMaze.length && teleportX >= 0 &&
+               teleportX < currentMaze[0].length && 
+              currentMaze[teleportY][teleportX] === 0 && 
+              !visitedRef.current.has(`${teleportX},${teleportY}`)){
+            moveEnemy(currentPos, teleportX , teleportY, dx);
+            jumpCooldownRef.current = true;
+            return true;
+          }
+        }
+      }
 
 
       if (currentMaze[newY]?.[newX] === 0 && !visitedRef.current.has(key)) {
@@ -255,7 +281,7 @@ useEffect(() => {
           adjustedSpeed = 1;
          }
        }else{
-           adjustedSpeed = 2.5;
+           adjustedSpeed = 2;
          }
     const moveInterval = setInterval(() => {
       const moved = tryMoveEnemy(enemyPosRef.current);
@@ -275,6 +301,7 @@ useEffect(() => {
         maze={maze}
         enemyId={enemyId}
         isAlert={playerAlert}
+        jumpCooldownRef={jumpCooldownRef}
       />
     )}
   </>

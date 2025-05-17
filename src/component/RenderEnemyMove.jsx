@@ -11,12 +11,14 @@ export default function RenderEnemyMove({
   cellDimensions,
   maze,
   enemyId,
-  isAlert
+  isAlert,
+  jumpCooldownRef
 }) {
   const spriteSheetRef = useRef(null);
   const animationFrames = useRef([]);
   const currentFrame = useRef(0);
   const frameCount = useRef(0);
+   const lavaParticles = useRef([]);
 
   const [totalFrames, setTotalFrames] = useState(10);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -66,6 +68,51 @@ export default function RenderEnemyMove({
     }
   };
 
+    const createLavaParticle = (p5, x, y) => {
+    return {
+      x: x + p5.random(-5, 5),
+      y: y + p5.random(0, 10),
+      size: p5.random(3, 8),
+      life: p5.random(30, 60),
+      maxLife: 60,
+      speed: p5.random(0.2, 0.5),
+      color: p5.color(
+        255, // R
+        p5.random(100, 150), // G
+        p5.random(0, 50), // B
+        p5.random(150, 200) // Alpha
+      )
+    };
+  };
+
+    const updateLavaParticles = (p5, centerX, centerY) => {
+    // Adiciona novas partículas se o cooldown estiver desativado
+    if (!jumpCooldownRef.current && enemyId === 3) {
+      if (p5.frameCount % 3 === 0) { // Controla a frequência de criação
+        lavaParticles.current.push(createLavaParticle(p5, centerX, centerY));
+      }
+    }
+
+    // Atualiza e remove partículas antigas
+    lavaParticles.current = lavaParticles.current.map(particle => {
+      return {
+        ...particle,
+        y: particle.y - particle.speed,
+        life: particle.life - 1
+      };
+    }).filter(particle => particle.life > 0);
+  };
+
+  const drawLavaParticles = (p5) => {
+    lavaParticles.current.forEach(particle => {
+      const alpha = p5.map(particle.life, 0, particle.maxLife, 0, 255);
+      particle.color.setAlpha(alpha);
+      p5.noStroke();
+      p5.fill(particle.color);
+      p5.ellipse(particle.x, particle.y, particle.size);
+    });
+  };
+
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(
       cellWidth * maze[0].length,
@@ -85,6 +132,11 @@ export default function RenderEnemyMove({
 
     frameCount.current += 0.1;
     currentFrame.current = Math.floor(frameCount.current) % totalFrames;
+
+     if (enemyId === 3) {
+      updateLavaParticles(p5, centerX, centerY);
+      drawLavaParticles(p5);
+    }
 
     const currentImg = animationFrames.current[currentFrame.current];
 

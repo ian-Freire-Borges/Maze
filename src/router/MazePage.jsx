@@ -132,8 +132,9 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
           />
         )}
 
-        {mazeReady && (nivel !== 0 && nivel !== 4)&& (
+        {mazeReady && (nivel === 1)&& (
           <>
+
           <TrueEnemyMove
             key="enemy1"
             setMaze={setMaze}
@@ -149,6 +150,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             powerPickRef={powerPickRef}
             setScore={setScore}
           />
+
            <TrueEnemyMove
             key="enemy1b"
             setMaze={setMaze}
@@ -164,10 +166,28 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             powerPickRef={powerPickRef}
             setScore={setScore}
           />
+
           </>
         )}
 
-        {mazeReady && (nivel ===2 || nivel===4) && (
+        {mazeReady && (nivel ===2 ) && (
+          <>
+            <TrueEnemyMove
+            key="enemy1c"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={1}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+
           <TrueEnemyMove
             key="enemy2"
             setMaze={setMaze}
@@ -183,6 +203,24 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             powerPickRef={powerPickRef}
             setScore={setScore}
           />
+
+          <TrueEnemyMove
+            key="enemy2b"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={2}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+
+          </>
         )}
         {mazeReady && nivel === 3 && (
           <>
@@ -203,7 +241,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
           />
 
            <TrueEnemyMove
-            key="enemyb3"
+            key="enemy3b"
             setMaze={setMaze}
             maze={maze}
             exitFound={exitFound}
@@ -217,6 +255,40 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             powerPickRef={powerPickRef}
             setScore={setScore}
           />
+
+             <TrueEnemyMove
+            key="enemy3c"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+
+          
+          <TrueEnemyMove
+            key="enemy1d"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={1}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+
           </>
         
         )}
