@@ -232,6 +232,9 @@ import React, { useState, useEffect, useRef } from 'react';
 
     if(enemyAlertRef.current && currentMaze[prevPos.y][prevPos.x]  ){
       playerPanic.current=true;
+      superVisited.current.clear();
+      superVisited.current.add(`${prevPos.y},${prevPos.x}`);
+      superVisited.current.add(`${playerPosition.y},${playerPosition.x}`);
     } else{
       setPlayerPosition(prevPos);
       setMoveDirection(dir);
