@@ -50,7 +50,7 @@ import React, { useState, useEffect, useRef } from 'react';
       console.log(stepOutOfPowerRef.current)
       if(powerPickRef.current){
         stepOutOfPowerRef.current++
-        if(stepOutOfPowerRef.current>120){
+        if(stepOutOfPowerRef.current>90){
           powerPickRef.current = false;
           stepOutOfPowerRef.current = 0;
         }
@@ -143,7 +143,8 @@ import React, { useState, useEffect, useRef } from 'react';
             const newMaze = prevMaze.map(row => [...row]);
             newMaze[currentPos.y][currentPos.x] = 0;
             newMaze[newY][newX] = 2;
-
+          return newMaze;
+          });
             setPlayerPosition({ x: newX, y: newY });
             setMoveDirection(dir);
             setLastValidDirection(dir);
@@ -159,8 +160,7 @@ import React, { useState, useEffect, useRef } from 'react';
                   stepsInPanic.current = 0;
                 }
             }
-            return newMaze;
-          });
+       
           return true;
         }
       }

@@ -272,6 +272,22 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             setScore={setScore}
           />
 
+            <TrueEnemyMove
+            key="enemy3d"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+          />
+
           
           <TrueEnemyMove
             key="enemy1d"
