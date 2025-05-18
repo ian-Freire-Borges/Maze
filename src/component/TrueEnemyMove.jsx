@@ -155,7 +155,7 @@ useEffect(() => {
 
     if(enemyId === 3 && jumpCooldownRef.current){
       jumpCooldownStepRef.current++;
-      if(jumpCooldownStepRef.current>60){
+      if(jumpCooldownStepRef.current>80){
         jumpCooldownStepRef.current=0;
         jumpCooldownRef.current=false;
 

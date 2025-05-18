@@ -43,27 +43,27 @@ export default function RenderCoins({
   switch (nivel) {
     case 1:
       mutiCoin = 4;
-      mutiPowe = 3;
+      mutiPowe = 4;
       cristal = cristalGreen;
       break;
     case 2:
       mutiCoin = 6;
-      mutiPowe = 5;
+      mutiPowe = 6;
       cristal = cristalPink;
       break;
     case 3:
       mutiCoin = 8;
-      mutiPowe = 7;
+      mutiPowe = 8;
       cristal = cristalRed;
       break;
     case 4:
       mutiCoin = 10;
-      mutiPowe = 8;
+      mutiPowe = 10;
       cristal = cristalBlue;
       break;
     default:
-      mutiCoin = 4;
-      mutiPowe = 1;
+      mutiCoin = 0;
+      mutiPowe = 0;
       cristal = cristalGreen;
   }
 
