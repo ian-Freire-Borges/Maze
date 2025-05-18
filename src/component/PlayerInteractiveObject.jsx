@@ -73,6 +73,19 @@ export default function RenderCoins({
     let doorPosition = null;
     const  poweUpPosition = [];
 
+
+    let startPos = null;
+
+for (let y = 0; y < maze.length; y++) {
+  for (let x = 0; x < maze[y].length; x++) {
+    if (maze[y][x] === 2) {
+      startPos = { x, y };
+      break;
+    }
+  }
+  if (startPos) break;
+}
+
     for (let y = 0; y < maze.length; y++) {
       for (let x = 0; x < maze[y].length; x++) {
         if (maze[y][x] === 0) emptyCells.push({ x, y });
@@ -89,8 +102,24 @@ export default function RenderCoins({
       poweUpPosition.push(emptyCells.splice(indexP, 1)[0]);
     }
 
-    const indexD = Math.floor(Math.random() * emptyCells.length);
-    doorPosition = emptyCells.splice(indexD, 1)[0];
+    function getManhattanDistance(a, b) {
+    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  }
+
+  let maxDistance = -1;
+  let farthestCellIndex = -1;
+
+  for (let i = 0; i < emptyCells.length; i++) {
+    const dist = getManhattanDistance(startPos, emptyCells[i]);
+    if (dist > maxDistance) {
+      maxDistance = dist;
+      farthestCellIndex = i;
+    }
+  }
+
+  if (farthestCellIndex !== -1) {
+    doorPosition = emptyCells.splice(farthestCellIndex, 1)[0];
+  }
     
 
     poweUpPositionRef.current = poweUpPosition;

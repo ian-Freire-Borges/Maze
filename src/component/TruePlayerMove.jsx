@@ -17,7 +17,8 @@ import React, { useState, useEffect, useRef } from 'react';
     const superVisited = useRef(new Set());
     const playerPanic = useRef(false);
     const stepsInPanic = useRef(0);
-    const stepOutOfPowerRef = useRef(0)
+    const stepOutOfPowerRef = useRef(0);
+    const stepOutofPanic = useRef(0);
 
 
 
@@ -47,10 +48,15 @@ import React, { useState, useEffect, useRef } from 'react';
         { dx: 0, dy: -1, dir: "up" },
         { dx: 0, dy: 1, dir: "down" }
       ];
+
+     
+
+
+       
       console.log(stepOutOfPowerRef.current)
       if(powerPickRef.current){
         stepOutOfPowerRef.current++
-        if(stepOutOfPowerRef.current>90){
+        if(stepOutOfPowerRef.current>55){
           powerPickRef.current = false;
           stepOutOfPowerRef.current = 0;
         }
@@ -122,7 +128,7 @@ import React, { useState, useEffect, useRef } from 'react';
           return true;
         }
         if (
-          (!playerPanic.current && (currentMaze[newY]?.[newX] === 0 || currentMaze[newY]?.[newX] === 4) && !visited.current.has(key)) ||
+          (!playerPanic.current && (currentMaze[newY]?.[newX] === 0 || currentMaze[newY]?.[newX] === 4 ) && !visited.current.has(key)) ||
           (playerPanic.current && currentMaze[newY]?.[newX] === 0 && !superVisited.current.has(key))
         )  
         {
@@ -153,9 +159,10 @@ import React, { useState, useEffect, useRef } from 'react';
             if(playerPanic.current){
               stepsInPanic.current++;
               superVisited.current.add(`${currentPos.x},${currentPos.y}`);
-                if(stepsInPanic.current>=20){
+                if(stepsInPanic.current>=30){
                   superVisited.current.clear();
-                  playerPanic.current=false
+                  playerPanic.current=false;
+                  stepOutofPanic.current=0;
                   console.log("saiu do panico")
                   stepsInPanic.current = 0;
                 }
@@ -164,20 +171,22 @@ import React, { useState, useEffect, useRef } from 'react';
           return true;
         }
       }
-
+      if(playerPanic){
+      stepOutofPanic.current++
+      }
       return false;
     };
 
     const backtrack = () => {
       const currentMaze = mazeRef.current;
       back.current=true;
-      if(playerPanic.current){
-        stepsInPanic.current++;
-        if(stepsInPanic.current>=20){
+      if(playerPanic.current){   
+        if(stepOutofPanic.current>stepsInPanic.current){
           superVisited.current.clear();
           playerPanic.current=false
           console.log("saiu do panico no back")
           stepsInPanic.current = 0;
+          stepOutofPanic.current = 0;
         }
         return ;
       }
@@ -220,13 +229,13 @@ import React, { useState, useEffect, useRef } from 'react';
       else if (dy === -1) dir = "up";
       else if (dy === 1) dir = "down";
 
-    
+
+    if(enemyAlertRef.current && currentMaze[prevPos.y][prevPos.x]  ){
+      playerPanic.current=true;
+    } else{
       setPlayerPosition(prevPos);
       setMoveDirection(dir);
       setLastValidDirection(dir);
-
-     
-    
 
       setMaze(prevMaze => {
         const newMaze = prevMaze.map(row => [...row]);
@@ -234,6 +243,7 @@ import React, { useState, useEffect, useRef } from 'react';
         newMaze[prevPos.y][prevPos.x] = 2;
         return newMaze;
       });
+    }
       return ;
     };
 
