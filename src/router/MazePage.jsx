@@ -46,7 +46,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
           maxWidth = window.innerWidth * 0.9;
       }else{
       maxWidth = window.innerWidth * 1;
-      maxHeight = window.innerHeight * 0.64;
+      maxHeight = window.innerHeight * 0.8;
       }
 
       const cellWidth = Math.floor(maxWidth / cols);
@@ -83,8 +83,8 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
               if (prev === 300) return 150;
               if (prev === 150) return 100;
               if (devMode) {
-                if (prev === 100) return 50;
-                if (prev === 50) return 25;
+                if (prev === 100) return 80;
+                if (prev === 80) return 40;
               }
               return 300;
             });
@@ -92,7 +92,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             <img src={speedUp} />
           </button>
           <span className="speed-text">
-            {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 50 ? '4x' : '5x'}
+            {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 80 ? '4x' : '5x'}
           </span>
         </div>
         <button className="back-button" onClick={() => setScreen("MENU")}>
