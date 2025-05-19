@@ -242,7 +242,7 @@ body {
     .menu-container {
       margin-top: 6rem;
       width: 290px; 
-      height: 400px;}
+      height: 420px;}
 
       .menu-title {
         font-size: 1.8rem;
@@ -259,7 +259,7 @@ body {
      margin-top: 0rem;}
 
        .nameLevel-container{
-  margin-top: 0.7rem;
+  margin-top: rem;
   }
      
   }
