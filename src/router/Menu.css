@@ -206,6 +206,7 @@ body {
   cursor: default;
   border-radius: 0;
   text-align: left;
+
   }
 
   .scoreBoard-container button:hover{
@@ -248,18 +249,23 @@ body {
         font-size: 1.8rem;
       }
       .score-button.active{
-         font-size: 12px;
          width: 12rem;
          height: 2rem;
         margin-left: 4rem;
+          position: fixed;
+        bottom: 7px;
+          left:9px;
         
          
       }
       .nivel-titulo{
+          margin-bottom: 2rem;
      margin-top: 0rem;}
 
        .nameLevel-container{
-  margin-top: 1;
+      margin-top: 1;
+      
+
   }
      
   }
