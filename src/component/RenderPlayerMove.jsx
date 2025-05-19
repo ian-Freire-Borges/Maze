@@ -89,19 +89,43 @@ export default function RenderPlayerMove({
     }
 
     // Efeitos visuais de alerta/pânico
-    if (isAlert || isPanic) {
-      p5.push();
-      p5.translate(centerX, centerY);
+// Efeitos visuais de alerta/pânico (dentro da função draw)
+if (isAlert || isPanic) {
+  p5.push();
+  p5.translate(centerX, centerY);
 
-      const time = p5.millis() * 0.005;
-      const lightSize = Math.sin(time * 2.5) * 8 + 24;
+  // Tamanhos definidos (mínimo e máximo relativo ao sprite)
+  const minSize = Math.min(spriteWidth, spriteHeight) * 0.05; // 5% do tamanho - bem pequeno
+  const maxSize = Math.min(spriteWidth, spriteHeight) * 0.25; // 25% do tamanho
+  
+  // Tempo de crescimento (0 a 1) em 0.5 segundos
+  const growthProgress = Math.min(1, (p5.millis() % 2000) / 500); 
+  
+  // Interpolação suave do tamanho
+  const currentBaseSize = p5.lerp(minSize, maxSize, easeOutQuad(growthProgress));
+  
+  // Pulsação sutil (5% de variação)
+  const pulse = Math.sin(p5.millis() * 0.01) * 0.05 * currentBaseSize;
+  const finalSize = currentBaseSize + pulse;
 
-      p5.noStroke();
-      p5.fill(isPanic ? [255, 0, 0, 150] : [255, 255, 0, 150]);
-      p5.ellipse(0, 0, lightSize);
+  // Cor com transparência que também aumenta
+  const alpha = p5.lerp(50, 120, growthProgress);
+  p5.noStroke();
+  p5.fill(
+    isPanic ? [255, 70, 70, alpha] :  // Vermelho
+    [255, 255, 80, alpha]             // Amarelo
+  );
 
-      p5.pop();
-    }
+  // Desenha o efeito
+  p5.ellipse(0, 0, finalSize, finalSize);
+  
+  p5.pop();
+}
+
+// Função de easing para suavizar a animação
+function easeOutQuad(t) {
+  return t * (2 - t);
+}
 
     // Efeito de partículas tipo cristal (powerPickRef)
     if (powerPickRef.current) {

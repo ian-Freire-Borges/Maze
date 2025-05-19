@@ -13,11 +13,13 @@ export default function TrueEnemyMove({
   mazeRef,
   enemyId,
   powerPickRef,
-  setScore
+  setScore,
+  tick
 }) {
   const [enemyPosition, setEnemyPosition] = useState({ x: 0, y: 0 });
   const [moveDirection, setMoveDirection] = useState("right");
   const [playerAlert, setPlayerAlert] = useState(false)
+  const [moveRate, setMoveRate] = useState(6);
 
   
   // Refs para sincronização
@@ -102,7 +104,7 @@ useEffect(() => {
   }
   cechkPlayerImpact (enemyPosRef.current);
 
-}, [maze]); 
+}, [maze,enemyPosition,tick]); 
   useEffect(() => {
     enemyPosRef.current = enemyPosition;
   }, [enemyPosition]);
@@ -269,27 +271,24 @@ useEffect(() => {
     pathStackRef.current = newPath;
   };
 
-  useEffect(() => {
-    if (!isAutoMoving || exitFound) return;
-        let adjustedSpeed;
-        if(enemyId===1){
-        adjustedSpeed = 3;
-      }
-       else if(enemyId===2){
-         adjustedSpeed = 3.5;
-         if(playerAlert){
-          adjustedSpeed = 1;
-         }
-       }else{
-           adjustedSpeed = 2;
-         }
-    const moveInterval = setInterval(() => {
-      const moved = tryMoveEnemy(enemyPosRef.current);
-      if (!moved) backtrack();
-    }, moveSpeed * adjustedSpeed);
+ useEffect(() => {
+  if (enemyId === 1) {
+    setMoveRate(8);
+  } else if (enemyId === 2) {
+    setMoveRate(playerAlert ? 3 : 8);
+  } else {
+    setMoveRate(6);
+  }
+}, [enemyId, playerAlert]);
 
-    return () => clearInterval(moveInterval);
-  }, [isAutoMoving, exitFound, moveSpeed, playerAlert]);
+useEffect(() => {
+  if (!isAutoMoving || exitFound) return;
+
+  if (tick % moveRate !== 0) return; // só se for o momento certo de agir
+
+  const moved = tryMoveEnemy(enemyPosRef.current);
+  if (!moved) backtrack();
+}, [tick, isAutoMoving, exitFound, moveRate]);
 
   return (
    <>

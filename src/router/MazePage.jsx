@@ -11,7 +11,7 @@ import volta from "../assets/voltar.png";
 export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, setScore, score, devMode }) {
   const [maze, setMaze] = useState(mazeLayout);
   const [exitFound, setExitFound] = useState(false);
-  const [moveSpeed, setMoveSpeed] = useState(300);
+  const [moveSpeed, setMoveSpeed] = useState(150);
   const [isAutoMoving, setIsAutoMoving] = useState(false);
   const mazeWrapperRef = useRef();
   const [cellDimensions, setCellDimensions] = useState({ });
@@ -19,7 +19,17 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   const mazeRef = useRef(maze);
   const [dynamicSize, setDynamicSize] = useState(null);
   const powerPickRef = useRef(false);
+const [tick, setTick] = useState(0);
 
+useEffect(() => {
+  if (!isAutoMoving || exitFound) return;
+
+  const interval = setInterval(() => {
+    setTick((prev) => prev + 1);
+  }, moveSpeed); 
+
+  return () => clearInterval(interval);
+}, [isAutoMoving, exitFound,moveSpeed]);
 
   useEffect(() => {
     mazeRef.current = maze;
@@ -63,7 +73,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
-  }, [maze]);
+  }, []);
 
   return (
     <>
@@ -80,19 +90,19 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
           </button>
           <button className="speed-button" onClick={() => {
             setMoveSpeed(prev => {
-              if (prev === 300) return 150;
-              if (prev === 150) return 100;
+              if (prev === 150) return 70;
+              if (prev === 70) return 40;
               if (devMode) {
-                if (prev === 100) return 80;
-                if (prev === 80) return 40;
+                if (prev === 40) return 25;
+                if (prev === 25) return 15;
               }
-              return 300;
+              return 150;
             });
           }}>
             <img src={speedUp} />
           </button>
           <span className="speed-text">
-            {moveSpeed === 300 ? "1x" : moveSpeed === 150 ? "2x" : moveSpeed === 100 ? '3x' : moveSpeed === 80 ? '4x' : '5x'}
+            {moveSpeed === 150 ? "1x" : moveSpeed === 70 ? "2x" : moveSpeed === 40 ? '3x' : moveSpeed === 25 ? '4x' : '5x'}
           </span>
         </div>
         <button className="back-button" onClick={() => setScreen("MENU")}>
@@ -129,6 +139,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             mazeRef={mazeRef}
             nivel={nivel}
             powerPickRef={powerPickRef}
+             tick={tick}
           />
         )}
 
@@ -149,6 +160,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={1}
             powerPickRef={powerPickRef}
             setScore={setScore}
+            tick={tick}
           />
 
            <TrueEnemyMove
@@ -165,6 +177,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={1}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
           <TrueEnemyMove
             key="enemy1sdb"
@@ -180,6 +193,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={1}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
             <TrueEnemyMove
             key="enemy1bsd"
@@ -195,6 +209,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={1}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
 
@@ -217,6 +232,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={1}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
           <TrueEnemyMove
@@ -233,6 +249,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={2}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
           <TrueEnemyMove
@@ -249,6 +266,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={2}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
           <TrueEnemyMove
@@ -265,6 +283,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={2}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
           <TrueEnemyMove
@@ -281,6 +300,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={2}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
           </>
@@ -301,6 +321,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={3}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
            <TrueEnemyMove
@@ -317,6 +338,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={3}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
              <TrueEnemyMove
@@ -333,6 +355,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={3}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
             <TrueEnemyMove
@@ -349,6 +372,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={3}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
            <TrueEnemyMove
@@ -365,6 +389,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={3}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
           
@@ -382,6 +407,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={1}
             powerPickRef={powerPickRef}
             setScore={setScore}
+             tick={tick}
           />
 
           </>
@@ -403,6 +429,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={2}
             powerPickRef={powerPickRef}
             setScore={setScore}
+            tick={tick}
           />
              <TrueEnemyMove
             key="enemy5"
@@ -418,6 +445,7 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
             enemyId={2}
             powerPickRef={powerPickRef}
             setScore={setScore}
+            tick={tick}
           />
           </>
         )}

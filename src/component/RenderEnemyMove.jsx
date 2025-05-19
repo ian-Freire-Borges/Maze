@@ -130,7 +130,7 @@ export default function RenderEnemyMove({
     const centerX = position.x * cellWidth + cellWidth / 2;
     const centerY = position.y * cellHeight + cellHeight / 2;
 
-    frameCount.current += 0.1;
+    frameCount.current += 0.25;
     currentFrame.current = Math.floor(frameCount.current) % totalFrames;
 
      if (enemyId === 3) {

@@ -3,10 +3,12 @@ import React, { useState, useEffect, useRef } from 'react';
   import PlayerInteractiveObject from './PlayerInteractiveObject';
 
 
-  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef}) {
-    const [playerPosition, setPlayerPosition] = useState([], []);
+  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef,tick}) {
+    const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
     const [moveDirection, setMoveDirection] = useState(null);
     const [lastValidDirection, setLastValidDirection] = useState("down");
+    const [moveRate, setMoveRate] = useState(3);
+    
   
     const win= useRef(false);
     const back= useRef(false);
@@ -41,10 +43,11 @@ import React, { useState, useEffect, useRef } from 'react';
       visited.current = new Set([`${startPos.x},${startPos.y}`]);
     }, []);
 
+
     useEffect(()=>{
      playerPositionRef.current=playerPosition;
     },
-    [maze])
+    [playerPosition])
 
     const tryMovePlayer = (currentPos) => {
       const currentMaze = mazeRef.current;
@@ -73,8 +76,8 @@ import React, { useState, useEffect, useRef } from 'react';
       }
       const cellValue = currentMaze[currentPos.y][currentPos.x];
 
-      if(cellValue===3){
-        win.current=true;
+       if(cellValue===4 && !powerPickRef.current){
+        win.current=false;
         setGameResult(true);
         setExitFound(true);
         setMoveDirection(null);
@@ -125,13 +128,7 @@ import React, { useState, useEffect, useRef } from 'react';
         const newY = currentPos.y + dy;
         const key = `${newX},${newY}`;
 
-        if (currentMaze[newY]?.[newX] === 3) {
-          win.current=true;
-          setGameResult(true);
-          setExitFound(true);
-          setMoveDirection(null);
-          return true;
-        }
+       
         if (
           (!playerPanic.current && (currentMaze[newY]?.[newX] === 0 || currentMaze[newY]?.[newX] === 4 ) && !visited.current.has(key)) ||
           (playerPanic.current && currentMaze[newY]?.[newX] === 0 && !superVisited.current.has(key))
@@ -185,6 +182,14 @@ import React, { useState, useEffect, useRef } from 'react';
     const backtrack = () => {
       const currentMaze = mazeRef.current;
       back.current=true;
+       
+       if(currentMaze[playerPositionRef.current.y][playerPositionRef.current.x]===4 && !powerPickRef.current){
+        win.current=false;
+        setGameResult(true);
+        setExitFound(true);
+        setMoveDirection(null);
+        return true;
+      }
       if(playerPanic.current){   
         if(stepOutofPanic.current!=stepsInPanic.current){
           superVisited.current.clear();
@@ -255,33 +260,32 @@ import React, { useState, useEffect, useRef } from 'react';
       return ;
     };
 
-    useEffect(() => {
-      if (!isAutoMoving || exitFound) {
-        if (exitFound) {
-          enemyAlertRef.current = false;
-          playerPanic.current = false;
-          superVisited.current.clear();
-          if(win.current){
-          setScreen("WINNER")}
-          else{
-            setScreen("END")
-          }
-        }
-        return;
-      }
+ useEffect(() => {
+  if (!isAutoMoving) return;
 
-      const moveInterval = setInterval(() => {
-        const currentMaze = mazeRef.current;
-        const moved = tryMovePlayer(playerPositionRef.current);
-        if (!moved) {
-          backtrack();
-        
-        }
-       
-      }, moveSpeed);
+  if (exitFound) {
+    enemyAlertRef.current = false;
+    playerPanic.current = false;
+    superVisited.current.clear();
 
-      return () => clearInterval(moveInterval);
-    }, [isAutoMoving, playerPosition, exitFound]);
+    if (win.current) {
+      setScreen("WINNER");
+    } else {
+      setScreen("END");
+    }
+
+    return;
+  }
+
+  // Executa a cada `moveRate` ticks
+  if (tick % moveRate !== 0) return;
+
+
+  const moved = tryMovePlayer(playerPositionRef.current);
+  if (!moved) {
+    backtrack();
+  }
+}, [tick, isAutoMoving, exitFound, moveRate]);
 
     return (
       <>
