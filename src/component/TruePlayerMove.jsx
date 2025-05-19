@@ -19,6 +19,7 @@ import React, { useState, useEffect, useRef } from 'react';
     const stepsInPanic = useRef(0);
     const stepOutOfPowerRef = useRef(0);
     const stepOutofPanic = useRef(0);
+    const playerPositionRef = useRef(playerPosition);
 
 
 
@@ -39,6 +40,11 @@ import React, { useState, useEffect, useRef } from 'react';
       pathStackRef.current = [startPos]; // Atualiza a ref
       visited.current = new Set([`${startPos.x},${startPos.y}`]);
     }, []);
+
+    useEffect(()=>{
+     playerPositionRef.current=playerPosition;
+    },
+    [maze])
 
     const tryMovePlayer = (currentPos) => {
       const currentMaze = mazeRef.current;
@@ -171,7 +177,7 @@ import React, { useState, useEffect, useRef } from 'react';
           return true;
         }
       }
-      if(playerPanic){
+      if(playerPanic.current){
       stepOutofPanic.current++
       }
       return false;
@@ -219,8 +225,8 @@ import React, { useState, useEffect, useRef } from 'react';
       
       console.log("back ativado")
     
-      const dx = prevPos.x - playerPosition.x;
-      const dy = prevPos.y - playerPosition.y;
+      const dx = prevPos.x - playerPositionRef.current.x;
+      const dy = prevPos.y - playerPositionRef.current.y;
       
 
       let dir = null;
@@ -234,7 +240,7 @@ import React, { useState, useEffect, useRef } from 'react';
       playerPanic.current=true;
       superVisited.current.clear();
       superVisited.current.add(`${prevPos.y},${prevPos.x}`);
-      superVisited.current.add(`${playerPosition.y},${playerPosition.x}`);
+      superVisited.current.add(`${playerPositionRef.current.y},${playerPositionRef.current.x}`);
     } else{
       setPlayerPosition(prevPos);
       setMoveDirection(dir);
@@ -242,7 +248,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
       setMaze(prevMaze => {
         const newMaze = prevMaze.map(row => [...row]);
-        newMaze[playerPosition.y][playerPosition.x] = 0;
+        newMaze[playerPositionRef.current.y][playerPositionRef.current.x] = 0;
         newMaze[prevPos.y][prevPos.x] = 2;
         return newMaze;
       });
@@ -267,7 +273,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
       const moveInterval = setInterval(() => {
         const currentMaze = mazeRef.current;
-        const moved = tryMovePlayer(playerPosition);
+        const moved = tryMovePlayer(playerPositionRef.current);
         if (!moved) {
           backtrack();
         

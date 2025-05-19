@@ -97,9 +97,30 @@ for (let y = 0; y < maze.length; y++) {
       positions.push(emptyCells.splice(index, 1)[0]);
     }
 
-    for (let i = 0; i < mutiPowe && emptyCells.length > 0; i++) {
+    function getChebyshevDistance(a, b) {
+      return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
+    }
+
+    function isValidPowerUpPosition(pos, existingPositions) {
+      for (const p of existingPositions) {
+        if (getChebyshevDistance(pos, p) < 10) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // Seleciona power-ups respeitando distância mínima 5
+    for (let i = 0; i < mutiPowe && emptyCells.length > 0; ) {
       const indexP = Math.floor(Math.random() * emptyCells.length);
-      poweUpPosition.push(emptyCells.splice(indexP, 1)[0]);
+      const candidate = emptyCells[indexP];
+      if (isValidPowerUpPosition(candidate, poweUpPosition)) {
+        poweUpPosition.push(candidate);
+        emptyCells.splice(indexP, 1);
+        i++;
+      } else {
+        emptyCells.splice(indexP, 1);
+      }
     }
 
     function getManhattanDistance(a, b) {
