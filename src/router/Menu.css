@@ -7,15 +7,15 @@ body {
   }
 
   .devMode-container {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .devMode-container button {
    background: linear-gradient(to right, #00d2ff, #3a7bd5);
   border: 2px solid #fff;
   border-radius: 8px;
-  padding: 8px 20px;
-  font-size: 14px;
+  padding: 8px 8px;
+  font-size: 6px;
   color: #ffffff;
   font-weight: bold;
   text-transform: uppercase;
@@ -23,6 +23,9 @@ body {
   transition: all 0.2s ease-in-out;
   font-family: 'Press Start 2P', cursive; 
   cursor: pointer;
+  position: fixed;
+  bottom: 7px;
+  left:6px;
 }
 
 .devMode-container button:hover {
@@ -35,6 +38,9 @@ body {
   border-color: #00e676;
   color: rgb(255, 255, 255);
   box-shadow: 0 0 10px #00e676;
+  padding: 12px 60px;
+  font-size: 14px;
+  position: static;
 }
   
   .menu-container {
@@ -185,10 +191,10 @@ body {
   margin-top: 2rem;
   }
   .nivel-titulo{
-     margin-top: 1rem;
+     margin-top: 0.5rem;
   background: rgba(0, 210, 255, 0.2); /* fundo translúcido suave */
   border-left: 6px solid #00d2ff;
-  padding: 10px 16px;
+  padding: 14px 22px;
   font-size: 13px;
   color: #fff;
   font-weight: bold;
@@ -208,6 +214,30 @@ body {
     color: #fff;
   }
 
+  .input-container button {
+    background: linear-gradient(to right, #00d2ff, #3a7bd5);
+    border: 2px solid #fff;
+    border-radius: 8px;
+    padding: 5px 11px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.2s ease-in-out;
+  }
+
+   .input-container button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+  }
+
+  .score-button.active{
+      font-size: 11px;
+      height: 32px;
+  
+  }
   @media (max-width: 450px){
     .menu-container {
       margin-top: 6rem;
@@ -217,4 +247,19 @@ body {
       .menu-title {
         font-size: 1.8rem;
       }
+      .score-button.active{
+         font-size: 12px;
+         width: 12rem;
+         height: 2rem;
+        margin-left: 4rem;
+        
+         
+      }
+      .nivel-titulo{
+     margin-top: 0rem;}
+
+       .nameLevel-container{
+  margin-top: 1rem;
+  }
+     
   }

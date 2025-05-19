@@ -2,20 +2,30 @@ import React, { useState,useEffect } from 'react';
 import './Menu.css';
 
 function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,setDevMove,devMode}) { 
-  const ativarDevMode = ()=>{
-    if(!devMode){
-    let senhaDev = "123"
-    const senha = prompt('Digite a senha de desenvolvedor:');
-    if( senha === senhaDev){
-      setDevMove(true)
-      alert('Dev Mode ativado!');
-    }else{
-        alert('Senha incorreta!');
-    }
-  }else{
+  const [devModeForm, setDevModeForm] = useState(false);
+  const [passWord, setPassWord] = useState("");
+  const ativarDevModeForm = ()=>{
+   if(!devMode){
+      setDevModeForm(true)
+   }else{
     setDevMove(false)
+   }
+ 
   }
+  const ativarDevMod = ()=>{
+    let senhaDev = "123"
+    if(passWord === senhaDev){
+       setPassWord("");   
+      setDevMove(true)
+      setDevModeForm(false)
+      alert("Bem vindo Dev!");
+    }else{
+       alert("Senha incorreta!");
+    setPassWord(""); 
+    }
+
   }
+   
   const renderNivelNome = () => {
   switch (nivel) {
     case 1:
@@ -49,8 +59,19 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
         Iniciar Maze
       </button>
       <div className='devMode-container'>
-        <button onClick={ativarDevMode} className={devMode ? 'dev-button active' : ''}>Dev Mode</button>
+        <button onClick={ativarDevModeForm} className={devMode ? 'dev-button active' : ''}>{devMode ? "Dev Mode" : "Dev"}</button>
       </div>
+      {devModeForm &&(
+      <div className='input-container'>
+         <input type="password" placeholder="Digite a senha de desenvolvedor"  onChange={(e) => setPassWord(e.target.value)} maxLength={10} value={passWord}/>
+          <div className="button-group">
+          <button onClick={ativarDevMod}>Confirmar</button>
+          <button onClick={() => {
+             setPassWord("");   
+            setDevModeForm(false)}}>Cancelar</button>
+      </div>
+       </div>
+      )}
       {devMode &&(<div className='opçoes'>
       <label htmlFor="Nivel">Escolha um Nivel:</label>
         <select id="nivel" name="nivel"
@@ -72,7 +93,7 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
       </div>
           )}
       <div className='scoreBoard-container'>
-          <button  onClick={() => {
+          <button className={devModeForm? 'score-button active' : ''} onClick={() => {
           setScreen("SCORE");
         }}>ScoreBoard</button>
       </div>

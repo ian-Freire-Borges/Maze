@@ -14,13 +14,13 @@ export default function TrueEnemyMove({
   enemyId,
   powerPickRef,
   setScore,
-  tick
+  tick,
+  playerPositionRef
 }) {
   const [enemyPosition, setEnemyPosition] = useState({ x: 0, y: 0 });
   const [moveDirection, setMoveDirection] = useState("right");
   const [playerAlert, setPlayerAlert] = useState(false)
   const [moveRate, setMoveRate] = useState(6);
-
   
   // Refs para sincronização
   const pathStackRef = useRef([]);
@@ -34,7 +34,6 @@ export default function TrueEnemyMove({
   
 
    const cechkPlayerImpact = (currentPos) => {
-    if(enemyDeadRef.current){return}
     const currentMaze = mazeRef.current;
     if(currentMaze[currentPos.y ]?.[currentPos.x]=== 2){
        setMaze(prevMaze => {
@@ -97,8 +96,26 @@ export default function TrueEnemyMove({
 
 
 useEffect(() => {
-  if (!lookIntervalRef.current) {
+          if(enemyDeadRef.current){return}
+  if(enemyPosRef.current===playerPositionRef.current){
+    const currentMaze = mazeRef.current;
+       setMaze(prevMaze => {
+      const newMaze = prevMaze.map(row => [...row]);
+      currentMaze[currentPos.y][currentPos.x] = 0;
+      return newMaze;
+       })
+      
+      if(!powerPickRef.current){
+    setGameResult(false);
+    setExitFound(true);
+    setMoveDirection(null);
+    }else if (powerPickRef.current){
+       setScore((prev) => prev + 100)
+      enemyDeadRef.current=true
+    }
     
+  }
+  if (!lookIntervalRef.current) {
       lookforplayer(enemyPosRef.current);
   
   }
@@ -134,7 +151,6 @@ useEffect(() => {
 }, []);
 
   const tryMoveEnemy = (currentPos) => {
-    if(enemyDeadRef.current){return}
     const currentMaze = mazeRef.current;
     const directions = [
       { dx: -1, dy: 0 }, // esquerda
@@ -142,6 +158,7 @@ useEffect(() => {
       { dx: 0, dy: -1 }, // cima
       { dx: 0, dy: 1 }   // baixo
     ];
+    cechkPlayerImpact (enemyPosRef.current)
           
     // Embaralha as direções
     for (let i = directions.length - 1; i > 0; i--) {
@@ -202,7 +219,6 @@ useEffect(() => {
   };
 
   const moveEnemy = (currentPos, newX, newY, dx) => {
-    if(enemyDeadRef.current){return}
     // Atualiza a direção
     if (dx < 0) setMoveDirection("left");
     if (dx > 0) setMoveDirection("right");
@@ -240,11 +256,11 @@ useEffect(() => {
   };
 
   const backtrack = () => {
-    if(enemyDeadRef.current){return}
     if (pathStackRef.current.length <= 1) {
       visitedRef.current = new Set();
       return;
     }
+     cechkPlayerImpact (enemyPosRef.current)
 
     const newPath = pathStackRef.current.slice(0, -1);
     const prevPos = newPath[newPath.length - 1];
@@ -275,17 +291,18 @@ useEffect(() => {
   if (enemyId === 1) {
     setMoveRate(8);
   } else if (enemyId === 2) {
-    setMoveRate(playerAlert ? 3 : 8);
+    setMoveRate(playerAlert ? 4 : 8);
   } else {
     setMoveRate(6);
   }
 }, [enemyId, playerAlert]);
 
 useEffect(() => {
+   if(enemyDeadRef.current)return;
   if (!isAutoMoving || exitFound) return;
 
   if (tick % moveRate !== 0) return; // só se for o momento certo de agir
-
+  cechkPlayerImpact(enemyPosRef.current)
   const moved = tryMoveEnemy(enemyPosRef.current);
   if (!moved) backtrack();
 }, [tick, isAutoMoving, exitFound, moveRate]);

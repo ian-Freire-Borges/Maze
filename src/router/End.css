@@ -90,7 +90,7 @@ body {
   }
   .input-container input::placeholder {
   color: #ccc;
-  font-size: 9px;
+  font-size: 7px;
 }
 
 .input-container input:focus {

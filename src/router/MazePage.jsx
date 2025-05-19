@@ -19,7 +19,8 @@ export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, 
   const mazeRef = useRef(maze);
   const [dynamicSize, setDynamicSize] = useState(null);
   const powerPickRef = useRef(false);
-const [tick, setTick] = useState(0);
+  const [tick, setTick] = useState(0);
+ const playerPositionRef = useRef([]);
 
 useEffect(() => {
   if (!isAutoMoving || exitFound) return;
@@ -140,6 +141,7 @@ useEffect(() => {
             nivel={nivel}
             powerPickRef={powerPickRef}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
         )}
 
@@ -161,6 +163,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
             tick={tick}
+            playerPositionRef={playerPositionRef}
           />
 
            <TrueEnemyMove
@@ -178,6 +181,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
           <TrueEnemyMove
             key="enemy1sdb"
@@ -194,6 +198,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
             <TrueEnemyMove
             key="enemy1bsd"
@@ -210,6 +215,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
 
@@ -233,6 +239,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
           <TrueEnemyMove
@@ -250,6 +257,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
           <TrueEnemyMove
@@ -267,6 +275,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
           <TrueEnemyMove
@@ -284,6 +293,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
           <TrueEnemyMove
@@ -300,7 +310,8 @@ useEffect(() => {
             enemyId={2}
             powerPickRef={powerPickRef}
             setScore={setScore}
-             tick={tick}
+            tick={tick}
+            playerPositionRef={playerPositionRef}
           />
 
           </>
@@ -322,6 +333,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
            <TrueEnemyMove
@@ -339,6 +351,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
              <TrueEnemyMove
@@ -356,6 +369,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
             <TrueEnemyMove
@@ -373,6 +387,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
            <TrueEnemyMove
@@ -390,6 +405,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
           
@@ -408,6 +424,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
              tick={tick}
+             playerPositionRef={playerPositionRef}
           />
 
           </>
@@ -430,6 +447,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
             tick={tick}
+            playerPositionRef={playerPositionRef}
           />
              <TrueEnemyMove
             key="enemy5"
@@ -446,6 +464,7 @@ useEffect(() => {
             powerPickRef={powerPickRef}
             setScore={setScore}
             tick={tick}
+            playerPositionRef={playerPositionRef}
           />
           </>
         )}
