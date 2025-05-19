@@ -59,7 +59,6 @@ import React, { useState, useEffect, useRef } from 'react';
 
 
        
-      console.log(stepOutOfPowerRef.current)
       if(powerPickRef.current){
         stepOutOfPowerRef.current++
         if(stepOutOfPowerRef.current>55){
@@ -165,7 +164,7 @@ import React, { useState, useEffect, useRef } from 'react';
             if(playerPanic.current){
               stepsInPanic.current++;
               superVisited.current.add(`${currentPos.x},${currentPos.y}`);
-                if(stepsInPanic.current>=30){
+                if(stepsInPanic.current>=40){
                   superVisited.current.clear();
                   playerPanic.current=false;
                   stepOutofPanic.current=0;
@@ -187,7 +186,7 @@ import React, { useState, useEffect, useRef } from 'react';
       const currentMaze = mazeRef.current;
       back.current=true;
       if(playerPanic.current){   
-        if(stepOutofPanic.current>stepsInPanic.current){
+        if(stepOutofPanic.current!=stepsInPanic.current){
           superVisited.current.clear();
           playerPanic.current=false
           console.log("saiu do panico no back")
