@@ -195,7 +195,7 @@ body {
   background: rgba(0, 210, 255, 0.2); /* fundo translúcido suave */
   border-left: 6px solid #00d2ff;
   padding: 14px 22px;
-  font-size: 13px;
+  font-size: 12px;
   color: #fff;
   font-weight: bold;
   text-transform: uppercase;
@@ -260,12 +260,11 @@ body {
       }
       .nivel-titulo{
           margin-bottom: 2rem;
-     margin-top: 0rem;}
+     margin-top: 1rem;}
 
        .nameLevel-container{
       margin-top: 1;
-      
-
   }
+   
      
   }
