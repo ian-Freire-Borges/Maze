@@ -26,7 +26,6 @@ export default function TrueEnemyMove({
   const pathStackRef = useRef([]);
   const visitedRef = useRef(new Set());
   const enemyPosRef = useRef(enemyPosition);
-  const lookIntervalRef = useRef(null);
   const emenyPassRef = useRef(0)
   const enemyDeadRef = useRef(false)
   const jumpCooldownRef= useRef(false)
@@ -188,19 +187,10 @@ useEffect(() => {
       const newY = currentPos.y + dy;
       const key = `${newX},${newY}`;
 
-      if(enemyId === 3 && !jumpCooldownRef.current){
-        if(currentMaze[newY]?.[newX] === 1){
-          const teleportY = newY+dy;
-          const teleportX = newX+dx;
-            if(teleportY >= 0 && teleportY < currentMaze.length && teleportX >= 0 &&
-               teleportX < currentMaze[0].length && 
-              currentMaze[teleportY][teleportX] === 0 && 
-              !visitedRef.current.has(`${teleportX},${teleportY}`)){
-            moveEnemy(currentPos, teleportX , teleportY, dx);
-            jumpCooldownRef.current = true;
-            return true;
-          }
-        }
+
+      if (currentMaze[newY]?.[newX] === 2) {
+        handlePlayerCaught({ x: newX, y: newY }, currentPos);
+        return true;
       }
 
 
@@ -209,12 +199,31 @@ useEffect(() => {
         return true;
       }
       
-      // Verifica se encontrou o jogador na nova posição
-      if (currentMaze[newY]?.[newX] === 2) {
-        handlePlayerCaught({ x: newX, y: newY }, currentPos);
+      
+    }
+    if (enemyId === 3 && !jumpCooldownRef.current) {
+  for (const { dx, dy } of directions) {
+    const newX = currentPos.x + dx;
+    const newY = currentPos.y + dy;
+
+    if (currentMaze[newY]?.[newX] === 1) { // Se for obstáculo, tenta pular
+      const teleportY = newY + dy;
+      const teleportX = newX + dx;
+
+      if (
+        teleportY >= 0 && teleportY < currentMaze.length &&
+        teleportX >= 0 && teleportX < currentMaze[0].length &&
+        currentMaze[teleportY][teleportX] === 0 &&
+        !visitedRef.current.has(`${teleportX},${teleportY}`)
+      ) {
+        moveEnemy(currentPos, teleportX, teleportY, dx);
+        jumpCooldownRef.current = true;
         return true;
       }
     }
+  }
+}
+
 
     return false;
   };
