@@ -77,7 +77,7 @@ useEffect(() => {
   }, []);
 
   return (
-    <>
+    <div className='total-maze'>
       <div className='container-button'>
         <div className='coitaner-for-mov'>
           <button disabled={isAutoMoving} onClick={() => {
@@ -469,6 +469,6 @@ useEffect(() => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }

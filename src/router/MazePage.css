@@ -8,25 +8,36 @@
   background-color: #000;
   
 }
-
-
+.total-maze{
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.back-button{
+ margin-right: 1.5rem;
+ margin-bottom: 1rem;
+}
 /* Button Container */
 .container-button {
-  margin-top: 0.6rem;
-  position: fixed;
-  top: 0px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
+  width: 100%;
+  max-width: 100%;
   display: flex;
-  gap: 24rem;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  
-}
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+ padding: 0.5rem;
+  background-color: rgba(42, 42, 42, 0.6); /* fundo um pouco translúcido */
+  border: 2px solid rgba(85, 85, 85, 0.6);  /* borda menos opaca */
+  box-shadow:
+    0 0 0 2px rgba(26, 26, 26, 0.6) inset,  /* contorno interno escuro com opacidade */
+    2px 2px 0 rgba(0, 0, 0, 0.7),           /* sombra lateral pixelada opaca */
+    -2px -2px 0 rgba(68, 68, 68, 0.4);      /* destaque superior opaco */
+
+  image-rendering: pixelated;}
 
 /* Movement Buttons Container */
 .coitaner-for-mov {
+  margin-left: 1.5rem;
   display: flex;
   gap: 4rem;
  
@@ -92,125 +103,44 @@
   
 }
 
-@media (max-width: 2560px) {
- 
-  .container-button {
-    gap: 12rem;
-  }
-  .container-button button {
-    margin-top: 1.2rem;
-    
-  }
-  .speed-text {
-    margin-top: 3.5rem;
-    
-  }
-}
 
-@media (max-width: 1920px) {
-  .container-button {
-    gap: 12rem;
-  }
-  .container-button button {
-    margin-top: 0.6rem;
-    
-  }
-  .speed-text {
-    margin-top: 2.4rem;
-    
-  }
-  
-}
 
-@media (max-width: 1200px), (max-height: 600px) {
- 
-  .container-button button {
-    margin-top: 1.2rem;
-  }
-  .speed-text {
-    margin-top: 2.8rem;
-  }
- 
-  
-}
-
-@media (max-width: 900px), (max-height: 500px) {
-
-  .container-button {
-    gap: 8rem;
-  }
-
-  .container-button button {
-    margin-top: 3.6rem;
-  
-  }
-  .speed-text {
-    margin-top: 5.3rem;
-  }
-
-}
-@media (max-width: 600px), (max-height: 450px) {
- 
-  
-  
-
-  .coitaner-for-mov {
-    gap: 2rem;
-  }
-  
-  .speed-text {
-    margin-left: -0.8rem;
-    
-  }
-  
-  
-}
-@media (max-width: 500px), (max-height: 400px) {
-  
-  .container-button button {
-    width: 10px;
-    height: 10px;
-    
-    
-    
-  }
-  .container-button button img {
-    height: 40px;
-    width: 40px;
-    image-rendering: pixelated;
-    
-  }
-  .container-button button {
-    margin-top: 1.6rem;
-  
-  }
-  .speed-text {
-    margin-top: 2rem;
-    font-size: 1rem; 
-  }
-  
-}
 
 
 @media (max-width: 450px){
+    .container-button{
+     position: fixed;
+  margin-top: 0.6rem;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: -2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+   margin-top: -1.6rem;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
   .coitaner-for-mov {
-    gap: 3.2rem;
+    margin-left: 3rem;
   }
-  .container-button {
-    margin-top: -1.6rem;
-    gap: 3rem;
-  }
+ .back-button{
+  margin-right: 3rem;
 
+ }
     
   .container-button button {
-    width: 10px;
+      width: 10px;
     height: 10px;
     margin-top: 2.7rem;
     
     
   }
   .speed-text {
-    margin-left: -1.5rem;
+    margin-left: -35px;
     margin-top: 3.8rem;
     font-size: 1rem; 
   }
