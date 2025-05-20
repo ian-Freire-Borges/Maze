@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 
   export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef,tick,playerPositionRef}) {
-    const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
+    const [playerPosition, setPlayerPosition] = useState([]);
     const [moveDirection, setMoveDirection] = useState(null);
     const [lastValidDirection, setLastValidDirection] = useState("down");
     const [moveRate, setMoveRate] = useState(3);

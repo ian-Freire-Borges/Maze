@@ -59,6 +59,9 @@ h1{
     box-shadow: 6px 6px 0 #000;
     text-align: center;
   }
+  .Win{
+    margin-bottom: 2rem;
+  }
   @media (max-width: 450px){
   .Win-container {
     width: 270px; 

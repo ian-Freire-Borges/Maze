@@ -1,17 +1,18 @@
 import React, { useState,useEffect } from 'react';
 import './Menu.css';
 
-function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,setDevMove,devMode,infinityMode}) { 
+function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,setDevMove,devMode,infinityMode,trueInfinityMode, setTrueInfinityMode}) { 
   const [devModeForm, setDevModeForm] = useState(false);
   const [passWord, setPassWord] = useState("");
-  const [trueInfinityMode ,setTrueInfinityMode] = useState(false);
+  const[auxiliarRandow, setAuxiliarRandow] = useState(false)
+ 
 
   const randomNivel = ()=>{
      setNivel(Math.floor(Math.random() * 4) + 1)
   }
 
   useEffect(() => {
-  if (trueInfinityMode) {
+  if (auxiliarRandow) {
     setScore(0);
     gerarNovoMaze();
     setScreen("MAZE");
@@ -19,7 +20,7 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
 
   
   }
-}, [trueInfinityMode]); 
+}, [auxiliarRandow]); 
 
   const ativarDevModeForm = ()=>{
    if(!devMode){
@@ -59,6 +60,7 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
   }
 };
   useEffect(() => {
+    setTrueInfinityMode(false)
       setNivel(1)
     }, []); 
   return (
@@ -81,8 +83,9 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
     <div className="infinity-container">
         <button
           onClick={() => {
-          randomNivel()
+          setAuxiliarRandow(true)
           setTrueInfinityMode(true)
+          randomNivel()
           setScore(0)
         }}
         >Infinity mode</button>

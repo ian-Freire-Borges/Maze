@@ -1,10 +1,12 @@
 import "./Win.css";
 import { useState, useEffect } from 'react';  // Adicionando o useEffect aqui
 
-const Win = ({ setScreen, gameResult, score, nivel, setNivel, setMazeKey, gerarNovoMaze, levelCheck,  setLevelCheck}) => {
+const Win = ({ setScreen, gameResult, score, nivel, setNivel, setMazeKey, gerarNovoMaze, levelCheck,  setLevelCheck,trueInfinityMode}) => {
   
   
   useEffect(() => {
+    console.log(trueInfinityMode)
+    if(!trueInfinityMode){
     if (nivel < 4) {
       const proximoNivel = nivel + 1;
       setNivel(proximoNivel);    
@@ -12,6 +14,8 @@ const Win = ({ setScreen, gameResult, score, nivel, setNivel, setMazeKey, gerarN
       gerarNovoMaze();          
     }else{
         setLevelCheck(true)
+    }}else{
+      setNivel(Math.floor(Math.random() * 4) + 1)
     }
   }, []); 
 

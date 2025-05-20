@@ -97,11 +97,12 @@ export default function TrueEnemyMove({
 
 useEffect(() => {
           if(enemyDeadRef.current){return}
-  if(enemyPosRef.current===playerPositionRef.current){
+  if (enemyPosRef.current.x === playerPositionRef.current.x &&
+    enemyPosRef.current.y === playerPositionRef.current.y){
     const currentMaze = mazeRef.current;
        setMaze(prevMaze => {
       const newMaze = prevMaze.map(row => [...row]);
-      currentMaze[currentPos.y][currentPos.x] = 0;
+      currentMaze[enemyPosRef.current.y][enemyPosRef.current.x] = 0;
       return newMaze;
        })
       
@@ -115,10 +116,10 @@ useEffect(() => {
     }
     
   }
-  if (!lookIntervalRef.current) {
+  
       lookforplayer(enemyPosRef.current);
   
-  }
+ 
   cechkPlayerImpact (enemyPosRef.current);
 
 }, [maze,enemyPosition,tick]); 
@@ -291,9 +292,9 @@ useEffect(() => {
   if (enemyId === 1) {
     setMoveRate(8);
   } else if (enemyId === 2) {
-    setMoveRate(playerAlert ? 4 : 8);
+    setMoveRate(playerAlert ? 3 : 8);
   } else {
-    setMoveRate(7);
+    setMoveRate(5);
   }
 }, [enemyId, playerAlert]);
 

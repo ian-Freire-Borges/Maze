@@ -24,6 +24,7 @@ function App() {
   const [devMode, setDevMove] = useState()
   const [levelCheck , setLevelCheck] = useState(false);
   const [infinityMode, setInfinityMode] = useState(true);
+  const [trueInfinityMode ,setTrueInfinityMode] = useState(false);
   
   useEffect(() => {
   if (levelCheck) {
@@ -61,7 +62,7 @@ function App() {
         backgroundSize: 'cover',
       }}
     >
-      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode}/>}
+      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode} trueInfinityMode={trueInfinityMode} setTrueInfinityMode={setTrueInfinityMode}/>}
       {screen === 'MAZE' && (
         <div key={mazeKey}>
           <MazePage 
@@ -76,7 +77,7 @@ function App() {
         </div>
       )}
       {screen === 'END' && <End setScreen={setScreen} gameResult={gameResult} score={score}/>}
-      {screen === 'WINNER' && <Win setScreen={setScreen} gameResult={gameResult} score={score} nivel={nivel} setNivel={setNivel}setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} levelCheck={levelCheck} setLevelCheck={setLevelCheck}/>}
+      {screen === 'WINNER' && <Win setScreen={setScreen} gameResult={gameResult} score={score} nivel={nivel} setNivel={setNivel}setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} levelCheck={levelCheck} setLevelCheck={setLevelCheck} trueInfinityMode={trueInfinityMode}/>}
       {screen === "SCORE" && <ScoreBoard setScreen={setScreen}/>}
     </div>
   );
