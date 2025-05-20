@@ -87,11 +87,7 @@
   transition: all 0.2s;
 }
 
-.delete-button:hover {
-  background-color: #c00;
-  transform: scale(1.1);
-  box-shadow: 2px 2px #000;
-}
+
 
 .back-button button {
   margin-top: 1rem;
@@ -121,10 +117,6 @@
   .score-list li {
     font-size: 9px;
   }
-  .delete-button span {
-    display: none;
-  }
-  .delete-button {
-    transform: translateX(-18px);
-  }
+  
+  
 }

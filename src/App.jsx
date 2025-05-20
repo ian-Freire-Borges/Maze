@@ -23,8 +23,14 @@ function App() {
   const [score, setScore] = useState(0);
   const [devMode, setDevMove] = useState()
   const [levelCheck , setLevelCheck] = useState(false);
+  const [infinityMode, setInfinityMode] = useState(true);
   
-  
+  useEffect(() => {
+  if (levelCheck) {
+    setInfinityMode(true);
+  }
+}, [levelCheck]);
+
   const cellSize = 20;
    let backgroundImage =menuImage;
   if(levelCheck){
@@ -55,7 +61,7 @@ function App() {
         backgroundSize: 'cover',
       }}
     >
-      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode}/>}
+      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode}/>}
       {screen === 'MAZE' && (
         <div key={mazeKey}>
           <MazePage 

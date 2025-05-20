@@ -293,7 +293,7 @@ useEffect(() => {
   } else if (enemyId === 2) {
     setMoveRate(playerAlert ? 4 : 8);
   } else {
-    setMoveRate(6);
+    setMoveRate(7);
   }
 }, [enemyId, playerAlert]);
 

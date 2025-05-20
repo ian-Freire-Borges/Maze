@@ -1,9 +1,26 @@
 import React, { useState,useEffect } from 'react';
 import './Menu.css';
 
-function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,setDevMove,devMode}) { 
+function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,setDevMove,devMode,infinityMode}) { 
   const [devModeForm, setDevModeForm] = useState(false);
   const [passWord, setPassWord] = useState("");
+  const [trueInfinityMode ,setTrueInfinityMode] = useState(false);
+
+  const randomNivel = ()=>{
+     setNivel(Math.floor(Math.random() * 4) + 1)
+  }
+
+  useEffect(() => {
+  if (trueInfinityMode) {
+    setScore(0);
+    gerarNovoMaze();
+    setScreen("MAZE");
+    setMazeKey(prevKey => prevKey + 1);
+
+  
+  }
+}, [trueInfinityMode]); 
+
   const ativarDevModeForm = ()=>{
    if(!devMode){
       setDevModeForm(true)
@@ -47,6 +64,8 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
   return (
     <div className="menu-container">
       <h1 className="menu-title">Maze Game</h1>
+       {!devModeForm &&(
+      <div>
       <button
         className="menu-button"
         onClick={() => {
@@ -58,8 +77,20 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
       >
         Iniciar Maze
       </button>
+      {infinityMode &&(
+    <div className="infinity-container">
+        <button
+          onClick={() => {
+          randomNivel()
+          setTrueInfinityMode(true)
+          setScore(0)
+        }}
+        >Infinity mode</button>
+    </div>
+      )}
+      </div>)}
       <div className='devMode-container'>
-        <button onClick={ativarDevModeForm} className={devMode ? 'dev-button active' : ''}>{devMode ? "Dev Mode" : "Dev"}</button>
+        <button onClick={ativarDevModeForm} className={devModeForm || devMode ? 'dev-button active' : ''}>{devMode || devModeForm ? "Dev Mode" : "Dev"}</button>
       </div>
       {devModeForm &&(
       <div className='input-container'>
@@ -72,6 +103,8 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
       </div>
        </div>
       )}
+       {!devModeForm &&(
+      <div>
       {devMode &&(<div className='opçoes'>
       <label htmlFor="Nivel">Escolha um Nivel:</label>
         <select id="nivel" name="nivel"
@@ -93,11 +126,14 @@ function Menu({ setScreen, setMazeKey, gerarNovoMaze, setNivel ,nivel,setScore,s
       </div>
           )}
       <div className='scoreBoard-container'>
-          <button className={devModeForm? 'score-button active' : ''} onClick={() => {
+          <button  onClick={() => {
           setScreen("SCORE");
         }}>ScoreBoard</button>
       </div>
+      </div>
+       )}
     </div>
+    
   );
 }
 
