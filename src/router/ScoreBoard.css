@@ -82,7 +82,7 @@
     border-radius: 8px;
     margin-top: 1rem;
     padding: 10px 16px;
-    font-size: 13px;
+    font-size: 16px;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
@@ -106,6 +106,8 @@
   .score-list li {
     font-size: 9px;
   }
-  
+  .back-buttonS button {
+    font-size: 10px;
+  }
   
 }
