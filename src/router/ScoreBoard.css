@@ -76,36 +76,25 @@
   animation: pulseTitle 2s infinite;
 }
 
-.delete-button {
-  font-family: 'Press Start 2P', cursive;
-  background-color: rgb(93, 18, 18);
-  color: white;
-  border: 2px solid #fff;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 8px;
-  transition: all 0.2s;
+.back-buttonS button {
+   background: linear-gradient(to right, #00d2ff, #3a7bd5);
+    border: 2px solid #fff;
+    border-radius: 8px;
+    margin-top: 1rem;
+    padding: 10px 16px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Press Start 2P', cursive; 
+     width: 17rem;
+    height: 2.4rem;
 }
 
-
-
-.back-button button {
-  margin-top: 1rem;
-  background: linear-gradient(to right, #00d2ff, #3a7bd5);
-  border: 2px solid #fff;
-  border-radius: 8px;
-  padding: 8px 20px;
-  font-size: 14px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  text-transform: uppercase;
-  box-shadow: 4px 4px 0 #000;
-  transition: all 0.2s ease-in-out;
-  font-family: 'Press Start 2P', cursive;
-}
-
-.back-button button:hover {
+.back-buttonS button:hover {
   transform: scale(1.05);
   background: linear-gradient(to right, #ff4141, #ff4b2b);
 }

@@ -23,9 +23,17 @@ function App() {
   const [score, setScore] = useState(0);
   const [devMode, setDevMove] = useState(false);
   const [levelCheck, setLevelCheck] = useState(false);
-  const [infinityMode, setInfinityMode] = useState(true);
+  const [infinityMode, setInfinityMode] = useState( localStorage.getItem("infinityMode") === "true");
   const [trueInfinityMode, setTrueInfinityMode] = useState(false);
   const [progressoInfinito, setProgressoInfinito] = useState(0);
+
+  useEffect (()=>{
+     if (levelCheck) {
+    setInfinityMode(true);
+    localStorage.setItem("infinityMode", "true"); // Armazena no localStorage
+  } 
+  },[levelCheck])
+ 
 
   const getBackgroundImage = () => {
     if (levelCheck) return winerimg;

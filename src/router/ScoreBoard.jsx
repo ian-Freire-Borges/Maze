@@ -44,7 +44,7 @@ const ScoreBoard = ({ setScreen }) => {
           </ul>
         )}
 
-        <div className="back-button">
+        <div className="back-buttonS">
           <button onClick={() => setScreen('MENU')}>Voltar</button>
           <button onClick={() => setViewNivel(!viewNivel)}>
             {viewNivel ? 'Score Normal' : 'Score Infinito'}

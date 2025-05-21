@@ -195,7 +195,7 @@ body {
   background: rgba(0, 210, 255, 0.2); /* fundo translúcido suave */
   border-left: 6px solid #00d2ff;
   padding: 14px 22px;
-  font-size: 13px;
+  font-size: 12px;
   color: #fff;
   font-weight: bold;
   text-transform: uppercase;
@@ -258,7 +258,18 @@ body {
     background: linear-gradient(to right, #ff416c, #ff4b2b);
   }
 
+ .infinity-container.block button {
+  background: linear-gradient(to bottom, #666 0%, #444 100%);
+  color: #ccc;
+  cursor: not-allowed;
+  font-size: 15px;
+  transition: font-size 0.2s ease, background 0.2s ease;
+}
 
+.infinity-container.block button:hover {
+  background: linear-gradient(to bottom, #888 0%, #666 100%);
+  font-size: 17px; /* Cresce só a fonte */
+}
 
   
 

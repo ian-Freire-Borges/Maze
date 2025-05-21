@@ -17,7 +17,6 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
       setScreen("MAZE");
       setMazeKey(prevKey => prevKey + 1);
       setAuxiliarRandow(false);
-      console.log("Modo infinito iniciado - Nível:", nivel);
     }
   }, [auxiliarRandow]);
 
@@ -68,7 +67,6 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
     setNivel(randomNivel());
     setScore(0);
     setAuxiliarRandow(true);
-    console.log("Modo infinito iniciado - Progresso: 1");
   };
 
   useEffect(() => {
@@ -91,15 +89,13 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
             Story Mode
           </button>
           
-          {infinityMode && (
-            <div className="infinity-container">
+            <div className={(infinityMode || devMode)? 'infinity-container' : 'infinity-container block'}> 
               <button
-                onClick={iniciarModoInfinito}
+                 onClick={(infinityMode || devMode)? iniciarModoInfinito : undefined}
               >
-                Infinity mode
+                 {(infinityMode || devMode)? 'Infinity mode' : 'BLOCKED'}
               </button>
             </div>
-          )}
         </div>
       )}
       
