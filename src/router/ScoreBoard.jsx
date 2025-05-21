@@ -11,7 +11,8 @@ const ScoreBoard = ({ setScreen }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.get(viewNivel ? '/scoreNivel' : '/scoreTop');
+        const endpoint = viewNivel ? '/scoreNivel' : '/scoreTop';
+        const response = await api.get(endpoint);
         setScores(response.data);
       } catch (error) {
         console.error('Erro ao buscar scores:', error);
@@ -36,7 +37,7 @@ const ScoreBoard = ({ setScreen }) => {
             {scores.map((score) => (
               <li key={score.id}>
                 <span className="score-info">
-                  <strong>{score.name}</strong> - {viewNivel ? `${score.nivel}° nivel` : `${score.score} pts`}
+                  <strong>{score.name}</strong> - {viewNivel ? `${score.nivel}° nível` : `${score.score} pts`}
                 </span>
               </li>
             ))}

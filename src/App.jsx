@@ -21,63 +21,39 @@ function App() {
   const [screen, setScreen] = useState('MENU');
   const [gameResult, setGameResult] = useState(null);
   const [score, setScore] = useState(0);
-  const [devMode, setDevMove] = useState()
-  const [levelCheck , setLevelCheck] = useState(false);
+  const [devMode, setDevMove] = useState(false);
+  const [levelCheck, setLevelCheck] = useState(false);
   const [infinityMode, setInfinityMode] = useState(true);
-  const [trueInfinityMode ,setTrueInfinityMode] = useState(false);
-  
-  useEffect(() => {
-  if (levelCheck) {
-    setInfinityMode(true);
-  }
-}, [levelCheck]);
+  const [trueInfinityMode, setTrueInfinityMode] = useState(false);
+  const [progressoInfinito, setProgressoInfinito] = useState(0);
 
-  const cellSize = 20;
-   let backgroundImage =menuImage;
-  if(levelCheck){
-     backgroundImage = winerimg;
-  }
-  else if(screen === 'SCORE'){
-    backgroundImage=menuImage
-  }
-  else if(!devMode &&  screen === 'MENU'){
-      backgroundImage =menuImage
-  }
-  else if(nivel === 2){
-    backgroundImage = cristal;
-  }else if(nivel === 3 ){
-     backgroundImage = lavacave ;
-  }else if(nivel === 4 ){
-    backgroundImage = iceimg
-  }else if((devMode && nivel === 1)||(nivel === 1 && screen != 'MENU')){
-    backgroundImage = florestimage
-  }
+  const getBackgroundImage = () => {
+    if (levelCheck) return winerimg;
+    if (screen === 'SCORE') return menuImage;
+    if (!devMode && screen === 'MENU') return menuImage;
+    
+    switch(nivel) {
+      case 2: return cristal;
+      case 3: return lavacave;
+      case 4: return iceimg;
+      case 1: return (devMode || screen !== 'MENU') ? florestimage : menuImage;
+      default: return menuImage;
+    }
+  };
 
   return (
     <div
       className="app-container"
       style={{
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: `url(${getBackgroundImage()})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
       }}
     >
-      {screen === 'MENU' && <Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode} trueInfinityMode={trueInfinityMode} setTrueInfinityMode={setTrueInfinityMode}/>}
-      {screen === 'MAZE' && (
-        <div key={mazeKey}>
-          <MazePage 
-            mazeLayout={mazeLayout}  
-            setScreen={setScreen} 
-            setGameResult={setGameResult}
-            nivel={nivel}
-            setScore={setScore}
-            score={score}
-            devMode={devMode}
-          />
-        </div>
-      )}
-      {screen === 'END' && <End setScreen={setScreen} gameResult={gameResult} score={score}/>}
-      {screen === 'WINNER' && <Win setScreen={setScreen} gameResult={gameResult} score={score} nivel={nivel} setNivel={setNivel}setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} levelCheck={levelCheck} setLevelCheck={setLevelCheck} trueInfinityMode={trueInfinityMode}/>}
+      {screen === 'MENU' && (<Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode} trueInfinityMode={trueInfinityMode} setTrueInfinityMode={setTrueInfinityMode}setProgressoInfinito={setProgressoInfinito}/>)}
+      {screen === 'MAZE' && (<div key={mazeKey}><MazePage mazeLayout={mazeLayout} setScreen={setScreen} setGameResult={setGameResult} nivel={nivel} setScore={setScore} score={score} devMode={devMode}/></div>)}
+      {screen === 'END' && (<End setScreen={setScreen} gameResult={gameResult} score={score} trueInfinityMode={trueInfinityMode} nivel={nivel} progressoInfinito={progressoInfinito}/>)}
+      {screen === 'WINNER' && (<Win setScreen={setScreen} gameResult={gameResult} score={score} nivel={nivel} setNivel={setNivel}setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} levelCheck={levelCheck} setLevelCheck={setLevelCheck} trueInfinityMode={trueInfinityMode} progressoInfinito={progressoInfinito} setProgressoInfinito={setProgressoInfinito}/>)}
       {screen === "SCORE" && <ScoreBoard setScreen={setScreen}/>}
     </div>
   );

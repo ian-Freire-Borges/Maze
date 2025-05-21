@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './End.css';
 import api from '../api';
 
-function End({ setScreen, score }) {
+function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
   const [showSaveForm, setShowSaveForm] = useState(false);
   const [nick, setNick] = useState('');
   const [error, setError] = useState('');
@@ -24,10 +24,10 @@ function End({ setScreen, score }) {
         throw new Error('Score inválido');
       }
 
-      const response = await api.post('/scoreTop', {
-        name: nick,
-        score: numericScore,
-      });
+      const payload = trueInfinityMode ? { name: nick, nivel: progressoInfinito } : { name: nick, score: Number(score) };
+
+      const endpoint = trueInfinityMode ? '/scoreNivel' : '/scoreTop';
+      const response = await api.post(endpoint, payload);
 
       if (response.data && response.data.id) {
         setSaved(true);
@@ -88,7 +88,7 @@ function End({ setScreen, score }) {
       {saved && <p className="success-message">Score salvo com sucesso!</p>}
 
       <div className='score-container'>
-        <h2>Score: {score}</h2>
+        <h2>{trueInfinityMode ? `Progresso: Nível ${progressoInfinito}` : `Score: ${score}`}</h2>
       </div>
     </div>
   );
