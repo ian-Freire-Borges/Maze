@@ -7,7 +7,7 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
   const [auxiliarRandow, setAuxiliarRandow] = useState(false);
  
   const randomNivel = () => {
-    return Math.max(1, Math.floor(Math.random() * 4)); // Garante 1-4
+    return Math.max(1, Math.floor(Math.random() * 4) + 1); 
   };
 
   useEffect(() => {
