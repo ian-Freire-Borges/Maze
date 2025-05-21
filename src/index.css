@@ -4,12 +4,25 @@
   box-sizing: border-box;
 }
 
-
+/* Garante que a aplicação ocupe 100% da altura da tela */
 html, body, #root {
   min-height: 100vh;
   height: 100%;
   width: 100%;
   overscroll-behavior: none;
   overflow-x: hidden;
-  -webkit-overflow-scrolling: touch; 
+  -webkit-overflow-scrolling: touch;
+  
+  /* Impede zoom e rolagem elástica */
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
+}
+
+/* Remove o highlight azul ao tocar, impede seleção e zoom */
+button, a {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
