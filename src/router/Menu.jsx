@@ -57,7 +57,6 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
     setScore(0);
     setTrueInfinityMode(false);
     setProgressoInfinito(0);
-    setNivel(1);
     gerarNovoMaze();
     setScreen("MAZE");
     setMazeKey(prevKey => prevKey + 1);
