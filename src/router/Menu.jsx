@@ -26,6 +26,9 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
     } else {
       setDevMove(false);
     }
+    if(devModeForm){
+      setDevModeForm(false);
+    }
   };
 
   const ativarDevMod = () => {

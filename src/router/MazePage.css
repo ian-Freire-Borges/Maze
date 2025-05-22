@@ -105,6 +105,15 @@
 
 
 @media (max-width: 450px){
+    .container-button button:disabled {
+  filter: 
+    sepia(1) 
+    hue-rotate(90deg)  /* Verde (90deg) ou Ciano (160deg) */
+    saturate(4)
+    brightness(1.1);
+  box-shadow: 0 0 8px #0ff;
+  }
+
    .container-button{
      position: fixed;
   margin-top: 0.6rem;
@@ -127,12 +136,13 @@
     width: 10px;
     height: 6px;
     margin-top: 2.2rem;
+    opacity: 0.7;
     
     
     
   }
   .maze-wrapper{
-    margin-bottom: 4rem;
+    margin-top: -3rem;
   }
   .speed-text {
     margin-left: -40px;
