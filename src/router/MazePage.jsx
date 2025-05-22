@@ -53,7 +53,7 @@ useEffect(() => {
       let maxHeight;
       let maxWidth ;
       if(window.innerWidth <= 450 ){
-          maxHeight = window.innerHeight * 1;
+          maxHeight = window.innerHeight * 0.7;
           maxWidth = window.innerWidth * 1;
       }else{
       maxWidth = window.innerWidth * 1;
@@ -80,10 +80,9 @@ useEffect(() => {
     <div className='total-maze'>
       <div className='container-button'>
         <div className='coitaner-for-mov'>
-          <button disabled={isAutoMoving} onClick={() => {
-            setIsAutoMoving(true);
-            setExitFound(false);
-          }}>
+          <button disabled={isAutoMoving} onClick={() => mazeReady
+      ? (setIsAutoMoving(true), setExitFound(false))
+      : undefined}>
             <img src={play} />
           </button>
           <button onClick={() => setIsAutoMoving(false)} disabled={!isAutoMoving}>

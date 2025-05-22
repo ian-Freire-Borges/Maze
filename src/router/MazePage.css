@@ -90,10 +90,7 @@
 }
 
 
-.container-button button:disabled,
-.back-button:disabled {
-  opacity: 0.7;
-}
+
 
 .speed-text {
   color: rgb(90, 134, 134);
@@ -108,49 +105,32 @@
 
 
 @media (max-width: 450px){
-    .container-button{
-     position: fixed;
-  margin-top: 0.6rem;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  display: flex;
-  gap: -2rem;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-   margin-top: -1.6rem;
-    background: none;
-    border: none;
-    box-shadow: none;
-  }
-  .coitaner-for-mov {
-    margin-left: 3rem;
-  }
- .back-button{
-  margin-right: 3rem;
-
+ .container-button {
+  margin-bottom: 2.3rem;
+  margin-top: -7rem;
  }
-    
+ 
   .container-button button {
-      width: 10px;
-    height: 10px;
-    margin-top: 2.7rem;
+    width: 10px;
+    height: 6px;
+    margin-top: 2.2rem;
+    
     
     
   }
   .speed-text {
-    margin-left: -35px;
-    margin-top: 3.8rem;
+    margin-left: -40px;
+    margin-top: 3.4rem;
     font-size: 1rem; 
   }
-    .maze-wrapper {
-      margin-bottom: -1.3rem;
-     
-    }
+   
     .container-button button img {
       width: 70px;
       height: 70px;
       image-rendering: pixelated;
+    }
+    .back-button{
+      margin-bottom: 2rem;
+      margin-left: 1rem;
     }
 }
