@@ -201,7 +201,7 @@ import React, { useState, useEffect, useRef } from 'react';
         return ;
       }
       console.log("back ativado")
-      if (pathStackRef.current.length < 1) {
+      if (pathStackRef.current.length <= 1) {
         visited.current.clear();
         console.log("🚨🚨🚨🚨🚨🚨todas visited linpo")
         return;
