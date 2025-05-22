@@ -53,8 +53,8 @@ useEffect(() => {
       let maxHeight;
       let maxWidth ;
       if(window.innerWidth <= 450 ){
-          maxHeight = window.innerHeight * 0.7;
-          maxWidth = window.innerWidth * 1;
+          maxHeight = window.innerHeight * 0.9;
+          maxWidth = window.innerWidth * 0.9;
       }else{
       maxWidth = window.innerWidth * 1;
       maxHeight = window.innerHeight * 0.8;
