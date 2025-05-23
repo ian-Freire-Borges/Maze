@@ -12,6 +12,13 @@ import florestimage from './assets/6271267.jpg'
 import winerimg from './assets/freepik__pixel-art-background-for-a-victory-screen-confetti__20051.png'
 import ScoreBoard from './router/ScoreBoard';
 import iceimg from './assets/5.png'
+import musicMenu from './assets/Music/musicMenu.mp3'
+import musicLv1 from './assets/Music/Level1Music.mp3'
+import musicLv2 from './assets/Music/Level2Music.mp3'
+import musicLv3 from './assets/Music/Level3Music.mp3'
+import musicLv4 from './assets/Music/Level4Music.mp3'
+import musicVictory from './assets/Music/victory.mp3'
+import musicEnd from './assets/Music/endMusic.mp3'
 
 
 function App() { 
@@ -26,6 +33,99 @@ function App() {
   const [infinityMode, setInfinityMode] = useState( localStorage.getItem("infinityMode") === "true");
   const [trueInfinityMode, setTrueInfinityMode] = useState(false);
   const [progressoInfinito, setProgressoInfinito] = useState(0);
+  const audioRef = useRef(null);
+  const [audioSrc, setAudioSrc] = useState(musicMenu);
+  const [hasClicked, setHasClicked] = useState(false);
+
+
+useEffect(() => {
+  if(screen === "MAZE"){
+    switch(nivel){
+      case 1:
+        setAudioSrc(musicLv1);
+      break
+
+      case 2:
+        setAudioSrc(musicLv2);
+        break
+
+      case 3:
+        setAudioSrc(musicLv3);
+        break
+
+      case 4:
+        setAudioSrc(musicLv4);
+        break
+
+      default:
+        setAudioSrc(musicLv1);
+        break
+    }
+}
+ else if (screen === "MENU") {
+    setAudioSrc(musicMenu);
+  }else if(screen === "END"){
+    setAudioSrc(musicEnd )
+  }else if(screen === "WINNER"){
+    setAudioSrc(musicVictory)
+  }
+ 
+}, [screen, nivel]);
+
+useEffect(() => {
+  const playMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.015;
+      audioRef.current.play().catch((err) => {
+        console.warn("Erro ao tentar tocar o áudio:", err);
+      });
+    }
+    window.removeEventListener("click", playMusic); // remove após tocar
+  };
+
+  if (audioSrc) {
+    window.addEventListener("click", playMusic);
+  }
+
+  return () => {
+    window.removeEventListener("click", playMusic);
+  };
+}, [audioSrc]);
+
+
+// 2. Executa o áudio no primeiro clique
+useEffect(() => {
+  const handleClick = () => {
+    if (audioRef.current && !hasClicked) {
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.015;
+      audioRef.current.play().catch(console.warn);
+      setHasClicked(true);
+    }
+  };
+
+  window.addEventListener("click", handleClick);
+
+  return () => {
+    window.removeEventListener("click", handleClick);
+  };
+}, [hasClicked]);
+
+// 3. Quando audioSrc muda e já houve clique, troca a música
+useEffect(() => {
+  if (audioRef.current && hasClicked && audioSrc) {
+    audioRef.current.pause();
+    audioRef.current.src = audioSrc;
+    audioRef.current.load();
+
+    audioRef.current.loop = screen !== "END" && screen !== "WINNER";
+    audioRef.current.play().catch(console.warn);
+  }
+}, [audioSrc, hasClicked]);
+
+
+
 
   useEffect (()=>{
      if (levelCheck) {
@@ -58,6 +158,7 @@ function App() {
         backgroundSize: 'cover',
       }}
     >
+     <audio ref={audioRef} src={audioSrc} />
       {screen === 'MENU' && (<Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode} trueInfinityMode={trueInfinityMode} setTrueInfinityMode={setTrueInfinityMode}setProgressoInfinito={setProgressoInfinito}/>)}
       {screen === 'MAZE' && (<div key={mazeKey}><MazePage mazeLayout={mazeLayout} setScreen={setScreen} setGameResult={setGameResult} nivel={nivel} setScore={setScore} score={score} devMode={devMode}/></div>)}
       {screen === 'END' && (<End setScreen={setScreen} gameResult={gameResult} score={score} trueInfinityMode={trueInfinityMode} nivel={nivel} progressoInfinito={progressoInfinito}/>)}
