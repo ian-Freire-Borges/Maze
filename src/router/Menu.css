@@ -283,14 +283,20 @@ body {
 .music-button {
   position: fixed;
   bottom: 0px;
-  background: none;
   border: none;
   cursor: pointer;
+  outline: none;
 
 }
 .music-div button{
   background: none;
-   display: block;
+  position: fixed;
+    bottom: 7px;
+  right: 14px;
+}
+.music-div {
+  background: none;
+  
 }
   
 
