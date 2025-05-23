@@ -36,7 +36,19 @@ function App() {
   const audioRef = useRef(null);
   const [audioSrc, setAudioSrc] = useState(musicMenu);
   const [hasClicked, setHasClicked] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
+useEffect(() => {
+  if (audioRef.current) {
+    audioRef.current.volume = 0.012;
+
+    if (isPlaying) {
+      audioRef.current.play().catch(console.warn);
+    } else {
+      audioRef.current.pause();
+    }
+  }
+}, [isPlaying,audioSrc]);
 
 useEffect(() => {
   if(screen === "MAZE"){
@@ -73,56 +85,42 @@ useEffect(() => {
 }, [screen, nivel]);
 
 useEffect(() => {
-  const playMusic = () => {
-    if (audioRef.current) {
+  const handleUserClick = () => {
+    if (audioRef.current && isPlaying) {
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.015;
-      audioRef.current.play().catch((err) => {
-        console.warn("Erro ao tentar tocar o áudio:", err);
-      });
+      audioRef.current.volume = 0.012;
+      audioRef.current.play().catch(console.warn);
     }
-    window.removeEventListener("click", playMusic); // remove após tocar
+    setHasClicked(true);
+    window.removeEventListener("click", handleUserClick);
   };
 
-  if (audioSrc) {
-    window.addEventListener("click", playMusic);
+  if (!hasClicked) {
+    window.addEventListener("click", handleUserClick);
   }
 
   return () => {
-    window.removeEventListener("click", playMusic);
+    window.removeEventListener("click", handleUserClick);
   };
-}, [audioSrc]);
+}, [hasClicked, isPlaying]);
 
 
-// 2. Executa o áudio no primeiro clique
-useEffect(() => {
-  const handleClick = () => {
-    if (audioRef.current && !hasClicked) {
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0.015;
-      audioRef.current.play().catch(console.warn);
-      setHasClicked(true);
-    }
-  };
 
-  window.addEventListener("click", handleClick);
-
-  return () => {
-    window.removeEventListener("click", handleClick);
-  };
-}, [hasClicked]);
 
 // 3. Quando audioSrc muda e já houve clique, troca a música
 useEffect(() => {
-  if (audioRef.current && hasClicked && audioSrc) {
+  if (audioRef.current) {
     audioRef.current.pause();
     audioRef.current.src = audioSrc;
     audioRef.current.load();
-
     audioRef.current.loop = screen !== "END" && screen !== "WINNER";
-    audioRef.current.play().catch(console.warn);
+
+    // Só toca se isPlaying === true
+    if (isPlaying) {
+      audioRef.current.play().catch(console.warn);
+    }
   }
-}, [audioSrc, hasClicked]);
+}, [audioSrc]);
 
 
 
@@ -159,10 +157,14 @@ useEffect(() => {
       }}
     >
      <audio ref={audioRef} src={audioSrc} />
-      {screen === 'MENU' && (<Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode} trueInfinityMode={trueInfinityMode} setTrueInfinityMode={setTrueInfinityMode}setProgressoInfinito={setProgressoInfinito}/>)}
+      {screen === 'MENU' && (<Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode} trueInfinityMode={trueInfinityMode} setTrueInfinityMode={setTrueInfinityMode}setProgressoInfinito={setProgressoInfinito} setIsPlaying={setIsPlaying} isPlaying={isPlaying}/>)}
+
       {screen === 'MAZE' && (<div key={mazeKey}><MazePage mazeLayout={mazeLayout} setScreen={setScreen} setGameResult={setGameResult} nivel={nivel} setScore={setScore} score={score} devMode={devMode}/></div>)}
+
       {screen === 'END' && (<End setScreen={setScreen} gameResult={gameResult} score={score} trueInfinityMode={trueInfinityMode} nivel={nivel} progressoInfinito={progressoInfinito}/>)}
+
       {screen === 'WINNER' && (<Win setScreen={setScreen} gameResult={gameResult} score={score} nivel={nivel} setNivel={setNivel}setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} levelCheck={levelCheck} setLevelCheck={setLevelCheck} trueInfinityMode={trueInfinityMode} progressoInfinito={progressoInfinito} setProgressoInfinito={setProgressoInfinito}/>)}
+
       {screen === "SCORE" && <ScoreBoard setScreen={setScreen}/>}
     </div>
   );

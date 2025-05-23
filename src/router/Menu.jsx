@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Menu.css';
+import musicOn from "../assets/unmuted.png"
+import musicOF from "../assets/muted.png"
 
-function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  setScore, setDevMove, devMode, infinityMode, setTrueInfinityMode, setProgressoInfinito}) { 
+function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  setScore, setDevMove, devMode, infinityMode, setTrueInfinityMode, setProgressoInfinito,setIsPlaying,isPlaying}) { 
   const [devModeForm, setDevModeForm] = useState(false);
   const [passWord, setPassWord] = useState("");
   const [auxiliarRandow, setAuxiliarRandow] = useState(false);
@@ -166,6 +168,15 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
           </div>
         </div>
       )}
+      <div className='music-div'>
+     <button onClick={() => setIsPlaying(prev => !prev)}>
+  <img 
+    src={isPlaying ? musicOn : musicOF} 
+    alt="toggle music" 
+    className="music-icon" 
+  />
+</button>
+      </div>
     </div>
   );
 }

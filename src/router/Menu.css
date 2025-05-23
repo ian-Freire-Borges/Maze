@@ -271,6 +271,27 @@ body {
   font-size: 17px; /* Cresce só a fonte */
 }
 
+.music-icon {
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 2px;
+  right: 4px;
+  background: none;
+  cursor: pointer;
+}
+.music-button {
+  position: fixed;
+  bottom: 0px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+}
+.music-div button{
+  background: none;
+   display: block;
+}
   
 
   @media (max-width: 450px){

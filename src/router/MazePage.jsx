@@ -449,7 +449,7 @@ useEffect(() => {
             playerPositionRef={playerPositionRef}
           />
              <TrueEnemyMove
-            key="enemy5"
+            key="enemy5a"
             setMaze={setMaze}
             maze={maze}
             exitFound={exitFound}
@@ -460,6 +460,108 @@ useEffect(() => {
             cellDimensions={cellDimensions}
             mazeRef={mazeRef}
             enemyId={2}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+            tick={tick}
+            playerPositionRef={playerPositionRef}
+          />
+              <TrueEnemyMove
+            key="enemy5b"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+            tick={tick}
+            playerPositionRef={playerPositionRef}
+          />
+              <TrueEnemyMove
+            key="enemy5c"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+            tick={tick}
+            playerPositionRef={playerPositionRef}
+          />
+              <TrueEnemyMove
+            key="enemy5g"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={2}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+            tick={tick}
+            playerPositionRef={playerPositionRef}
+          />
+              <TrueEnemyMove
+            key="enemy5f"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={2}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+            tick={tick}
+            playerPositionRef={playerPositionRef}
+          />
+              <TrueEnemyMove
+            key="enemy5h"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
+            powerPickRef={powerPickRef}
+            setScore={setScore}
+            tick={tick}
+            playerPositionRef={playerPositionRef}
+          />
+              <TrueEnemyMove
+            key="enemy5j"
+            setMaze={setMaze}
+            maze={maze}
+            exitFound={exitFound}
+            moveSpeed={moveSpeed}
+            isAutoMoving={isAutoMoving}
+            setExitFound={setExitFound}
+            setGameResult={setGameResult}
+            cellDimensions={cellDimensions}
+            mazeRef={mazeRef}
+            enemyId={3}
             powerPickRef={powerPickRef}
             setScore={setScore}
             tick={tick}
