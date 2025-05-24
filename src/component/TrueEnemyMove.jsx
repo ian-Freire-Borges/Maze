@@ -127,19 +127,33 @@ useEffect(() => {
   }, [enemyPosition]);
 
   // Inicializa a posição do inimigo
- useEffect(() => {
+useEffect(() => {
   const currentMaze = mazeRef.current;
   const validPositions = [];
+  let playerX = 0;
+  let playerY = 0;
 
+  // Encontra a posição do player (valor 2)
   for (let row = 0; row < currentMaze.length; row++) {
     for (let col = 0; col < currentMaze[row].length; col++) {
-      if (currentMaze[row][col] === 0) {
-        validPositions.push({ x: col, y: row });
+      if (currentMaze[row][col] === 2) {
+        playerX = col;
+        playerY = row;
       }
     }
   }
 
-  
+  // Filtra apenas posições válidas com distância >= 10 do player
+  for (let row = 0; row < currentMaze.length; row++) {
+    for (let col = 0; col < currentMaze[row].length; col++) {
+      if (currentMaze[row][col] === 0) {
+        const distance = Math.sqrt((col - playerX) ** 2 + (row - playerY) ** 2);
+        if (distance >= 10) {
+          validPositions.push({ x: col, y: row });
+        }
+      }
+    }
+  }
 
 
   const randomIndex = Math.floor(Math.random() * validPositions.length);

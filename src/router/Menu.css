@@ -316,5 +316,10 @@ body {
   font-size: 12px;
 }
   
-     
+     .menu-button{
+      font-size: 13px;
+     }
+     .infinity-container button{
+      font-size: 13px;
+     }
   }
