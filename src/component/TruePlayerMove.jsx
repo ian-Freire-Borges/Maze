@@ -64,7 +64,7 @@ import React, { useState, useEffect, useRef } from 'react';
        
       if(powerPickRef.current){
         stepOutOfPowerRef.current++
-        if(stepOutOfPowerRef.current>140){
+        if(stepOutOfPowerRef.current>90){
           powerPickRef.current = false;
           stepOutOfPowerRef.current = 0;
         }

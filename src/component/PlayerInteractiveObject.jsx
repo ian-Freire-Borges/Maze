@@ -72,22 +72,22 @@ const playPowerSound = () => {
   switch (nivel) {
     case 1:
       mutiCoin = 4;
-      mutiPowe = 7;
+      mutiPowe = 5;
       cristal = cristalGreen;
       break;
     case 2:
       mutiCoin = 6;
-      mutiPowe = 9;
+      mutiPowe = 7;
       cristal = cristalPink;
       break;
     case 3:
       mutiCoin = 8;
-      mutiPowe = 11;
+      mutiPowe = 9;
       cristal = cristalRed;
       break;
     case 4:
       mutiCoin = 10;
-      mutiPowe = 13;
+      mutiPowe = 11;
       cristal = cristalBlue;
       break;
     default:
@@ -113,6 +113,10 @@ for (let y = 0; y < maze.length; y++) {
     }
   }
   if (startPos) break;
+}
+if (!startPos && emptyCells.length > 0) {
+  const index = Math.floor(Math.random() * emptyCells.length);
+  startPos = emptyCells[index];
 }
 
     for (let y = 0; y < maze.length; y++) {

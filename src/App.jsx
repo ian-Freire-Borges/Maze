@@ -134,7 +134,6 @@ useEffect(() => {
  
 
   const getBackgroundImage = () => {
-    if (levelCheck) return winerimg;
     if (screen === 'SCORE') return menuImage;
     if (!devMode && screen === 'MENU') return menuImage;
     

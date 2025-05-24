@@ -56,14 +56,21 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
 
   return (
     <div className="Win-container">
-      <h1>Winner Chicken Dinner</h1>
+      <h1>{levelCheck ? "victory" :  "Winner Chicken Dinner"}</h1>
       <div className='Win'>
-        <button onClick={WinNext}>Next Level</button>
+        <button onClick={WinNext}>{levelCheck ? "Menu" :  "Next Level"}</button>
       </div>
+      {!levelCheck &&(
       <div className='nameLevel-container'>
         <label>Próximo Nível:</label>
         {renderNivelNome()}
       </div>
+      )}
+      {levelCheck &&(
+      <div>
+        <p>Modo Infinito desbloqueado</p>
+      </div>
+      )}
       <div className="score-container">
         <h2>{trueInfinityMode ? `Sequência: ${progressoInfinito - 1} níveis` : `Score: ${score}`}</h2>
       </div>
