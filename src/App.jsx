@@ -40,7 +40,7 @@ function App() {
 
 useEffect(() => {
   if (audioRef.current) {
-    audioRef.current.volume = 0.012;
+    audioRef.current.volume = 0.1;
 
     if (isPlaying) {
       audioRef.current.play().catch(console.warn);

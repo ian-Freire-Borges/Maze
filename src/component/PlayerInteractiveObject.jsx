@@ -6,6 +6,8 @@ import cristalBlue from '../assets/blue_crystal_0000.png';
 import cristalRed from '../assets/red_crystal_0000.png';
 import cristalGreen from '../assets/green_crystal_0000.png';
 import cristalPink from '../assets/pink_crystal_0000.png';
+import coindSound from '../assets/Music/coin-recieved-230517.mp3'
+import PowerSound from '../assets/Music/power-up-type-1-230548.mp3'
 
 const SPRITE_FRAME_COUNT = 6;
 const POWER_FRAME_COUNT = 4;
@@ -22,6 +24,7 @@ export default function RenderCoins({
   powerPickRef,
   stepOutOfPowerRef
 }) {
+ 
   const spriteSheetRef = useRef(null);
   const doorImageRef = useRef(null);
   const powerImageRef = useRef(null);
@@ -36,6 +39,32 @@ export default function RenderCoins({
 
   const { cellWidth, cellHeight } = cellDimensions;
   const spriteSize = Math.min(cellWidth, cellHeight) * 1.1;
+  
+  const coinAudioRef = useRef(null);
+  const powerAudioRef = useRef(null);
+
+
+useEffect(() => {
+  coinAudioRef.current = new Audio(coindSound);
+  powerAudioRef.current = new Audio(PowerSound);
+  powerAudioRef.current.preload = 'auto'
+  powerAudioRef.current.volume = 0.4;
+  coinAudioRef.current.preload = 'auto';
+  coinAudioRef.current.volume = 0.4;
+}, []);
+
+const playCoinSound = () => {
+  if (coinAudioRef.current) {
+    coinAudioRef.current.currentTime = 0;
+    coinAudioRef.current.play();
+  }
+};
+const playPowerSound = () => {
+  if (powerAudioRef.current) {
+     powerAudioRef.current.currentTime = 0;
+    powerAudioRef.current.play();
+  }
+};
 
   let mutiCoin;
   let mutiPowe;
@@ -43,7 +72,7 @@ export default function RenderCoins({
   switch (nivel) {
     case 1:
       mutiCoin = 4;
-      mutiPowe = 4;
+      mutiPowe = 6;
       cristal = cristalGreen;
       break;
     case 2:
@@ -176,17 +205,20 @@ for (let y = 0; y < maze.length; y++) {
     if (index !== -1) {
       itemPositionsRef.current.splice(index, 1);
       setScore((prev) => prev + 20 * mutiplier);
+      playCoinSound();
     }
 
     // Coleta power-up
     const indexP = poweUpPositionRef.current.findIndex(
       (pos) => `${pos.x},${pos.y}` === playerKey
+      
     );
     if (indexP !== -1) {
       poweUpPositionRef.current.splice(indexP, 1);
       setScore((prev) => prev + 4 * mutiplier);
       powerPickRef.current = true;
       stepOutOfPowerRef.current = 0;
+      playPowerSound();
     }
 
     // Porta

@@ -311,7 +311,10 @@ body {
       }
       
      
-
+.scoreBoard-container.atived button{
+  width: 11rem;
+  font-size: 12px;
+}
   
      
   }

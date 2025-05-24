@@ -91,7 +91,7 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
             className="menu-button"
             onClick={iniciarModoNormal}
           >
-            Story Mode
+             {devMode ? "Selected Level" : "Story Mode"}
           </button>
           
             <div className={(infinityMode || devMode)? 'infinity-container' : 'infinity-container block'}> 
@@ -161,8 +161,8 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
             </div>
           )}
           
-          <div className='scoreBoard-container'>
-            <button onClick={() => setScreen("SCORE")}>
+          <div className = {!devMode ?'scoreBoard-container' : 'scoreBoard-container atived'}>
+            <button  onClick={() => setScreen("SCORE")}>
               ScoreBoard
             </button>
           </div>
