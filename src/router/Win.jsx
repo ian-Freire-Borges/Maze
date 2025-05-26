@@ -1,7 +1,14 @@
 import "./Win.css";
+import api from "../api";
 import { useState, useEffect } from 'react';
 
 const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, levelCheck, setLevelCheck, trueInfinityMode,progressoInfinito,setProgressoInfinito}) => {
+  const [showSaveForm, setShowSaveForm] = useState(false);
+  const [nick, setNick] = useState('');
+  const [error, setError] = useState('');
+  const [saved, setSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
   const randomNivel = () => Math.max(1, Math.floor(Math.random() * 4) + 1);
 
   useEffect(() => {
@@ -27,6 +34,38 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
       }
     }
   }, []);
+
+    const handleSaveScore = async () => {
+    if (nick.length < 3 || nick.length > 10) {
+      setError('Nick deve ter entre 3 e 10 caracteres.');
+      return;
+    }
+
+    setIsSaving(true);
+    setError('');
+
+    try {
+      const payload = trueInfinityMode
+        ? { name: nick, nivel: progressoInfinito - 1 }
+        : { name: nick, score };
+
+      const endpoint = trueInfinityMode ? '/scoreNivel' : '/scoreTop';
+      const response = await api.post(endpoint, payload);
+
+      if (response.data && response.data.id) {
+        setSaved(true);
+        setShowSaveForm(false);
+        setNick('');
+      } else {
+        throw new Error('Resposta inválida do servidor');
+      }
+    } catch (err) {
+      console.error('Erro ao salvar score:', err);
+      setError(err.response?.data?.error || 'Erro ao salvar score. Tente novamente mais tarde.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const WinNext = () => {
     if(levelCheck) {
@@ -60,22 +99,62 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
       <div className='Win'>
         <button onClick={WinNext}>{levelCheck ? "Menu" :  "Next Level"}</button>
       </div>
-      {!levelCheck &&(
-      <div className='nameLevel-container'>
-        <label>Próximo Nível:</label>
-        {renderNivelNome()}
-      </div>
+
+  {!saved && (
+        <div className='save-container'>
+          {!showSaveForm ? (
+            <button onClick={() => setShowSaveForm(true)}>Salvar Score</button>
+          ) : (
+            <div className='input-container'>
+              <input
+                type="text"
+                value={nick}
+                onChange={(e) => setNick(e.target.value)}
+                placeholder="Seu nick (3-10 caracteres)"
+                maxLength={10}
+              />
+              {error && <p className="error-message">{error}</p>}
+              <div className="button-group">
+                <button
+                  onClick={handleSaveScore}
+                  disabled={nick.length < 3 || isSaving}
+                >
+                  {isSaving ? 'Salvando...' : 'Confirmar'}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowSaveForm(false);
+                    setError('');
+                  }}
+                  disabled={isSaving}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       )}
-      {levelCheck &&(
-      <div>
-        <p>Modo Infinito desbloqueado</p>
-      </div>
+
+      {saved && <p className="success-message">Score salvo com sucesso!</p>}
+
+      {!levelCheck && (
+        <div className='nameLevel-container'>
+          <label>Próximo Nível:</label>
+          {renderNivelNome()}
+        </div>
+      )}
+
+      {levelCheck && (
+        <div>
+          <p>Modo Infinito desbloqueado</p>
+        </div>
       )}
       <div className="score-container">
         <h2>{trueInfinityMode ? `Sequência: ${progressoInfinito - 1} níveis` : `Score: ${score}`}</h2>
       </div>
     </div>
   );
-}
+};
 
 export default Win;
