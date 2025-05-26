@@ -1,11 +1,11 @@
 .Win button {
+  width:  12rem;
   margin-top: 2rem;
-  width: 10rem;
   background: linear-gradient(to right, #00d2ff, #3a7bd5);
   border: 2px solid #fff;
   border-radius: 8px;
   padding: 8px 20px;
-  font-size: 16px;
+  font-size: 14px;
   color: #ffffff;
   font-weight: bold;
   text-transform: uppercase;
@@ -61,10 +61,11 @@ h1{
     box-shadow: 6px 6px 0 #000;
     text-align: center;
   }
-  
+  .save-container .save-score{
+      width: 12rem;
+  }
   .save-container button{
     background: linear-gradient(to right, #00d2ff, #3a7bd5);
-     width: 10rem;
     border: 2px solid #fff;
     border-radius: 8px;
     padding: 8px 20px;
@@ -75,11 +76,17 @@ h1{
     text-transform: uppercase;
     box-shadow: 4px 4px 0 #000;
     transition: all 0.2s ease-in-out;
-    margin-bottom: 2rem;
   }
   .Win-container button:hover{
      transform: scale(1.05);
     background: linear-gradient(to right, #ff416c, #ff4b2b);
+  }
+  .desbloqueado{
+    color: #ffffff;
+    margin-top: 2rem;
+  }
+  .nameLevel-container {
+    margin-top: 1rem;
   }
   @media (max-width: 450px){
   .Win-container {

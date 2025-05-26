@@ -100,10 +100,10 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
         <button onClick={WinNext}>{levelCheck ? "Menu" :  "Next Level"}</button>
       </div>
 
-  {!saved && (
+  {!saved && levelCheck && (
         <div className='save-container'>
           {!showSaveForm ? (
-            <button onClick={() => setShowSaveForm(true)}>Salvar Score</button>
+            <button className="save-score" onClick={() => setShowSaveForm(true)}>Salvar Score</button>
           ) : (
             <div className='input-container'>
               <input
@@ -146,7 +146,7 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
       )}
 
       {levelCheck && (
-        <div>
+        <div className="desbloqueado">
           <p>Modo Infinito desbloqueado</p>
         </div>
       )}

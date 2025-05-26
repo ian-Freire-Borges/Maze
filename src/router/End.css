@@ -60,12 +60,21 @@ body {
   font-weight: bold;
   text-shadow: 1px 1px 0px #000;
 }
+.end-container .menu-button{
+  font-size: 0.6rem;
+}
+
+  .save-container .end-save{
+    width: 15rem;
+  }
   
 .end-container button {
     background: linear-gradient(to right, #00d2ff, #3a7bd5);
     border: 2px solid #fff;
     border-radius: 8px;
     padding: 16px 32px;
+    width: 15rem;
+    height: 2.5rem;
     font-size: 16px;
     color: #fff;
     font-weight: bold;
@@ -117,8 +126,15 @@ body {
     display: flex;
     margin-top: 1rem;
     gap: 1rem;
-    
+    align-self: center;
+    align-content: center;
+    align-items: center;
   }
+  .button-group button{
+    width: 10rem;
+    height: 2.4rem;
+  }
+ 
 
 @media (max-width: 450px){
   .end-container {
@@ -133,4 +149,5 @@ body {
     gap: 0.5rem;
     
   }
+ 
 }

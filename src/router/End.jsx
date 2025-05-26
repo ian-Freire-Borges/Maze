@@ -47,12 +47,12 @@ function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
   return (
     <div className="end-container">
       <h1 className="end-title">You Lose!</h1>
-      <button onClick={() => setScreen("MENU")}>Voltar para o menu</button>
+      <button className="menu-button" onClick={() => setScreen("MENU")}>Voltar para o menu</button>
 
       {!saved && (
         <div className='save-container'>
           {!showSaveForm ? (
-            <button onClick={() => setShowSaveForm(true)}>Save Score</button>
+            <button className="end-save"onClick={() => setShowSaveForm(true)}>Save Score</button>
           ) : (
             <div className='input-container'>
               <input
