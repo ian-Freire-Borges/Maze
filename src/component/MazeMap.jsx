@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import mapaMobileLv1 from "../../public/Mobile1.json"  // 17 x 33
-import mapaMobileLv2 from "../../public/Mobile2.json"  // 23 x 45
-import mapaMobileLv3 from "../../public/Mobile3.json"  // 27 x 51
-import mapaMobileLv4 from "../../public/Mobile4.json"  // 31 x 57
-import matrizes1 from '../../public/mapaNv1.json' // 47 x 23 
-import matrizes2 from '../../public/mapaNv2.json';  // 51 x 25 
-import matrizes3 from '../../public/mapaNv3.json';  // 59 x 29 
-import matrizes4 from "../../public/mapaNv4.json";   // 63 x 31 
-import demo from '../../public/mapaForDemo.json';   // 63 x 31 
+import mapaMobileLv1 from "../../public/Mobile1.json";  
+import mapaMobileLv2 from "../../public/Mobile2.json"; 
+import mapaMobileLv3 from "../../public/Mobile3.json";
+import mapaMobileLv4 from "../../public/Mobile4.json";
+import matrizes1 from '../../public/mapaNv1.json';
+import matrizes2 from '../../public/mapaNv2.json';  
+import matrizes3 from '../../public/mapaNv3.json';   
+import matrizes4 from "../../public/mapaNv4.json";   
+import demo from '../../public/mapaForDemo.json';   
 
 export default function useMaze(nivel) {
   const escolherMatrizes = () => {
