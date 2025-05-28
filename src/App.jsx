@@ -19,6 +19,8 @@ import musicLv3 from './assets/Music/Level3Music.mp3'
 import musicLv4 from './assets/Music/Level4Music.mp3'
 import musicVictory from './assets/Music/victory.mp3'
 import musicEnd from './assets/Music/endMusic.mp3'
+import coindSound from './assets/Music/coin-recieved-230517.mp3'
+import PowerSound from './assets/Music/power-up-type-1-230548.mp3'
 
 
 function App() { 
@@ -37,18 +39,40 @@ function App() {
   const [audioSrc, setAudioSrc] = useState(musicMenu);
   const [hasClicked, setHasClicked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+   const coinAudioRef = useRef(null);
+  const powerAudioRef = useRef(null);
 
 useEffect(() => {
   if (audioRef.current) {
     audioRef.current.volume = 0.1;
-
     if (isPlaying) {
       audioRef.current.play().catch(console.warn);
     } else {
       audioRef.current.pause();
     }
   }
-}, [isPlaying,audioSrc]);
+
+  // Controla os efeitos sonoros
+  if (coinAudioRef.current) {
+    coinAudioRef.current.volume = isPlaying ? 0.4 : 0;
+    if (!isPlaying) coinAudioRef.current.pause();
+  }
+
+  if (powerAudioRef.current) {
+    powerAudioRef.current.volume = isPlaying ? 0.4 : 0;
+    if (!isPlaying) powerAudioRef.current.pause();
+  }
+
+}, [isPlaying, audioSrc]);
+
+useEffect(() => {
+  coinAudioRef.current = new Audio(coindSound);
+  powerAudioRef.current = new Audio(PowerSound);
+  powerAudioRef.current.preload = 'auto'
+  powerAudioRef.current.volume = 0.4;
+  coinAudioRef.current.preload = 'auto';
+  coinAudioRef.current.volume = 0.4;
+}, []);
 
 useEffect(() => {
   if(screen === "MAZE"){
@@ -158,7 +182,7 @@ useEffect(() => {
      <audio ref={audioRef} src={audioSrc} />
       {screen === 'MENU' && (<Menu setScreen={setScreen} setMazeKey={setMazeKey} gerarNovoMaze={gerarNovoMaze} setNivel={setNivel} nivel={nivel} setScore={setScore} setDevMove={setDevMove} devMode={devMode} infinityMode={infinityMode} trueInfinityMode={trueInfinityMode} setTrueInfinityMode={setTrueInfinityMode}setProgressoInfinito={setProgressoInfinito} setIsPlaying={setIsPlaying} isPlaying={isPlaying}/>)}
 
-      {screen === 'MAZE' && (<div key={mazeKey}><MazePage mazeLayout={mazeLayout} setScreen={setScreen} setGameResult={setGameResult} nivel={nivel} setScore={setScore} score={score} devMode={devMode}/></div>)}
+      {screen === 'MAZE' && (<div key={mazeKey}><MazePage mazeLayout={mazeLayout} setScreen={setScreen} setGameResult={setGameResult} nivel={nivel} setScore={setScore} score={score} devMode={devMode} coinAudioRef={coinAudioRef} powerAudioRef={powerAudioRef}/></div>)}
 
       {screen === 'END' && (<End setScreen={setScreen} gameResult={gameResult} score={score} trueInfinityMode={trueInfinityMode} nivel={nivel} progressoInfinito={progressoInfinito}/>)}
 

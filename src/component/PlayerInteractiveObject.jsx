@@ -6,8 +6,7 @@ import cristalBlue from '../assets/blue_crystal_0000.png';
 import cristalRed from '../assets/red_crystal_0000.png';
 import cristalGreen from '../assets/green_crystal_0000.png';
 import cristalPink from '../assets/pink_crystal_0000.png';
-import coindSound from '../assets/Music/coin-recieved-230517.mp3'
-import PowerSound from '../assets/Music/power-up-type-1-230548.mp3'
+
 
 const SPRITE_FRAME_COUNT = 6;
 const POWER_FRAME_COUNT = 4;
@@ -22,7 +21,9 @@ export default function RenderCoins({
   setExitFound,
   win,
   powerPickRef,
-  stepOutOfPowerRef
+  stepOutOfPowerRef,
+  coinAudioRef,
+  powerAudioRef
 }) {
  
   const spriteSheetRef = useRef(null);
@@ -40,18 +41,9 @@ export default function RenderCoins({
   const { cellWidth, cellHeight } = cellDimensions;
   const spriteSize = Math.min(cellWidth, cellHeight) * 1.1;
   
-  const coinAudioRef = useRef(null);
-  const powerAudioRef = useRef(null);
 
 
-useEffect(() => {
-  coinAudioRef.current = new Audio(coindSound);
-  powerAudioRef.current = new Audio(PowerSound);
-  powerAudioRef.current.preload = 'auto'
-  powerAudioRef.current.volume = 0.4;
-  coinAudioRef.current.preload = 'auto';
-  coinAudioRef.current.volume = 0.4;
-}, []);
+
 
 const playCoinSound = () => {
   if (coinAudioRef.current) {
@@ -125,6 +117,29 @@ if (!startPos && emptyCells.length > 0) {
       }
     }
 
+        function getManhattanDistance(a, b) {
+    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  }
+
+  let maxDistance = -1;
+  let farthestCellIndex = -1;
+
+  for (let i = 0; i < emptyCells.length; i++) {
+    const dist = getManhattanDistance(startPos, emptyCells[i]);
+    if (dist > maxDistance) {
+      maxDistance = dist;
+      farthestCellIndex = i;
+    }
+  }
+
+  if (farthestCellIndex !== -1) {
+    doorPosition = emptyCells.splice(farthestCellIndex, 1)[0];
+  }
+
+
+
+
+
     for (let i = 0; i < mutiCoin && emptyCells.length > 0; i++) {
       const index = Math.floor(Math.random() * emptyCells.length);
       positions.push(emptyCells.splice(index, 1)[0]);
@@ -156,29 +171,10 @@ if (!startPos && emptyCells.length > 0) {
       }
     }
 
-    function getManhattanDistance(a, b) {
-    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
-  }
-
-  let maxDistance = -1;
-  let farthestCellIndex = -1;
-
-  for (let i = 0; i < emptyCells.length; i++) {
-    const dist = getManhattanDistance(startPos, emptyCells[i]);
-    if (dist > maxDistance) {
-      maxDistance = dist;
-      farthestCellIndex = i;
-    }
-  }
-
-  if (farthestCellIndex !== -1) {
-    doorPosition = emptyCells.splice(farthestCellIndex, 1)[0];
-  }
-    
-
     poweUpPositionRef.current = poweUpPosition;
     doorPositionsRef.current = doorPosition;
     itemPositionsRef.current = positions;
+    
   }
 
   useEffect(() => {

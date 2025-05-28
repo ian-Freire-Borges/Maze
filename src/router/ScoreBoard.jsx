@@ -28,7 +28,7 @@ const ScoreBoard = ({ setScreen }) => {
   return (
     <div className="scoreboard-wrapper">
       <div className="scoreboard-container">
-        <h2>{viewNivel ? 'Top 10 Modo Infinito' : 'Top 10 Scores'}</h2>
+        <h2>{viewNivel ? 'Top 10 Infinite Mode' : 'Top 10 Scores'}</h2>
 
         {loading ? (
           <p>Carregando...</p>
@@ -45,9 +45,9 @@ const ScoreBoard = ({ setScreen }) => {
         )}
 
         <div className="back-buttonS">
-          <button onClick={() => setScreen('MENU')}>Voltar</button>
+          <button onClick={() => setScreen('MENU')}>Back</button>
           <button onClick={() => setViewNivel(!viewNivel)}>
-            {viewNivel ? 'Score Normal' : 'Score Infinito'}
+            {viewNivel ? ' Normal Score' : ' Infinite Score'}
           </button>
         </div>
       </div>

@@ -39,9 +39,9 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
       setPassWord("");   
       setDevMove(true);
       setDevModeForm(false);
-      alert("Bem vindo Dev!");
+      alert("Welcome, Dev!");
     } else {
-      alert("Senha incorreta!");
+      alert("Incorrect password!");
       setPassWord(""); 
     }
   };
@@ -117,18 +117,18 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
         <div className='input-container'>
           <input 
             type="password" 
-            placeholder="Digite a senha de desenvolvedor"  
+            placeholder="Enter the developer password"  
             onChange={(e) => setPassWord(e.target.value)} 
             maxLength={10} 
             value={passWord}
           />
           <div className="button-group">
-            <button onClick={ativarDevMod}>Confirmar</button>
+            <button onClick={ativarDevMod}>Confirm</button>
             <button onClick={() => {
               setPassWord("");   
               setDevModeForm(false);
             }}>
-              Cancelar
+              Cancel
             </button>
           </div>
         </div>
@@ -138,7 +138,7 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
         <div>
           {devMode && (
             <div className='opçoes'>
-              <label htmlFor="Nivel">Escolha um Nivel:</label>
+              <label htmlFor="Nivel">Choose a Level</label>
               <select 
                 id="nivel" 
                 name="nivel"
@@ -156,7 +156,7 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
           
           {!devMode && (
             <div className='nameLevel-container'>
-              <label>Nível Atual:</label>
+              <label>Current Level</label>
               {renderNivelNome()}
             </div>
           )}

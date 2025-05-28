@@ -1,6 +1,6 @@
 import "./Win.css";
 import api from "../api";
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useRef } from 'react';
 
 const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, levelCheck, setLevelCheck, trueInfinityMode,progressoInfinito,setProgressoInfinito}) => {
   const [showSaveForm, setShowSaveForm] = useState(false);
@@ -8,19 +8,20 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const didAdvanceLevel = useRef(false);
 
   const randomNivel = () => Math.max(1, Math.floor(Math.random() * 4) + 1);
 
   useEffect(() => {
+     if (didAdvanceLevel.current) return;
+    didAdvanceLevel.current = true;
     if(trueInfinityMode) {
       setProgressoInfinito(prev => {
         const novoProgresso = prev + 1;
-        console.log(`Progresso atualizado: ${novoProgresso}`);
         return novoProgresso;
       });
       
       const novoNivel = randomNivel();
-      console.log(`Novo nível sorteado: ${novoNivel}`);
       setNivel(novoNivel);
       setMazeKey(prev => prev + 1);
       gerarNovoMaze();
@@ -37,7 +38,7 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
 
     const handleSaveScore = async () => {
     if (nick.length < 3 || nick.length > 10) {
-      setError('Nick deve ter entre 3 e 10 caracteres.');
+      setError("Nickname must be between 3 and 10 characters.");
       return;
     }
 
@@ -57,11 +58,10 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
         setShowSaveForm(false);
         setNick('');
       } else {
-        throw new Error('Resposta inválida do servidor');
+        throw new Error("Invalid response from the server");
       }
     } catch (err) {
-      console.error('Erro ao salvar score:', err);
-      setError(err.response?.data?.error || 'Erro ao salvar score. Tente novamente mais tarde.');
+      setError(err.response?.data?.error || "Error saving score. Please try again later.");
     } finally {
       setIsSaving(false);
     }
@@ -97,20 +97,20 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
     <div className="Win-container">
       <h1>{levelCheck ? "victory" :  "Winner Chicken Dinner"}</h1>
       <div className='Win'>
-        <button onClick={WinNext}>{levelCheck ? "Menu" :  "Next Level"}</button>
+        <button onClick={WinNext}>{levelCheck ? "Menu" :  "Next >>"}</button>
       </div>
 
   {!saved && levelCheck && (
         <div className='save-container'>
           {!showSaveForm ? (
-            <button className="save-score" onClick={() => setShowSaveForm(true)}>Salvar Score</button>
+            <button className="save-score" onClick={() => setShowSaveForm(true)}>Save Score</button>
           ) : (
             <div className='input-container'>
               <input
                 type="text"
                 value={nick}
                 onChange={(e) => setNick(e.target.value)}
-                placeholder="Seu nick (3-10 caracteres)"
+                placeholder="Your nickname (3–10 characters)"
                 maxLength={10}
               />
               {error && <p className="error-message">{error}</p>}
@@ -119,7 +119,7 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
                   onClick={handleSaveScore}
                   disabled={nick.length < 3 || isSaving}
                 >
-                  {isSaving ? 'Salvando...' : 'Confirmar'}
+                  {isSaving ? 'Saving...' : 'Confirm'}
                 </button>
                 <button
                   onClick={() => {
@@ -128,7 +128,7 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
                   }}
                   disabled={isSaving}
                 >
-                  Cancelar
+                  Cancel
                 </button>
               </div>
             </div>
@@ -136,22 +136,22 @@ const Win = ({ setScreen,score, nivel, setNivel, setMazeKey, gerarNovoMaze, leve
         </div>
       )}
 
-      {saved && <p className="success-message">Score salvo com sucesso!</p>}
+      {saved && <p className="success-message">Score saved successfully!</p>}
 
       {!levelCheck && (
         <div className='nameLevel-container'>
-          <label>Próximo Nível:</label>
+          <label>Next Level</label>
           {renderNivelNome()}
         </div>
       )}
 
       {levelCheck && (
         <div className="desbloqueado">
-          <p>Modo Infinito desbloqueado</p>
+          <p>Infinite Mode unlocked</p>
         </div>
       )}
       <div className="score-container">
-        <h2>{trueInfinityMode ? `Sequência: ${progressoInfinito - 1} níveis` : `Score: ${score}`}</h2>
+        <h2>{trueInfinityMode ? `Sequence: ${progressoInfinito - 1} levels` : `Score: ${score}`}</h2>
       </div>
     </div>
   );

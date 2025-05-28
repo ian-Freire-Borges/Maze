@@ -34,11 +34,10 @@ function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
         setShowSaveForm(false);
         setNick('');
       } else {
-        throw new Error('Resposta inválida do servidor');
+        throw new Error('Invalid response from the server');
       }
     } catch (err) {
-      console.error('Erro ao salvar score:', err);
-      setError(err.response?.data?.error || 'Erro ao salvar score. Tente novamente mais tarde.');
+      setError(err.response?.data?.error || 'Error saving score. Please try again later.');
     } finally {
       setIsSaving(false);
     }
@@ -47,7 +46,7 @@ function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
   return (
     <div className="end-container">
       <h1 className="end-title">You Lose!</h1>
-      <button className="menu-button" onClick={() => setScreen("MENU")}>Voltar para o menu</button>
+      <button className="menu-button" onClick={() => setScreen("MENU")}>Back to menu</button>
 
       {!saved && (
         <div className='save-container'>
@@ -59,7 +58,7 @@ function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
                 type="text"
                 value={nick}
                 onChange={(e) => setNick(e.target.value)}
-                placeholder="Seu nick (3-10 caracteres)"
+                placeholder="Your nickname (3–10 characters)"
                 maxLength={10}
               />
               {error && <p className="error-message">{error}</p>}
@@ -68,7 +67,7 @@ function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
                   onClick={handleSaveScore}
                   disabled={nick.length < 3 || isSaving}
                 >
-                  {isSaving ? 'Salvando...' : 'Confirmar'}
+                  {isSaving ? 'Salvando...' : 'Confirm'}
                 </button>
                 <button 
                   onClick={() => {
@@ -77,7 +76,7 @@ function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
                   }}
                   disabled={isSaving}
                 >
-                  Cancelar
+                  Cancel
                 </button>
               </div>
             </div>
@@ -85,7 +84,7 @@ function End({ setScreen, score, trueInfinityMode, progressoInfinito }) {
         </div>
       )}
 
-      {saved && <p className="success-message">Score salvo com sucesso!</p>}
+      {saved && <p className="success-message">Score was saved successfully!</p>}
 
       <div className='score-container'>
         <h2>{trueInfinityMode ? `Progresso: Nível ${progressoInfinito}` : `Score: ${score}`}</h2>
