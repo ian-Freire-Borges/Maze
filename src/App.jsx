@@ -70,20 +70,31 @@ useEffect(() => {
       audioRef.current.volume = 0.1;
       audioRef.current.play().catch(console.warn);
     } else {
-      audioRef.current.volume = 0;
       audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.volume = 0;
     }
   }
 
-  // Controla os efeitos sonoros também, com base no isPlaying e hasClicked
+  // Controla os efeitos sonoros com reset completo
   if (coinAudioRef.current) {
-    coinAudioRef.current.volume = (isPlaying && hasClicked) ? 0.4 : 0;
-    if (!isPlaying || !hasClicked) coinAudioRef.current.pause();
+    if (isPlaying && hasClicked) {
+      coinAudioRef.current.volume = 0.4;
+    } else {
+      coinAudioRef.current.pause();
+      coinAudioRef.current.currentTime = 0;
+      coinAudioRef.current.volume = 0;
+    }
   }
 
   if (powerAudioRef.current) {
-    powerAudioRef.current.volume = (isPlaying && hasClicked) ? 0.4 : 0;
-    if (!isPlaying || !hasClicked) powerAudioRef.current.pause();
+    if (isPlaying && hasClicked) {
+      powerAudioRef.current.volume = 0.4;
+    } else {
+      powerAudioRef.current.pause();
+      powerAudioRef.current.currentTime = 0;
+      powerAudioRef.current.volume = 0;
+    }
   }
 
 }, [isPlaying, audioSrc, hasClicked]);
