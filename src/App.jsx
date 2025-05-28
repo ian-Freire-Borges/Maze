@@ -43,6 +43,28 @@ function App() {
   const powerAudioRef = useRef(null);
 
 useEffect(() => {
+  const handleUnlockAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.1;
+      audioRef.current.play().catch(() => {
+        // Ignora erro (normal no mobile se não houver interação)
+      });
+    }
+    window.removeEventListener('click', handleUnlockAudio);
+    window.removeEventListener('touchstart', handleUnlockAudio);
+  };
+
+  window.addEventListener('click', handleUnlockAudio, { once: true });
+  window.addEventListener('touchstart', handleUnlockAudio, { once: true });
+
+  return () => {
+    window.removeEventListener('click', handleUnlockAudio);
+    window.removeEventListener('touchstart', handleUnlockAudio);
+  };
+}, []);
+
+
+useEffect(() => {
   if (audioRef.current) {
     audioRef.current.volume = 0.1;
     if (isPlaying) {
@@ -112,7 +134,7 @@ useEffect(() => {
   const handleUserClick = () => {
     if (audioRef.current && isPlaying) {
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.012;
+      audioRef.current.volume = 0.1;
       audioRef.current.play().catch(console.warn);
     }
     setHasClicked(true);
