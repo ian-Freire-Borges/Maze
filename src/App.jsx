@@ -66,26 +66,27 @@ useEffect(() => {
 
 useEffect(() => {
   if (audioRef.current) {
-    audioRef.current.volume = 0.1;
-    if (isPlaying) {
+    if (isPlaying && hasClicked) {
+      audioRef.current.volume = 0.1;
       audioRef.current.play().catch(console.warn);
     } else {
+      audioRef.current.volume = 0;
       audioRef.current.pause();
     }
   }
 
-  // Controla os efeitos sonoros
+  // Controla os efeitos sonoros também, com base no isPlaying e hasClicked
   if (coinAudioRef.current) {
-    coinAudioRef.current.volume = isPlaying ? 0.4 : 0;
-    if (!isPlaying) coinAudioRef.current.pause();
+    coinAudioRef.current.volume = (isPlaying && hasClicked) ? 0.4 : 0;
+    if (!isPlaying || !hasClicked) coinAudioRef.current.pause();
   }
 
   if (powerAudioRef.current) {
-    powerAudioRef.current.volume = isPlaying ? 0.4 : 0;
-    if (!isPlaying) powerAudioRef.current.pause();
+    powerAudioRef.current.volume = (isPlaying && hasClicked) ? 0.4 : 0;
+    if (!isPlaying || !hasClicked) powerAudioRef.current.pause();
   }
 
-}, [isPlaying, audioSrc]);
+}, [isPlaying, audioSrc, hasClicked]);
 
 useEffect(() => {
   coinAudioRef.current = new Audio(coindSound);
