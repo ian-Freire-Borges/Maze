@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
   import PlayerInteractiveObject from './PlayerInteractiveObject';
 
 
-  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef,tick,playerPositionRef,coinAudioRef,powerAudioRef}) {
+  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef,tick,playerPositionRef,coinAudioRef,powerAudioRef,isPlaying}) {
     const [playerPosition, setPlayerPosition] = useState([]);
     const [moveDirection, setMoveDirection] = useState(null);
     const [lastValidDirection, setLastValidDirection] = useState("down");
