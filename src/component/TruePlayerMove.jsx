@@ -312,6 +312,7 @@ import React, { useState, useEffect, useRef } from 'react';
         stepOutOfPowerRef={stepOutOfPowerRef}
         coinAudioRef={coinAudioRef}
         powerAudioRef={powerAudioRef}
+        isPlaying={isPlaying}
         />
       </>
     );

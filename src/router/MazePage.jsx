@@ -8,7 +8,7 @@ import speedUp from "../assets/speedup.png";
 import TrueEnemyMove from '../component/TrueEnemyMove';
 import volta from "../assets/voltar.png";
 
-export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, setScore, score, devMode,coinAudioRef,powerAudioRef}) {
+export default function MazePage({ mazeLayout, setScreen, setGameResult, nivel, setScore, score, devMode,coinAudioRef,powerAudioRef,isPlaying}) {
   const [maze, setMaze] = useState(mazeLayout);
   const [exitFound, setExitFound] = useState(false);
   const [moveSpeed, setMoveSpeed] = useState(150);
@@ -143,6 +143,7 @@ useEffect(() => {
              playerPositionRef={playerPositionRef}
             coinAudioRef={coinAudioRef}
             powerAudioRef={powerAudioRef}
+            isPlaying={isPlaying}
           />
         )}
 

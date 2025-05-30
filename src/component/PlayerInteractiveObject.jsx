@@ -23,7 +23,8 @@ export default function RenderCoins({
   powerPickRef,
   stepOutOfPowerRef,
   coinAudioRef,
-  powerAudioRef
+  powerAudioRef,
+  isPlaying
 }) {
  
   const spriteSheetRef = useRef(null);
@@ -46,16 +47,20 @@ export default function RenderCoins({
 
 
 const playCoinSound = () => {
+  if(isPlaying){
   if (coinAudioRef.current) {
     coinAudioRef.current.currentTime = 0;
     coinAudioRef.current.play();
   }
+}
 };
 const playPowerSound = () => {
+    if(isPlaying){
   if (powerAudioRef.current) {
      powerAudioRef.current.currentTime = 0;
     powerAudioRef.current.play();
   }
+}
 };
 
   let mutiCoin;
