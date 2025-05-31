@@ -125,6 +125,7 @@ O personagem é um agente virtual que:
 - Placar online:
   - Integrado com API REST
   - Ranking separado para modos **Normal** e **Infinito**
+  - Toda a pontuação permanece salva no banco de dados MongoDB
 
 ---
 
@@ -139,10 +140,22 @@ O personagem é um agente virtual que:
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🧠 Tecnologias e Funcionalidades
 
+### Frontend
 - ⚛️ **React** – Interface e gerenciamento de estado  
 - 🎨 **p5.js** – Renderização do labirinto e animações do personagem  
 - 💅 **CSS Customizado** – Visual retrô e estilo pixel art  
 - 💾 **localStorage** – Armazenamento de progresso local  
-- 🌐 **API Backend** – Integração com placar online (API externa, não incluída no repositório)  
+
+### Backend (Node.js + MongoDB + Prisma)
+- 🔐 **Autenticação JWT** – Middleware de autenticação com tokens JWT para proteger rotas  
+- 🛡️ **dotenv** – Gerenciamento seguro de variáveis de ambiente  
+- 🗃️ **MongoDB** – Banco de dados NoSQL para persistência de dados dos usuários, jogadores e níveis  
+- 📦 **Prisma Client** – ORM com suporte ao MongoDB para manipulação segura e tipada dos dados  
+- 🌐 **API RESTful** – Estrutura modular com rotas, middlewares e controle de acesso  
+- 📁 **Organização de pastas** – Separação de responsabilidades em `middlewares/`, `routes/`, `prisma/`, entre outras  
+
+> ⚠️ A API backend é externa e não está incluída diretamente neste repositório, mas está integrada ao frontend para funcionalidades como login, placar online e gerenciamento de níveis.
+
+> 🌐 **A API pode ser acessada em:** [https://github.com/ianmenezesss/MazeApi](https://github.com/ianmenezesss/MazeApi)
