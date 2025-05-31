@@ -55,10 +55,10 @@ export default function TrueEnemyMove({
     if(enemyDeadRef.current){return}
     const currentMaze = mazeRef.current;
     const directions = [
-      { dx: -1, dy: 0 }, // esquerda
-      { dx: 1, dy: 0 },  // direita
-      { dx: 0, dy: -1 }, // cima
-      { dx: 0, dy: 1 }   // baixo
+      { posX: -1, PosY: 0 }, // esquerda
+      { posX: 1, PosY: 0 },  // direita
+      { posX: 0, PosY: -1 }, // cima
+      { posX: 0, PosY: 1 }   // baixo
     ];
     if(playerAlert){
        emenyPassRef.current++
@@ -66,17 +66,17 @@ export default function TrueEnemyMove({
         setPlayerAlert(false)
        emenyPassRef.current=0}
     }
-     for (const { dx, dy } of directions) {
-      const newX = currentPos.x + dx;
-      const newY = currentPos.y + dy;
+     for (const { posX, PosY } of directions) {
+      const newX = currentPos.x + posX;
+      const newY = currentPos.y + PosY;
       const key = `${newX},${newY}`;
 
       if(!playerAlert && enemyId === 2){
       if (currentMaze[newY]?.[newX] === 0 || currentMaze[newY]?.[newX] === 2) {
-            let dx2 = dx;
-            let dy2 = dy;
-            while (currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 0 || currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 2) {
-              if (currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 2) {
+            let posX2 = posX;
+            let PosY2 = PosY;
+            while (currentMaze[currentPos.y + PosY2]?.[currentPos.x + posX2] === 0 || currentMaze[currentPos.y + PosY2]?.[currentPos.x + posX2] === 2) {
+              if (currentMaze[currentPos.y + PosY2]?.[currentPos.x + posX2] === 2) {
                 console.log("eedsasadasd")
                  setPlayerAlert(true)
                 return;
@@ -84,8 +84,8 @@ export default function TrueEnemyMove({
               
              
     
-                   dx2 += dx;
-                  dy2 += dy;
+                   posX2 += posX;
+                  PosY2 += PosY;
               }
            
           }
@@ -167,10 +167,10 @@ useEffect(() => {
   const tryMoveEnemy = (currentPos) => {
     const currentMaze = mazeRef.current;
     const directions = [
-      { dx: -1, dy: 0 }, // esquerda
-      { dx: 1, dy: 0 },  // direita
-      { dx: 0, dy: -1 }, // cima
-      { dx: 0, dy: 1 }   // baixo
+      { posX: -1, PosY: 0 }, // esquerda
+      { posX: 1, PosY: 0 },  // direita
+      { posX: 0, PosY: -1 }, // cima
+      { posX: 0, PosY: 1 }   // baixo
     ];
     cechkPlayerImpact (enemyPosRef.current)
           
@@ -196,9 +196,9 @@ useEffect(() => {
     }
 
     // Tenta mover em todas as direções
-    for (const { dx, dy } of directions) {
-      const newX = currentPos.x + dx;
-      const newY = currentPos.y + dy;
+    for (const { posX, PosY } of directions) {
+      const newX = currentPos.x + posX;
+      const newY = currentPos.y + PosY;
       const key = `${newX},${newY}`;
 
 
@@ -209,20 +209,20 @@ useEffect(() => {
 
 
       if (currentMaze[newY]?.[newX] === 0 && !visitedRef.current.has(key)) {
-        moveEnemy(currentPos, newX, newY, dx);
+        moveEnemy(currentPos, newX, newY, posX);
         return true;
       }
       
       
     }
     if (enemyId === 3 && !jumpCooldownRef.current) {
-  for (const { dx, dy } of directions) {
-    const newX = currentPos.x + dx;
-    const newY = currentPos.y + dy;
+  for (const { posX, PosY } of directions) {
+    const newX = currentPos.x + posX;
+    const newY = currentPos.y + PosY;
 
     if (currentMaze[newY]?.[newX] === 1) { // Se for obstáculo, tenta pular
-      const teleportY = newY + dy;
-      const teleportX = newX + dx;
+      const teleportY = newY + PosY;
+      const teleportX = newX + posX;
 
       if (
         teleportY >= 0 && teleportY < currentMaze.length &&
@@ -230,7 +230,7 @@ useEffect(() => {
         currentMaze[teleportY][teleportX] === 0 &&
         !visitedRef.current.has(`${teleportX},${teleportY}`)
       ) {
-        moveEnemy(currentPos, teleportX, teleportY, dx);
+        moveEnemy(currentPos, teleportX, teleportY, posX);
         jumpCooldownRef.current = true;
         return true;
       }
@@ -242,10 +242,10 @@ useEffect(() => {
     return false;
   };
 
-  const moveEnemy = (currentPos, newX, newY, dx) => {
+  const moveEnemy = (currentPos, newX, newY, posX) => {
     // Atualiza a direção
-    if (dx < 0) setMoveDirection("left");
-    if (dx > 0) setMoveDirection("right");
+    if (posX < 0) setMoveDirection("left");
+    if (posX > 0) setMoveDirection("right");
 
     // Atualiza o labirinto e a posição
     setMaze(prevMaze => {

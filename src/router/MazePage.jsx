@@ -132,7 +132,6 @@ useEffect(() => {
             setMaze={setMaze}
             setExitFound={setExitFound}
             exitFound={exitFound}
-            moveSpeed={moveSpeed}
             isAutoMoving={isAutoMoving}
             cellDimensions={cellDimensions}
             setScore={setScore}

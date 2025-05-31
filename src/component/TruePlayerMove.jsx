@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
   import PlayerInteractiveObject from './PlayerInteractiveObject';
 
 
-  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, moveSpeed, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef,tick,playerPositionRef,coinAudioRef,powerAudioRef,isPlaying}) {
+  export default function TruePlayerMove({ setScreen, setGameResult, maze, setMaze, setExitFound, exitFound, isAutoMoving, cellDimensions, setScore,mazeRef,nivel,powerPickRef,tick,playerPositionRef,coinAudioRef,powerAudioRef,isPlaying}) {
     const [playerPosition, setPlayerPosition] = useState([]);
     const [moveDirection, setMoveDirection] = useState(null);
     const [lastValidDirection, setLastValidDirection] = useState("down");
@@ -52,10 +52,10 @@ import React, { useState, useEffect, useRef } from 'react';
     const tryMovePlayer = (currentPos) => {
       const currentMaze = mazeRef.current;
       const directions = [
-        { dx: -1, dy: 0, dir: "left" },
-        { dx: 1, dy: 0, dir: "right" },
-        { dx: 0, dy: -1, dir: "up" },
-        { dx: 0, dy: 1, dir: "down" }
+        { posX: -1, posY: 0, dir: "left" },
+        { posX: 1, posY: 0, dir: "right" },
+        { posX: 0, posY: -1, dir: "up" },
+        { posX: 0, posY: 1, dir: "down" }
       ];
 
      
@@ -86,27 +86,24 @@ import React, { useState, useEffect, useRef } from 'react';
 
       if(!playerPanic.current && !powerPickRef.current){
       if (!enemyAlertRef.current) {
-        for (const { dx, dy } of directions) {
-          const newX = currentPos.x + dx;
-          const newY = currentPos.y + dy;
+        for (const { posX, posY } of directions) {
+          const newX = currentPos.x + posX;
+          const newY = currentPos.y + posY;
           const key = `${newX},${newY}`; 
 
           
           if (currentMaze[newY]?.[newX] === 0 || currentMaze[newY]?.[newX] === 4) {
-            let dx2 = dx;
-            let dy2 = dy;
+            let dx2 = posX;
+            let dy2 = posY;
             while (currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 0 || currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 4) {
               if (currentMaze[currentPos.y + dy2]?.[currentPos.x + dx2] === 4) {
-                console.log("🚨");
                 if(back.current===true){
-                  console.log("🚨alerta back panic");
                 superVisited.current.clear();
                 superVisited.current.add(key);
                 superVisited.current.add(`${currentPos.x},${currentPos.y}`);
                 playerPanic.current = true; 
                 return;
                 }else{
-                  console.log("🚨 ALERTA! Inimigo detectado!");
                 visited.current.add(key);
                 enemyAlertRef.current = true;
                 pathStackCloneRef.current = [...pathStackRef.current];
@@ -115,17 +112,17 @@ import React, { useState, useEffect, useRef } from 'react';
                 }
                 
               }
-              dx2 += dx;
-              dy2 += dy;
+              dx2 += posX;
+              dy2 += posY;
             }
           }
         }
       }
     }
 
-      for (const { dx, dy, dir } of directions) {
-        const newX = currentPos.x + dx;
-        const newY = currentPos.y + dy;
+      for (const { posX, posY, dir } of directions) {
+        const newX = currentPos.x + posX;
+        const newY = currentPos.y + posY;
         const key = `${newX},${newY}`;
 
        
@@ -135,16 +132,12 @@ import React, { useState, useEffect, useRef } from 'react';
         )  
         {
           back.current=false
-          console.log("front");
           if (enemyAlertRef.current) {
             const last = Array.from(visited.current).at(-1);
             if (last) {
-              console.log("daletei utimo visited");
               visited.current.delete(last);
             }
             enemyAlertRef.current = false;
-            console.log("tirei alerta");
-            console.log(enemyAlertRef.current);
           }
           
           setMaze(prevMaze => {
@@ -165,7 +158,6 @@ import React, { useState, useEffect, useRef } from 'react';
                   superVisited.current.clear();
                   playerPanic.current=false;
                   stepOutofPanic.current=0;
-                  console.log("saiu do panico")
                   stepsInPanic.current = 0;
                 }
             }
@@ -194,28 +186,23 @@ import React, { useState, useEffect, useRef } from 'react';
         if(stepOutofPanic.current!=stepsInPanic.current){
           superVisited.current.clear();
           playerPanic.current=false
-          console.log("saiu do panico no back")
           stepsInPanic.current = 0;
           stepOutofPanic.current = 0;
         }
         return ;
       }
-      console.log("back ativado")
       if (pathStackRef.current.length <= 1) {
         visited.current.clear();
-        console.log("🚨🚨🚨🚨🚨🚨todas visited linpo")
         return;
       }
 
       let newPath, prevPos;
 
       if (enemyAlertRef.current) {
-        console.log("alerta ativado no back")
         newPath = pathStackCloneRef.current.slice(0, -1);
         if (newPath.length === 0) {
             const last = Array.from(visited.current).at(-1);
             if (last) {
-              console.log("daletei utimo visited");
               visited.current.delete(last);
             }
           enemyAlertRef.current = false
@@ -232,17 +219,16 @@ import React, { useState, useEffect, useRef } from 'react';
       }
 
       
-      console.log("back ativado")
     
-      const dx = prevPos.x - playerPositionRef.current.x;
-      const dy = prevPos.y - playerPositionRef.current.y;
+      const posX = prevPos.x - playerPositionRef.current.x;
+      const posY = prevPos.y - playerPositionRef.current.y;
       
 
       let dir = null;
-      if (dx === -1) dir = "left";
-      else if (dx === 1) dir = "right";
-      else if (dy === -1) dir = "up";
-      else if (dy === 1) dir = "down";
+      if (posX === -1) dir = "left";
+      else if (posX === 1) dir = "right";
+      else if (posY === -1) dir = "up";
+      else if (posY === 1) dir = "down";
 
 
     if(enemyAlertRef.current && currentMaze[prevPos.y][prevPos.x]  ){
