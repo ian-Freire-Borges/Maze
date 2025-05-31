@@ -69,12 +69,12 @@ const playPowerSound = () => {
   switch (nivel) {
     case 1:
       mutiCoin = 4;
-      mutiPowe = 8;
+      mutiPowe = 7;
       cristal = cristalGreen;
       break;
     case 2:
       mutiCoin = 6;
-      mutiPowe = 9;
+      mutiPowe = 8;
       cristal = cristalPink;
       break;
     case 3:

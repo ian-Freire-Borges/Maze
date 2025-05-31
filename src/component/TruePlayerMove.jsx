@@ -213,6 +213,11 @@ import React, { useState, useEffect, useRef } from 'react';
         console.log("alerta ativado no back")
         newPath = pathStackCloneRef.current.slice(0, -1);
         if (newPath.length === 0) {
+            const last = Array.from(visited.current).at(-1);
+            if (last) {
+              console.log("daletei utimo visited");
+              visited.current.delete(last);
+            }
           enemyAlertRef.current = false
           return ;
         }
