@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './Menu.css';
 import musicOn from "../assets/unmuted.png"
 import musicOF from "../assets/muted.png"
+import api from "../api";
 
 function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  setScore, setDevMove, devMode, infinityMode, setTrueInfinityMode, setProgressoInfinito,setIsPlaying,isPlaying}) { 
   const [devModeForm, setDevModeForm] = useState(false);
+  const [userName, setUserName] = useState("");
   const [passWord, setPassWord] = useState("");
   const [auxiliarRandow, setAuxiliarRandow] = useState(false);
  
@@ -33,18 +35,32 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
     }
   };
 
-  const ativarDevMod = () => {
-    const senhaDev = "123";
-    if(passWord === senhaDev) {
-      setPassWord("");   
+const ativarDevMod = async () => {
+  try {
+    const response = await api.post("/user", {
+      name: userName,
+      senha: passWord,
+    });
+
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
       setDevMove(true);
       setDevModeForm(false);
+      setUserName("");
+      setPassWord("");
       alert("Welcome, Dev!");
     } else {
-      alert("Incorrect password!");
-      setPassWord(""); 
+      alert("Login falhou!");
     }
-  };
+  } catch (error) {
+    if (error.response && error.response.data?.error) {
+      alert(error.response.data.error);
+    } else {
+      alert("Erro ao conectar com servidor!");
+    }
+    setPassWord("");
+  }
+};
    
   const renderNivelNome = () => {
     switch (nivel) {
@@ -114,7 +130,14 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
       </div>
       
       {devModeForm && (
-        <div className='input-container'>
+        <div className='input-container'> 
+          <input 
+            type="text" 
+            placeholder="Enter the developer username"  
+            onChange={(e) => setUserName(e.target.value)} 
+            maxLength={10} 
+            value={userName}
+          />
           <input 
             type="password" 
             placeholder="Enter the developer password"  
@@ -125,7 +148,8 @@ function Menu({  setScreen,  setMazeKey,  gerarNovoMaze,  setNivel,  nivel,  set
           <div className="button-group">
             <button onClick={ativarDevMod}>Confirm</button>
             <button onClick={() => {
-              setPassWord("");   
+              setPassWord("");
+              setUserName("");  
               setDevModeForm(false);
             }}>
               Cancel
