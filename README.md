@@ -99,7 +99,7 @@ O personagem é um agente virtual que:
 
 ## 🧭 Interface e Controles
 
-- Menu inicial com:
+- Menu inicial :
   - Início do jogo
   - Alternância de modo infinito
   - Acesso ao placar
